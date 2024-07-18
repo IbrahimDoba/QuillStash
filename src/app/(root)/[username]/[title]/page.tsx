@@ -3,7 +3,7 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { postProps } from '@/components/blogs/blogListCard';
+import { postProps } from '@/lib/api';
 
 const BlogPostPage = () => {
   const { username, title } = useParams();

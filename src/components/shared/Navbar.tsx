@@ -1,14 +1,35 @@
-"use client";
+"use client"
 import { UserIcon } from "@heroicons/react/16/solid";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import user from "../../../public/Assets/user.jpg";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { UserProps } from "@/lib/api";
+import axios from "axios";
 
-const Navbar = () => {
+const Navbar =  () => {
   const { data: session, status } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [info, setInfo] = useState<UserProps>();
+  
+  // console.log(session)
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get('/api/blog/userInfo');
+        setInfo(response.data);
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+        // setError('Error fetching data');
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   const handleSignOut = () => {
     signOut();
@@ -75,7 +96,7 @@ const Navbar = () => {
                   </Link>
                 </div>
                 <Image
-                  src={session.user?.image || user}
+                  src={info?.image|| user }
                   alt="User"
                   width={70}
                   height={70}
@@ -85,7 +106,7 @@ const Navbar = () => {
                 {dropdownOpen && (
                   <div className="absolute top-12 right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg py-2">
                     <Link
-                      href="/profile"
+                      href={`/${info?.username}`}
                       // pass username instead of profile
                       className="block px-4 py-2 hover:bg-gray-200"
                     >

@@ -21,7 +21,9 @@ const LoginForm = () => {
     password: "",
   });
   const [statusError, setStatusError] = useState<string>("");
- 
+  const [responseUrl, setResponseUrl] = useState<string>("")
+
+  const router = useRouter();
 
   const schema = z.object({
     identifier: z.string().email("Invalid Username or Email "),
@@ -57,8 +59,10 @@ const LoginForm = () => {
       });
       console.log(res);
 
-    
-      if (res?.error) {
+      if (res?.url){
+        setResponseUrl(res.url);
+      }
+       else if (res?.error) {
         setStatusError("Invalid Username / email or Password");
       } else {
         setStatusError("");
@@ -68,7 +72,11 @@ const LoginForm = () => {
     }
     
   };
-
+  useEffect(() => {
+    if (responseUrl) {
+      router.push('/home');
+    }
+  }, [responseUrl, router]);
   return (
     <div className="flex  min-h-screen ">
       <div className="flex flex-1 flex-col justify-center w-full md:w-1/2 py-8 px-20  h-full shadow-xl mt-[5%] max-md:p-6">

@@ -6,29 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import BloglistCard from "@/components/blogs/blogListCard";
 import { useSession } from "next-auth/react";
+import { postProps, UserProfileProps } from "@/lib/api";
 
-interface UserProfileProps {
-  username: string;
-  name: string;
-  bio: string;
-  location: string;
-  createdAt: string;
-  email: string;
-  github: string;
-  pronouns: string;
-  work: string;
-  posts: Array<{
-    _id: string;
-    title: string;
-    coverImage: string;
-    createdAt: string;
-  }>;
-}
+
 
 const UserProfile = () => {
   const { username } = useParams();
   const [user, setUser] = useState<UserProfileProps | null>(null);
   const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<postProps[]>([]);
   const [error, setError] = useState("");
   const { data: session, status } = useSession();
 
@@ -36,7 +22,10 @@ const UserProfile = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`/api/user/${username}`);
-        setUser(response.data);
+        setUser(response.data.user);
+        setPosts(response.data.userPosts)
+        console.log("USER AND POSTS",response)
+
       } catch (error) {
         setError("Error fetching user data");
       } finally {
@@ -95,16 +84,16 @@ const UserProfile = () => {
         <div className="mt-6">
           <h3 className="text-xl font-bold mb-4">Posts</h3>
           <div className="grid grid-cols-1 gap-4">
-            {user.posts.map((post) => (
+            {/* {user.posts.map((post) => (
               <div
                 key={post._id}
                 className="bg-gray-100 p-4 rounded-lg shadow-md"
-              >
+              > */}
                 {/* <Link href={`/${username}/${post.title}`}> */}
-                  <BloglistCard />
+                  <BloglistCard posts={posts} loading={loading} error={error}/>
                 {/* </Link> */}
-              </div>
-            ))}
+              {/* </div>
+            ))} */}
           </div>
         </div>
       </div>

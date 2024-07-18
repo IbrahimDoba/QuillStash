@@ -1,4 +1,5 @@
 import { connectDb } from '@/lib/ConnetctDB';
+import Post from '@/models/Post';
 import User from '@/models/User';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
@@ -14,7 +15,8 @@ export const  GET =async (req: NextApiRequest, { params }: { params: { username:
       if (!user) {
         return NextResponse.json({ message: 'User not found' });
       }
-    return  NextResponse.json(user);
+      const userPosts = await Post.find({ "userInfo.authorId": user._id  })
+    return  NextResponse.json({user,userPosts});
     } catch (error) {
      return NextResponse.json({ message: 'Internal server error' });
     }

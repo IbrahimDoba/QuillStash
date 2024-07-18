@@ -32,8 +32,8 @@ export const POST = async (req: any, res: any) => {
     }
 
     const finalFilePath = await uploadFile(coverImage);
-    const finalbodyFilePath = await uploadFile(bodyImage);
-    console.log(finalbodyFilePath);
+    // const finalbodyFilePath = await uploadFile(bodyImage);
+    console.log(finalFilePath);
 
     await connectDb();
     const session = await getServerSession(); // Implement this function to get the current user
@@ -56,7 +56,7 @@ export const POST = async (req: any, res: any) => {
       coverImage: finalFilePath, // Save the final file path
       body: body,
       tags: parsedTags,
-      bodyImage: finalbodyFilePath,
+      // bodyImage: finalbodyFilePath,
       userInfo: {
         username: user.username,
         userImage: user.image,

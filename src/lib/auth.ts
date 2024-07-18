@@ -38,9 +38,8 @@ export const authOptions: NextAuthOptions = {
             { username: credentials.identifier }
           ] 
         })
-        console.log(user)
         if (user && await bcrypt.compare(credentials.password, user.password)) {
-          return { id: user._id, email: user.email, role: user.role }; // Ensure returning a plain object
+          return { id: user._id, email: user.email, role: user.role, image: user.image, usermame:user.username }; // Ensure returning a plain object
         }
         return null;
       },
