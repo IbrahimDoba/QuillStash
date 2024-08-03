@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import Providers from "@/context/QueryProvider";
 
@@ -11,8 +12,8 @@ export default function RootLayout({
     <div>
       
       <Navbar />
-      <main className=''>{children}</main>
-      {/* <Footer /> */}
+      <main className='flex justify-center items-center min-h-screen'>{children}</main>
+      <Footer />
     </div>
   );
 }

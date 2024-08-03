@@ -4,6 +4,7 @@ import User from "@/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { uploadFile } from "@/lib/uploadHandler";
+import { generateRandomString } from "@/lib/service";
 
 export const config = {
   api: {
@@ -13,27 +14,29 @@ export const config = {
 
 export const POST = async (req: any, res: any) => {
   try {
-    const formData = await req.formData();
-    const title = formData.get("title");
-    const body = formData.get("body");
-    const tags = formData.get("tags");
-    const coverImage = formData.get("coverImage");
-    const bodyImage = formData.get("bodyImage")
-
-    const parsedTags = JSON.parse(tags);
-
+    const formData = await req.json();
     console.log(formData);
+    
+    const title = formData.title
+    const body = formData.body;
+    const tags = formData.tags
+    const coverImageUrl = formData.coverImageUrl;
+  
 
-    if (!coverImage) {
+    const stringifyTags = JSON.stringify(tags);
+    const parsedTags = JSON.parse(stringifyTags)
+    console.log(parsedTags)
+
+    if (!coverImageUrl) {
       return NextResponse.json(
         { error: "Cover image is required." },
         { status: 400 }
       );
     }
 
-    const finalFilePath = await uploadFile(coverImage);
+    // const finalFilePath = await uploadFile(coverImage);
     // const finalbodyFilePath = await uploadFile(bodyImage);
-    console.log(finalFilePath);
+    // console.log(finalFilePath);
 
     await connectDb();
     const session = await getServerSession(); // Implement this function to get the current user
@@ -50,13 +53,16 @@ export const POST = async (req: any, res: any) => {
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
+     // Remove special characters from the title
+     const sanitizedTitle = title.replace(/[^a-zA-Z0-9\s]/g, '');
+     const slugTitle = `${sanitizedTitle}${generateRandomString(3)}`;
 
     const newPost = new Post({
       title: title,
-      coverImage: finalFilePath, // Save the final file path
+      coverImage: coverImageUrl, // Save the final file path
       body: body,
       tags: parsedTags,
-      // bodyImage: finalbodyFilePath,
+      slug: slugTitle,
       userInfo: {
         username: user.username,
         userImage: user.image,
@@ -65,7 +71,7 @@ export const POST = async (req: any, res: any) => {
         authorId: user._id,
       },
     });
-    console.log(newPost);
+    // console.log(newPost);
 
     const savePost = await newPost.save();
 

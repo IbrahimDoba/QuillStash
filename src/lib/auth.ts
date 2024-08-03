@@ -6,16 +6,8 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import { connectDb } from "./ConnetctDB";
+import { generateRandomString } from "./service";
 
-const generateRandomString = (length:any) => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
 
 
 
@@ -35,7 +27,8 @@ export const authOptions: NextAuthOptions = {
         const user = await User.findOne({ 
           $or: [
             { email: credentials.identifier }, 
-            { username: credentials.identifier }
+            { username: credentials.identifier },
+            
           ] 
         })
         if (user && await bcrypt.compare(credentials.password, user.password)) {
@@ -51,7 +44,22 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async jwt({ token, user }) {
+      // Include user ID in the token
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Include user ID in the session
+      if (token?.id) {
+        session.user.id = token.id;
+        // console.log("USER SEESION",session)
+      }
+      return session;
+    },
+    async signIn({  user, account, profile }) {
         await connectDb();
         const existingUser = await User.findOne({ email: user.email });
         if (!existingUser) {
@@ -60,7 +68,8 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             name: user.name,
             image: user.image,
-            username
+            username,
+            userId: user.id
             // Add other fields if necessary
           });
         }

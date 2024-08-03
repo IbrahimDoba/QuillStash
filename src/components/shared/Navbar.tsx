@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import user from "../../../public/Assets/user.jpg";
 import React, { useEffect, useState } from "react";
-import { UserProps } from "@/lib/api";
+import { UserProps } from "@/lib/service";
 import axios from "axios";
 
 const Navbar =  () => {
@@ -15,11 +15,11 @@ const Navbar =  () => {
   
   // console.log(session)
   useEffect(() => {
-    const fetchPosts = async () => {
+    const userInfo = async () => {
       try {
         const response = await axios.get('/api/blog/userInfo');
         setInfo(response.data);
-        console.log(response)
+        // console.log(response)
       } catch (error) {
         console.log(error)
         // setError('Error fetching data');
@@ -28,7 +28,7 @@ const Navbar =  () => {
       }
     };
 
-    fetchPosts();
+    userInfo();
   }, []);
 
   const handleSignOut = () => {
@@ -46,6 +46,7 @@ const Navbar =  () => {
               SILVERTECH
               <span className="ml-3 text-indigo-400">{`{Pulse}`}</span>
             </h1>
+            {/* <p>{session?.user?.id}</p> */}
             </Link>
           </div>
           {/* <div className="flex w-[30%] justify-between items-center p-4 mr-6">
@@ -89,12 +90,20 @@ const Navbar =  () => {
             {status === "authenticated" ? (
               <div className="relative flex justify-around items-center w-[50%] ">
                 <div>
+                  <Link href="/bookmark">
+                  <button className="p-2 text-black rounded-lg border-4 bg-slate-100">
+                  Bookmarks
+                  </button>
+                  </Link>
+                </div>
+                <div>
                   <Link href="/write">
                   <button className="p-2 text-black rounded-lg border-4 border-blue-400 bg-slate-100">
                     Create Post
                   </button>
                   </Link>
                 </div>
+                
                 <Image
                   src={info?.image|| user }
                   alt="User"

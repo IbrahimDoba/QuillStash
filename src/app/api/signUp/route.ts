@@ -11,18 +11,19 @@ export const config = {
 };
 
 export const POST = async (request: any) => {
-  const formData = await request.formData();
-  const username = formData.get('username');
-  const email = formData.get('email');
-  const password = formData.get('password');
-  const name = formData.get('name');
-  const profileImage = formData.get('profileImage');
+  const formData = await request.json();
+  console.log(formData)
+
+  const username = formData.username;
+  const email = formData.email;
+  const password = formData.password;
+  const name = formData.name;
+  const profileImage = formData.profileImage;
 
   console.log("signuptest", profileImage);
 
-  const finalUserFilePath = await uploadFile(profileImage);
-  console.log(finalUserFilePath);
-
+  // const finalUserFilePath = await uploadFile(profileImage);
+  // console.log(finalUserFilePath);
  
   const hashedPassword = await bcrypt.hash(password, 10);
   console.log(username, email, hashedPassword, profileImage);
@@ -45,7 +46,7 @@ export const POST = async (request: any) => {
       name,
       email,
       password: hashedPassword,
-      image: finalUserFilePath,
+      image: profileImage,
     });
 
     return new NextResponse("user is registered", { status: 200 });

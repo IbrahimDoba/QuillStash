@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <main className="bg-slate-100">{children}</main>
+          <main className="">{children}</main>
         </Providers>
       </body>
     </html>

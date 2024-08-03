@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import axios from "axios";
+import { SingleImageDropzone } from "@/components/ui/image-dropzone";
+import { useEdgeStore } from "@/lib/edgestore";
 
 interface errorProps {
   name: string;
@@ -15,9 +17,6 @@ interface errorProps {
   email: string;
   password: string;
   confirmPassword: string;
-}
-interface ImageData {
-  userImage: File | any;
 }
 
 const SignupForm = () => {
@@ -34,9 +33,10 @@ const SignupForm = () => {
     confirmPassword: "",
   });
   const [statusError, setStatusError] = useState<string>("");
-  const [profileImage, setProfileImage] = useState<ImageData>({
-    userImage: null,
-  });
+  const [profileImage, setProfileImage] = useState<File | any>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const { edgestore } = useEdgeStore();
 
   const router = useRouter();
 
@@ -57,12 +57,8 @@ const SignupForm = () => {
       }),
   });
 
-  const handleUserProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setProfileImage({
-      ...profileImage,
-      userImage: file,
-    });
+  const handleUserProfileChange = (file: File) => {
+    setProfileImage(file);
   };
 
   const handleSubmit = async (e: any) => {
@@ -91,20 +87,29 @@ const SignupForm = () => {
         confirmPassword: "",
       });
 
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("username", username);
-      formData.append("email", email);
-      formData.append("password", password);
-      if (profileImage.userImage) {
-        formData.append("profileImage", profileImage.userImage);
-      }
-
       try {
-        const res = await axios.post("/api/signup", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        // Confirm image upload and save the URL
+        let finalImageUrl = imageUrl;
+        if (profileImage) {
+          const res = await edgestore.myPublicImages.upload({
+            file: profileImage,
+            input: { type: "profile" },
+            onProgressChange: setProgress,
+          });
+          finalImageUrl = res.url;
+          console.log(res)
+          // if (res) {
+          //   await edgestore.myPublicImages.confirmUpload({ url });
+          // }
+        }
+
+        // Submit form data including the image URL
+        const res = await axios.post("/api/signup", {
+          name,
+          username,
+          email,
+          password,
+          profileImage: finalImageUrl,
         });
 
         if (res.status === 400) {
@@ -115,6 +120,7 @@ const SignupForm = () => {
         }
       } catch (err: any) {
         console.error(err);
+        setStatusError("An error occurred during signup.");
       }
     }
   };
@@ -132,11 +138,26 @@ const SignupForm = () => {
             >
               Profile Image
             </label>
-            <input
-              type="file"
-              onChange={handleUserProfileChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            <SingleImageDropzone
+              width={200}
+              height={200}
+              value={profileImage}
+              dropzoneOptions={{
+                maxSize: 1024 * 1024 * 1, // 1MB
+              }}
+              onChange={(file) => {
+                setProfileImage(file ?? null);
+              }}
             />
+
+            <div className="h-[6px] w-44 border rounded overflow-hidden">
+              <div
+                className="h-full bg-white transition-all duration-150"
+                style={{
+                  width: `${progress}%`,
+                }}
+              />
+            </div>
           </div>
 
           <div className="mb-4">

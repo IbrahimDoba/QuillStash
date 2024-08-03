@@ -1,4 +1,4 @@
-import CreatePost from '@/components/blogs/createBlog'
+import CreatePost from '@/components/blogs/createPost'
 import React from 'react'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';

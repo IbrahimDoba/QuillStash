@@ -19,7 +19,7 @@ export const GET = async (req: Request) => {
       });
     });
 
-    const popularTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]).slice(0, 10);
+    const popularTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]).slice(0, 5);
 
     return NextResponse.json(popularTags);
   } catch (err) {

@@ -1,29 +1,34 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import BloglistCard from '@/components/blogs/blogListCard';
+"use client";
+import React, { useEffect, useState } from "react";
+import PostlistCard from "@/components/blogs/postListCard";
 import { useParams } from "next/navigation";
+import { usePagination } from "@/context/paginationContext";
 
 const Page = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
- 
+  const [error, setError] = useState("");
+  const { currentPage, setCurrentPage, totalPages, setTotalPages } =
+    usePagination();
+
   const { tag } = useParams();
 
   useEffect(() => {
     if (tag) {
       const fetchPosts = async () => {
         try {
-          const response = await fetch(`/api/blog/tags/${tag}`);
+          const response = await fetch(
+            `/api/blog/tags/${tag}?page=${currentPage}&limit=5`
+          );
           const data = await response.json();
-        console.log(data)
+          console.log(data);
           if (response.ok) {
-            setPosts(data);
+            setPosts(data.tagPosts);
           } else {
-            setError(data.message || 'Error fetching posts');
+            setError(data.message || "Error fetching posts");
           }
         } catch (error) {
-          setError('Error fetching posts');
+          setError("Error fetching posts");
         } finally {
           setLoading(false);
         }
@@ -32,13 +37,35 @@ const Page = () => {
       fetchPosts();
     }
   }, [tag]);
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  const handlePageClick = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div>
-      <BloglistCard posts={posts} loading={loading} error={error} />
+      <PostlistCard
+        posts={posts}
+        loading={loading}
+        error={error}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handleNextPage={handleNextPage}
+        handlePrevPage={handlePrevPage}
+        handlePageClick={handlePageClick}
+      />{" "}
     </div>
   );
 };

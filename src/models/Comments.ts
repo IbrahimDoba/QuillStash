@@ -2,15 +2,36 @@ import mongoose, { Schema, models } from "mongoose";
 
 const CommentSchema = new Schema(
   {
-    author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+    userInfo: {
+      username: {
+        type: String,
         required: true,
       },
-      body: {
+      userImage: {
         type: String,
-        required: true
-      }
+        required: true,
+      },
+      author: {
+        type: String,
+        required: true,
+      },
+      role: {
+        type: String,
+        required: true,
+      },
+      authorId: {
+        type: String,
+      },
+      postId: {
+        type: String,
+      },
+    },
+    body: {
+      type: String,
+      required: true,
+    },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    replies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );

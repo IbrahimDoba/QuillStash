@@ -41,14 +41,8 @@ const PostSchema = new Schema(
       type: Number,
       default: 0,
     },
-    likes: {
-      type: Number,
-      default: 0,
-    },
-    bookmarks: {
-      type: Number,
-      default: 0,
-    },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
     tags: {
       type: [String],

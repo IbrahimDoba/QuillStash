@@ -49,13 +49,27 @@ const userSchema = new Schema(
       },
     ],
     comments: [
-      [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Comment",
-        },
-      ],
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
     ],
+    bookmarks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: 'likesRef'
+      }
+    ],
+    likesRef: {
+      type: String,
+      enum: ['Post', 'Comment', 'Reply']
+    },
     bio: {
       type: String,
     },

@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -5,7 +6,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex flex-col  w-full  h-auto ">
       <Navbar />
 
-      <div className="flex flex-col justify-center items-center mt-10 ">{children}</div>
+      <div className="flex flex-col min-h-screen justify-start items-center mt-10 ">{children}</div>
+      <Footer />
     </div>
   );
 };
