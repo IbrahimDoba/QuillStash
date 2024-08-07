@@ -8,6 +8,8 @@ import { generateRandomString } from "@/lib/service";
 
 
 export const POST = async (req: NextRequest, res: any) => {
+  const session = await getServerSession(); // Implement this function to get the current user
+
   try {
     const formData = await req.json();
     console.log(formData);
@@ -34,7 +36,6 @@ export const POST = async (req: NextRequest, res: any) => {
     // console.log(finalFilePath);
 
     await connectDb();
-    const session = await getServerSession(); // Implement this function to get the current user
     if (!session) {
       return NextResponse.json(
         { message: "User not authenticated" },
@@ -80,3 +81,4 @@ export const POST = async (req: NextRequest, res: any) => {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };
+export const dynamic = 'force-dynamic';

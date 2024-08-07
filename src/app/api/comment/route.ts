@@ -8,11 +8,11 @@ import { getServerSession } from 'next-auth';
 
 
 export const POST = async (req: NextRequest) => {
+  const session = await getServerSession(); // Implement this function to get the current user
   try {
     const { postId, userInfo, body } = await req.json();
     connectDb()
 
-    const session = await getServerSession(); // Implement this function to get the current user
     if (!session) {
       return NextResponse.json(
         { message: "User not authenticated" },
@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
     
-    console.log("TEST",postId,body)
+    // console.log("TEST",postId,body)
     // Create a new comment
     const newComment = new Comment({
       userInfo: {
@@ -58,3 +58,4 @@ export const POST = async (req: NextRequest) => {
   }
 }
 
+export const dynamic = 'force-dynamic';

@@ -6,11 +6,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req:NextRequest) => {
 
+  const session = await getServerSession(); // Implement this function to get the current user
     try {
 
         
     await connectDb();
-    const session = await getServerSession(); // Implement this function to get the current user
     if (!session) {
       return NextResponse.json(
         { message: "User not authenticated" },
@@ -25,6 +25,7 @@ export const GET = async (req:NextRequest) => {
       }
       return NextResponse.json(user)
     } catch (err){
-        console.log(err)
+      return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
+export const dynamic = 'force-dynamic';

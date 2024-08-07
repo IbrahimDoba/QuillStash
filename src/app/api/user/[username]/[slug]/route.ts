@@ -104,6 +104,7 @@ export const DELETE = async (
     }
     return NextResponse.json(DeletePost);
   } catch (err) {
-    console.log(err);
+    return NextResponse.json({ message: 'Internal server error' });
   }
 };
+export const dynamic = 'force-dynamic';

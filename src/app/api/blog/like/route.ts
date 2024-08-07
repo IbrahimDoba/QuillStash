@@ -6,11 +6,12 @@ import { getServerSession } from 'next-auth';
 import Post from '@/models/Post';
 
 export const POST = async (req: NextRequest) => {
+  const session = await getServerSession(); // Implement this function to get the current user
+
   try {
     const { postId } = await req.json();
     connectDb();
 
-    const session = await getServerSession(); // Implement this function to get the current user
     if (!session) {
       return NextResponse.json(
         { message: "User not authenticated" },
@@ -46,3 +47,4 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ success: false }, { status: 400 });
   }
 }
+export const dynamic = 'force-dynamic';

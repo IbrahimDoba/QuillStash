@@ -7,11 +7,12 @@ import Post from "@/models/Post";
 import { NextApiRequest } from "next";
 
 export const POST = async (req: NextRequest) => {
+  const session = await getServerSession(); // Implement this function to get the current user
+
   try {
     const { bookmarkId } = await req.json();
     connectDb();
 
-    const session = await getServerSession(); // Implement this function to get the current user
     if (!session) {
       return NextResponse.json(
         { message: "User not authenticated" },
@@ -93,3 +94,4 @@ export const GET = async (req: NextRequest) => {
   }
 };
 
+export const dynamic = 'force-dynamic';

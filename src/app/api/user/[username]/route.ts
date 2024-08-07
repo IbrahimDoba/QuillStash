@@ -74,3 +74,4 @@ export const PUT = async (req: any, { params }: { params: { username: string } }
         return NextResponse.json({ message: 'Internal server error' });
     }
 };
+export const dynamic = 'force-dynamic';
