@@ -61,7 +61,7 @@ const PostlistCard: React.FC<PostlistCardProps> = ({
             </Link>
             <div className="ml-[15%]">
               <Link href={`/${post.userInfo.username}/${post.slug}`}>
-                <p className="mt-2 font-extrabold text-gray-800">
+                <p className="mt-2 font-extrabold text-gray-800 text-3xl">
                   {post.title}
                 </p>
                 <div>

@@ -3,14 +3,9 @@ import Post from "@/models/Post";
 import User from "@/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { uploadFile } from "@/lib/uploadHandler";
 import { generateRandomString } from "@/lib/service";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
 
 export const POST = async (req: any, res: any) => {
   try {

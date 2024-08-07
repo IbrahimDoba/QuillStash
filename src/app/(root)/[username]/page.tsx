@@ -65,6 +65,10 @@ const UserProfile = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleEdit = () => {
+    setEditMode(true)
+  }
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData();
@@ -93,9 +97,11 @@ const UserProfile = () => {
       setCurrentPage(currentPage + 1);
     }
   };
+  
   const handlePageClick = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+  
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -110,12 +116,11 @@ const UserProfile = () => {
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex items-center mb-6">
-          <button
-            onClick={() => setEditMode(true)}
-            className="p-2 bg-green-300 rounded-xl"
-          >
-            Settings
-          </button>
+        {session?.user?.id === user._id && (
+            <button onClick={handleEdit} className="text-blue-500">
+              Edit
+            </button>
+          )}
           <div className="ml-4">
             <h2 className="text-2xl font-bold mb-2">{user.name}</h2>
             <p className="text-gray-600 mb-1">@{user.username}</p>

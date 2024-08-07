@@ -46,7 +46,7 @@ const Navbar =  () => {
               SILVERTECH
               <span className="ml-3 text-indigo-400">{`{Pulse}`}</span>
             </h1>
-            {/* <p>{session?.user?.id}</p> */}
+            <p>{session?.user?.id}</p>
             </Link>
           </div>
           {/* <div className="flex w-[30%] justify-between items-center p-4 mr-6">

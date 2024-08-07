@@ -2,6 +2,7 @@ import { connectDb } from '@/lib/ConnetctDB';
 import Post from '@/models/Post';
 import User from '@/models/User';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest, { params }: { params: { username: string } }) => {
@@ -44,6 +45,9 @@ export const PUT = async (req: any, { params }: { params: { username: string } }
     await connectDb();
     try {
         const username = params.username;
+        const session = await getServerSession()
+
+
         const form = await req.formData();
         const name = form.get("name") as string;
         const bio = form.get("bio") as string;
@@ -57,9 +61,14 @@ export const PUT = async (req: any, { params }: { params: { username: string } }
             { name, bio, location, pronouns, work, github },
             { new: true }
         );
+        // console.log(user)
         if (!user) {
             return NextResponse.json({ message: 'User not found' });
         }
+        // if (user.id.toString() !== session.user.id) {
+        //     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        //   }
+        
         return NextResponse.json(user);
     } catch (error) {
         return NextResponse.json({ message: 'Internal server error' });

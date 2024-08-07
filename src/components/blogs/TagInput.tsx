@@ -1,12 +1,12 @@
-"use client"
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 
 interface TagInputProps {
   onChange: (tags: string[]) => void;
+  value: string[];
 }
 
-const TagInput: React.FC<TagInputProps> = ({ onChange }) => {
-  const [tags, setTags] = useState<string[]>([]);
+const TagInput: React.FC<TagInputProps> = ({ onChange, value }) => {
+  const [tags, setTags] = useState<string[]>(value);
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +38,7 @@ const TagInput: React.FC<TagInputProps> = ({ onChange }) => {
           <div key={index} className="bg-gray-200 text-gray-700 px-2 py-1 rounded mr-2 mb-2 flex items-center">
             #{tag}
             <button
+              type="button" // Ensure this button doesn't submit the form
               onClick={() => handleRemoveTag(index)}
               className="ml-2 text-red-500 hover:text-red-700"
             >

@@ -1,14 +1,8 @@
 import { connectDb } from "@/lib/ConnetctDB";
-import { uploadFile } from "@/lib/uploadHandler";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 export const POST = async (request: any) => {
   const formData = await request.json();

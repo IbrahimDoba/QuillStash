@@ -162,7 +162,7 @@ const CreatePost: React.FC = () => {
           onChange={handleInputChange}
           className="w-full p-2 mb-4 border rounded"
         />
-        <TagInput onChange={handleTagsChange} />
+        <TagInput value={tags} onChange={handleTagsChange} />
         <CustomToolbar />
         <ReactQuill
           value={body}
@@ -209,4 +209,3 @@ const CreatePost: React.FC = () => {
 
 export default CreatePost;
 
-// data.append("tags", JSON.stringify(formData.tags));
