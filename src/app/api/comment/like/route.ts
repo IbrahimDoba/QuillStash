@@ -1,10 +1,10 @@
 import { connectDb } from '@/lib/ConnetctDB';
 import Comment from '@/models/Comments';
 import User from "@/models/User";
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 
-export const POST = async (req: Request) => {
+export const POST = async (req: NextRequest) => {
   try {
     const { commentId } = await req.json();
     connectDb();

@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import Post from "@/models/Post";
 import { NextApiRequest } from "next";
 
-export const POST = async (req: Request) => {
+export const POST = async (req: NextRequest) => {
   try {
     const { bookmarkId } = await req.json();
     connectDb();

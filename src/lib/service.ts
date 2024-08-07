@@ -26,6 +26,7 @@ export interface PostProps {
   coverImage: string;
   featured: boolean;
   userInfo: {
+    authorId: string;
     username: string;
     userImage: string | any;
     role: string;
@@ -51,6 +52,7 @@ export interface UserProps {
 }
 
 export interface UserProfileProps {
+  _id: string;
   username: string;
   name: string;
   bio: string;

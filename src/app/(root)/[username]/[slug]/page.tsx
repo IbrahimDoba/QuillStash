@@ -10,7 +10,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const BlogPostPage = () => {
   const params = useParams();

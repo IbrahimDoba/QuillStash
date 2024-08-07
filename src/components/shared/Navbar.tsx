@@ -30,6 +30,7 @@ const Navbar =  () => {
 
     userInfo();
   }, []);
+  
 
   const handleSignOut = () => {
     signOut();

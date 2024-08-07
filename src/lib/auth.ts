@@ -40,14 +40,14 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account, profile }) {
-      if (account?.provider === "google") {
+      if (account?.provider === "google" && profile) {
         await connectDb();
         let existingUser = await User.findOne({ email: profile.email });
         if (!existingUser) {
           existingUser = await User.create({
             email: profile.email,
             name: profile.name,
-            image: profile.picture,
+            image: profile.image,
             username: `${profile.name}${generateRandomString(6)}`,
           });
         }

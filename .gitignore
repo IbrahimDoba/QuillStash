@@ -8,7 +8,7 @@
 .env
 # testing
 /coverage
-
+.next-auth.d.ts
 # next.js
 /.next/
 /out/

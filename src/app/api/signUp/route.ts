@@ -1,10 +1,10 @@
 import { connectDb } from "@/lib/ConnetctDB";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
-export const POST = async (request: any) => {
+export const POST = async (request: NextRequest) => {
   const formData = await request.json();
   console.log(formData)
 

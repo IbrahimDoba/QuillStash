@@ -1,11 +1,10 @@
 import { connectDb } from "@/lib/ConnetctDB";
 import Post from "@/models/Post";
 import Comment from "@/models/Comments";
-import { NextResponse } from "next/server";
-import { NextApiRequest } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: NextApiRequest,
+  req: NextRequest,
   { params }: { params: { postId: any } }
 ) {
   const postId = params.postId;

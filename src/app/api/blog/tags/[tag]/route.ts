@@ -1,8 +1,8 @@
 import { connectDb } from "@/lib/ConnetctDB";
 import Post from "@/models/Post";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: Request, { params }: { params: { tag: string } }) => {
+export const GET = async (req: NextRequest, { params }: { params: { tag: string } }) => {
   try {
     await connectDb();
     

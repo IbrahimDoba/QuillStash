@@ -2,12 +2,12 @@ import { connectDb } from "@/lib/ConnetctDB";
 import Post from "@/models/Post";
 import User from "@/models/User";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateRandomString } from "@/lib/service";
 
 
 
-export const POST = async (req: any, res: any) => {
+export const POST = async (req: NextRequest, res: any) => {
   try {
     const formData = await req.json();
     console.log(formData);

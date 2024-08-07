@@ -1,10 +1,10 @@
 import { connectDb } from "@/lib/ConnetctDB";
 import User from "@/models/User";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
-export const GET = async (req:Request) => {
+export const GET = async (req:NextRequest) => {
 
     try {
 

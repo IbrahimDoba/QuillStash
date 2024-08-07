@@ -1,12 +1,17 @@
 import { connectDb } from "@/lib/ConnetctDB";
 import Post from "@/models/Post";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: Request) => {
+interface PostType {
+  tags: string[];
+}
+
+export const GET = async (req: NextRequest) => {
   try {
     await connectDb();
 
-    const posts = await Post.find({});
+    const posts = await Post.find({}) as PostType[];
+    
     const tagCount: { [key: string]: number } = {};
 
     posts.forEach(post => {
