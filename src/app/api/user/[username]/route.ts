@@ -10,6 +10,7 @@ export const GET = async (req: NextRequest, { params }: { params: { username: st
 
     const username = params.username;
     const { searchParams } = new URL(req.url);
+    console.log(username)
 
     const pageParam = searchParams.get('page');
     const limitParam = searchParams.get('limit');

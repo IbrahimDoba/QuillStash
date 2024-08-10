@@ -1,7 +1,7 @@
 // Custom toolbar with larger icons and tooltips
 export const CustomToolbar = () => (
     <div id="toolbar">
-      <select className="ql-header">
+      <select title="heading" className="ql-header">
         <option value="1">Header 1</option>
         <option value="2">Header 2</option>
         <option value="">Normal</option>

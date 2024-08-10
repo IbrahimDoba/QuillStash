@@ -4,31 +4,36 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
   await connectDb();
-
   const { searchParams } = new URL(req.url);
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
 
-  // Ensure that page and limit are valid strings before parsing
   const page = pageParam ? parseInt(pageParam) : 1;
-  const limit = limitParam ? parseInt(limitParam) : 5;
+  const limit = limitParam ? parseInt(limitParam) : 2;
   const skip = (page - 1) * limit;
+
+  // 3 posts per page
 
   try {
     const totalPosts = await Post.countDocuments();
+    const totalPages = Math.ceil(totalPosts / limit);
     const posts = await Post.find()
-      .sort({ createdAt: -1 }) // Sort by creation date in descending order
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    const response = {
-      totalPosts,
-      totalPages: Math.ceil(totalPosts / limit),
-      currentPage: page,
-      posts,
-    };
+    const nextPage = page < totalPages ? page + 1 : null;
+    const hasNextPage = page < totalPages;
 
-    return NextResponse.json(response);
+    return NextResponse.json(
+      {
+        posts,
+        nextPage,
+        totalPages,
+        hasNextPage,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: 'server error' }, { status: 500 });

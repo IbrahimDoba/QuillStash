@@ -1,3 +1,5 @@
+import { Input } from '@nextui-org/input';
+import { Chip } from '@nextui-org/react';
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 
 interface TagInputProps {
@@ -32,31 +34,29 @@ const TagInput: React.FC<TagInputProps> = ({ onChange, value }) => {
   };
 
   return (
-    <div className="mb-4">
-      <div className="flex flex-wrap items-center border p-2 rounded">
+    <div className='flex flex-col gap-2'>
+      <div className='flex gap-4'>
         {tags.map((tag, index) => (
-          <div key={index} className="bg-gray-200 text-gray-700 px-2 py-1 rounded mr-2 mb-2 flex items-center">
-            #{tag}
-            <button
-              type="button" // Ensure this button doesn't submit the form
-              onClick={() => handleRemoveTag(index)}
-              className="ml-2 text-red-500 hover:text-red-700"
-            >
-              &times;
-            </button>
-          </div>
+          <Chip
+            key={`${tag}-${index}`}
+            onClose={() => handleRemoveTag(index)} // Remove tag when the close button is clicked
+          >
+            {tag}
+          </Chip>
         ))}
-        {tags.length < 4 && (
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            placeholder="Add up to 4 tags..."
-            className="flex-grow p-2 outline-none"
-          />
-        )}
       </div>
+
+      {tags.length < 4 && (
+        <Input
+          type='text'
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder='Add up to 4 tags separated by spaces'
+          radius='sm'
+          size='lg'
+        />
+      )}
     </div>
   );
 };

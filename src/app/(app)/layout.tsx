@@ -1,5 +1,6 @@
+import Container from '@/components/Container';
 import Footer from '@/components/shared/Footer';
-import AlternateNavigation from './AlternateNavigation';
+import Navigation from '@/components/shared/Navigation';
 
 export default function RootLayout({
   children,
@@ -7,10 +8,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <AlternateNavigation />
+    <Container>
+      <Navigation />
       <main className='min-h-screen'>{children}</main>
       <Footer />
-    </div>
+    </Container>
   );
 }

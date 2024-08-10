@@ -116,7 +116,7 @@ const SignupForm = () => {
           setStatusError("This email/user is already registered");
         } else if (res.status === 200) {
           setStatusError("");
-          router.push("/auth/login");
+          router.push("/login");
         }
       } catch (err: any) {
         console.error(err);
@@ -309,7 +309,7 @@ const SignupForm = () => {
         </p>
         <p className="mt-4">
           Already have an account?{" "}
-          <Link href="/auth/login" className="text-blue-600 hover:underline">
+          <Link href="/login" className="text-blue-600 hover:underline">
             Log in
           </Link>
         </p>

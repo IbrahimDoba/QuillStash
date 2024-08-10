@@ -3,7 +3,6 @@ import React from 'react'
 
 const Tag = ({name} : {name:string}) => {
   return (
-    
     <Link href={`/tags/${name}`}>
       {name}
     </Link>

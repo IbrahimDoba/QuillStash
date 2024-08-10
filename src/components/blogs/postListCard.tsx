@@ -26,7 +26,7 @@ const PostlistCard: React.FC<PostlistCardProps> = ({
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="max-w-[720px] mx-auto rounded-xl overflow-hidden ">
+    <div className="rounded-xl overflow-hidden ">
       {posts.map(post => (
         <div key={post._id} className="md:flex p-4 flex my-8 border items-center justify-around border-gray-300 rounded-lg shadow-lg">
           <div className="md:flex-shrink-0 w-[30%]">
