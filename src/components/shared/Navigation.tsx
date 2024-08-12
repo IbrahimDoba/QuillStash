@@ -21,7 +21,7 @@ import {
 import { Avatar, Link } from '@nextui-org/react';
 import { useSession, signOut } from 'next-auth/react';
 import Search from '../Search';
-import { getUserInfo } from '@/lib/getUserInfo';
+import { getUserInfo } from '@/lib/Apis';
 
 const menuItems = [
   {
@@ -66,16 +66,26 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, status } = useSession();
   const user = session?.user;
-
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
 
-  useEffect(() => {
-    if (status === 'authenticated') {
-      getUserInfo().then((data) => {
-        setUsername(data.username);
-      });
+  const fetchUserInfo = async () => {
+    if (status === 'authenticated' && session?.user?.id) {
+      try {
+        const userInfo = await getUserInfo();
+        setUsername(userInfo.username);
+    
+      } catch (error) {
+        console.error('Failed to fetch user info:', error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [status, user]);
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [status, session]);
 
   return (
     <Navbar

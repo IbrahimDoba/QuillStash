@@ -20,8 +20,11 @@ import {
 } from '@nextui-org/react';
 import Container from '@/components/Container';
 import { Camera, Edit } from 'lucide-react';
+import { ProfileData } from '../../[username]/page-content';
 
-const ProfileForm = () => {
+
+
+const ProfileForm = ({ profileData }: any) => { // abeg fix typescript props
   const { username } = useParams();
   const { currentPage, setCurrentPage, totalPages, setTotalPages } =
     usePagination();
@@ -32,14 +35,14 @@ const ProfileForm = () => {
   const { data: session, status } = useSession();
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    bio: '',
-    location: '',
-    pronouns: '',
-    work: '',
-    github: '',
+    name: profileData.name || '',
+    bio: profileData.bio || '',
+    location: profileData.location || '',
+    pronouns: profileData.pronouns || '',
+    work: profileData.work || '',
+    github: profileData.github || '',
   });
-
+  console.log(formData)
   // useEffect(() => {
   //   const fetchUser = async () => {
   //     setLoading(true);
@@ -88,12 +91,13 @@ const ProfileForm = () => {
     form.append('github', formData.github);
 
     try {
-      const response = await axios.put(`/api/user/${username}`, form, {
+      const response = await axios.put(`/api/user`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       setUser(response.data);
+      console.log(response)
       setEditMode(false);
     } catch (error) {
       setError('Error updating user data');
@@ -190,6 +194,7 @@ const ProfileForm = () => {
           onChange={handleInputChange}
         />
       </div>
+      <Button type='submit'>Submit</Button>
     </form>
   );
 };

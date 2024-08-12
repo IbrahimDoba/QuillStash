@@ -1,4 +1,3 @@
-import PostsComponent from '@/components/homeComponents/postsComponent';
 import TopWriters from '@/components/homeComponents/TopWriters';
 import React from 'react';
 import PageContent from './page-content';

@@ -20,12 +20,12 @@ export type PostAuthor = {
   username: string;
   name: string;
   email: string;
-  password: string;
-  image: string;
-  role: string;
+  password: string | null; // Update if password can be null
+  image: string | null; // Update if image can be null
+  role: string | null; // Update if role can be null
   posts: any[];
-  bio: string;
-  github: string;
+  bio: string | null; // Update if bio can be null
+  github: string | null; // Update if github can be null
   followers: any[];
   following: any[];
   comments: any[];

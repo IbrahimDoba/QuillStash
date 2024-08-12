@@ -1,16 +1,40 @@
 import axios from "axios";
 import { ObjectId } from "mongoose";
+import { nanoid } from 'nanoid';
 
-
-export const generateRandomString = (length:any) => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
+export const generateRandomString = (length: any) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
   const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
 };
+
+export function generateSlug(title: string) {
+  const slug = title
+    .trim() // Remove leading and trailing spaces
+    .toLowerCase() // convert all alphabets to lowercase
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/[^a-z0-9-_]/g, "") // Remove all non-alphanumeric characters except hyphens and underscores
+    .replace(/-+/g, "-"); // Replace multiple hyphens with a single hyphen
+
+  const randomString = nanoid(5); 
+  return `${slug}-${randomString}`;
+}
+export function generateUsername(name: string) {
+  const username = name
+    .trim() // Remove leading and trailing spaces
+    .toLowerCase() // Convert all alphabets to lowercase
+    .replace(/\s+/g, "_") // Replace spaces with underscores
+    .replace(/[^a-z0-9-_]/g, "") // Remove all non-alphanumeric characters except hyphens and underscores
+    .replace(/_+/g, "_"); // Replace multiple underscores with a single underscore
+
+  const randomString = nanoid(3); 
+  return `${username}_${randomString}`;
+}
 
 export interface PostProps {
   _id: string;
@@ -21,8 +45,8 @@ export interface PostProps {
   createdAt: string;
   body: string;
   comments: [];
-  likes:any[];
-  bookmarks:any[];
+  likes: any[];
+  bookmarks: any[];
   coverImage: string;
   featured: boolean;
   userInfo: {
@@ -80,7 +104,7 @@ export interface CommentProps {
     userImage: string | any;
     role: string;
     author: string;
-    authorId:string;
+    authorId: string;
   };
-  replies?: CommentProps[]
+  replies?: CommentProps[];
 }
