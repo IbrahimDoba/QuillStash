@@ -1,30 +1,23 @@
 // types/next-auth.d.ts
-import NextAuth from "next-auth";
+import NextAuth from 'next-auth';
+import { User as UserSchema } from '@/db/schema';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: {
       id: string;
-      name?: string | null;
-      email?: string | null;
+      name: string | null;
+      email: string | null;
       image?: string | null;
+      username: string | null;
     };
   }
-//   interface Session {
-//     user: {
-//       id: string;
-//     } & DefaultSession["user"];
-//   }
 
-
-  interface User {
-    id: string;
-  }
-  
+  interface User extends UserSchema {}
 }
 
-declare module "next-auth/jwt" {
-    interface JWT {
-      id: string;
-    }
-}  
+declare module 'next-auth/jwt' {
+  interface JWT {
+    id: string;
+  }
+}

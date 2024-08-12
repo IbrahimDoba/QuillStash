@@ -1,15 +1,15 @@
 import { connectDb } from "@/lib/ConnetctDB";
 import Post from "@/models/Post";
 import User from "@/models/User";
-import { getServerSession } from "next-auth";
+import getSession from "@/lib/getSession";
 import { NextRequest, NextResponse } from "next/server";
 import { generateRandomString, generateSlug } from "@/lib/service";
-import { db, posts, users } from "@/db/schema";
+import { posts, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
+import { db } from "@/db";
 
 export const POST = async (req: NextRequest, res: any) => {
-  const session = await getServerSession(); // Get the current user session
+  const session = await getSession(); // Get the current user session
 
   try {
     const formData = await req.json();
@@ -66,7 +66,7 @@ export const POST = async (req: NextRequest, res: any) => {
 };
 
 // export const POST = async (req: NextRequest, res: any) => {
-//   const session = await getServerSession(); // Implement this function to get the current user
+//   const session = await getSession(); // Implement this function to get the current user
 
 //   try {
 //     const formData = await req.json();

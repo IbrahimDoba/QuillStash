@@ -9,7 +9,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from '@nextui-org/navbar';
-import { AcmeLogo } from '../AcmeLogo';
+import { AcmeLogo } from '../Icons';
 import { useEffect, useState } from 'react';
 import { ThemeSwitch } from '../ThemeSwitch';
 import {
@@ -22,77 +22,40 @@ import { Avatar, Link } from '@nextui-org/react';
 import { useSession, signOut } from 'next-auth/react';
 import Search from '../Search';
 import { getUserInfo } from '@/lib/Apis';
+import { menuItems } from '@/utils/constants';
 
-const menuItems = [
-  {
-    name: 'Profile',
-    href: '/profile',
-  },
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-  },
-  {
-    name: 'Activity',
-    href: '/activity',
-  },
-  {
-    name: 'New Post',
-    href: '/write',
-  },
-  {
-    name: 'System',
-    href: '/system',
-  },
-  {
-    name: 'Deployments',
-    href: '/deployments',
-  },
-  {
-    name: 'My Settings',
-    href: '/settings',
-  },
-  {
-    name: 'Team Settings',
-    href: '/team-settings',
-  },
-  {
-    name: 'Help & Feedback',
-    href: '/help',
-  },
-];
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
-  const user = session?.user;
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState('');
+  const session = useSession();
+  const user = session.data?.user;
+  // const [loading, setLoading] = useState(true);
+  // const [username, setUsername] = useState('');
 
-  const fetchUserInfo = async () => {
-    if (status === 'authenticated' && session?.user?.id) {
-      try {
-        const userInfo = await getUserInfo();
-        setUsername(userInfo.username);
-    
-      } catch (error) {
-        console.error('Failed to fetch user info:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+  // const fetchUserInfo = async () => {
+  //   if (status === 'authenticated' && session?.user?.id) {
+  //     try {
+  //       const userInfo = await getUserInfo();
+  //       setUsername(userInfo.username);
 
-  useEffect(() => {
-    fetchUserInfo();
-  }, [status, session]);
+  //     } catch (error) {
+  //       console.error('Failed to fetch user info:', error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchUserInfo();
+  // }, [status, session]);
 
   return (
     <Navbar
       shouldHideOnScroll
       onMenuOpenChange={setIsMenuOpen}
       classNames={{
-        wrapper: 'max-w-screen-2xl px-0',
+        wrapper: 'max-w-screen-2xl',
       }}
     >
       <NavbarContent>
@@ -109,10 +72,10 @@ export default function Navigation() {
         <Search />
       </NavbarContent>
 
-      {status !== 'authenticated' ? (
+      {!user ? (
         <NavbarContent justify='end'>
           <NavbarItem className='hidden lg:flex'>
-            <Link href='/login'>Login</Link>
+            <Link href='/sign-up'>Login</Link>
           </NavbarItem>
           <NavbarItem>
             <Button as={Link} color='primary' href='/signup' variant='flat'>
@@ -150,7 +113,7 @@ export default function Navigation() {
               <DropdownItem
                 key='profile'
                 className='h-14 gap-2'
-                href={`/${username}`}
+                href={`/${user?.username}`}
               >
                 <p className='font-semibold'>Signed in as</p>
                 <p className='font-semibold'>

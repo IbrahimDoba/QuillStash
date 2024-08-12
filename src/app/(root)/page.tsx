@@ -7,11 +7,11 @@ import {
   Palette,
   PenLine,
 } from 'lucide-react';
-import { getSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import { Avatar, AvatarGroup } from '@nextui-org/react';
+import getSession from '@/lib/getSession';
 
 export default async function Home() {
   const session = await getSession();

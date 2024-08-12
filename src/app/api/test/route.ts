@@ -4,8 +4,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 // import { usersTable } from "@/db/drizzleSchema";
 import { NextResponse } from "next/server";
-import { db, users } from "@/db/schema";
-import { getServerSession } from "next-auth";
+import { users } from "@/db/schema";
+import { db } from "@/db";
+import getSession from "@/lib/getSession";
 import { eq } from "drizzle-orm";
 
 // export const POST = async (req: NextResponse, res: NextApiResponse) => {
@@ -26,7 +27,7 @@ import { eq } from "drizzle-orm";
 export const GET = async (
   req: Request,
 ) => {
-  const session = await getServerSession();
+  const session = await getSession();
   console.log(session);
   const sessionEmail = session?.user.email || null
 

@@ -1,15 +1,16 @@
-import { db, users } from "@/db/schema";
+import { users } from "@/db/schema";
 import { connectDb } from "@/lib/ConnetctDB";
 import User from "@/models/User";
 import { eq } from "drizzle-orm";
-import { getServerSession } from "next-auth";
+import getSession from "@/lib/getSession";
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/db";
 
 
 export const GET = async (
   req: Request,
 ) => {
-  const session = await getServerSession();
+  const session = await getSession();
   console.log(session);
   const sessionEmail = session?.user.email || null
 
@@ -37,7 +38,7 @@ export const GET = async (
 
 // export const GET = async (req:NextRequest) => {
 
-//   const session = await getServerSession(); // Implement this function to get the current user
+//   const session = await getSession(); // Implement this function to get the current user
 //     try {
 
         

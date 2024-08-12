@@ -1,7 +1,5 @@
 // context/UserContext.tsx
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { getServerSession } from "next-auth";
-import { Session } from "next-auth"; // Import the correct type for session
+import { createContext, useContext } from "react";
 
 type ContextType = {};
 

@@ -4,11 +4,13 @@ import Footer from '@/components/shared/Footer';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Container className='grid grid-rows-[auto_1fr_auto]  '>
+    <>
       <Navigation />
-      <main className='min-h-screen'>{children}</main>
+      <Container className='grid grid-rows-[auto_1fr_auto]  '>
+        <main className='min-h-screen'>{children}</main>
+      </Container>
       <Footer />
-    </Container>
+    </>
   );
 };
 

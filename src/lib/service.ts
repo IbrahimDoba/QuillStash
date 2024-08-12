@@ -35,6 +35,10 @@ export function generateUsername(name: string) {
   const randomString = nanoid(3); 
   return `${username}_${randomString}`;
 }
+export function generateDisplayName() {
+  const randomString = nanoid(4); 
+  return `User${randomString}`;
+}
 
 export interface PostProps {
   _id: string;
@@ -73,25 +77,6 @@ export interface UserProps {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
-}
-
-export interface UserProfileProps {
-  _id: string;
-  username: string;
-  name: string;
-  bio: string;
-  location: string;
-  createdAt: string;
-  email: string;
-  github: string;
-  pronouns: string;
-  work: string;
-  posts: Array<{
-    _id: string;
-    title: string;
-    coverImage: string;
-    createdAt: string;
-  }>;
 }
 
 export interface CommentProps {

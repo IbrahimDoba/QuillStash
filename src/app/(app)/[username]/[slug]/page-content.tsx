@@ -1,10 +1,19 @@
 import { ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Post } from '@/types';
+import { Post } from '@/db/schema';
 import ActionsDesktop from './Actions';
+import { Avatar } from '@nextui-org/avatar';
 
-async function page({ post }: { post: Post }) {
+interface PostContentProps extends Post {
+  author: {
+    username: string;
+    image: string | null;
+    name: string;
+  } | null;
+}
+
+async function PostContent({ post }: { post: PostContentProps }) {
   const formattedDate = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',
@@ -28,44 +37,36 @@ async function page({ post }: { post: Post }) {
             <h1 className='font-bold text-2xl md:text-3xl lg:text-5xl leading-tight'>
               {post.title}
             </h1>
-            <div className='rounded-full w-fit flex justify-center bg-red-200 text-red-600 px-4 py-1'>
-              <p>{post.tags[0]}</p>
+            <div className='flex items-center gap-3 flex-wrap'>
+              {post?.tags?.map((tag) => (
+                <p key={tag}>{tag}</p>
+              ))}
             </div>
-            {post.userInfo.github ? (
+            {post.author && (
               <Link
-                href={post.userInfo.github}
+                href={`/${post.author.username}`}
                 target='_blank'
                 className='flex items-center gap-3 py-2 w-fit'
               >
-                <Image
-                  src={post.userInfo.image ?? '/profile.svg'}
-                  alt={''}
-                  width={42}
-                  height={42}
-                  className='w-6 h-6 lg:w-10 lg:h-10 rounded-full border'
+                <Avatar
+                  className='transition-transform'
+                  color='secondary'
+                  name={post.author.name ?? 'site user'}
+                  size='sm'
+                  src={
+                    post.author.image ??
+                    'https://i.pravatar.cc/150?u=a042581f4e29026704d'
+                  }
                 />
                 <p className='text-sm lg:text-base font-medium'>
-                  {post.userInfo.name}
+                  {post.author.name}
                 </p>
               </Link>
-            ) : (
-              <div className='flex items-center gap-3 py-2'>
-                <Image
-                  src={post.userInfo.image ?? '/profile.svg'}
-                  alt={''}
-                  width={42}
-                  height={42}
-                  className='w-6 h-6 lg:w-10 lg:h-10 rounded-full border'
-                />
-                <p className='text-sm lg:text-base font-medium'>
-                  {post.userInfo.name}
-                </p>
-              </div>
             )}
           </section>
 
           <Image
-            src={post.coverImage}
+            src={post.coverImage ?? '/login.jpg'}
             alt={post.title}
             width={768}
             height={400}
@@ -103,4 +104,4 @@ async function page({ post }: { post: Post }) {
   );
 }
 
-export default page;
+export default PostContent;
