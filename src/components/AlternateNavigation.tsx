@@ -16,55 +16,15 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/dropdown';
-import { Avatar, Link } from '@nextui-org/react';
-import { useSession, signOut } from 'next-auth/react';
-import { AcmeLogo } from '@/components/AcmeLogo';
+import { Link } from '@nextui-org/react';
+import { AcmeLogo } from '@/components/Icons';
 import Search from '@/components/Search';
 import { ArrowUpRight } from 'lucide-react';
-
-const menuItems = [
-  {
-    name: 'Profile',
-    href: '/profile',
-  },
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-  },
-  {
-    name: 'Activity',
-    href: '/activity',
-  },
-  {
-    name: 'New Post',
-    href: '/write',
-  },
-  {
-    name: 'System',
-    href: '/system',
-  },
-  {
-    name: 'Deployments',
-    href: '/deployments',
-  },
-  {
-    name: 'My Settings',
-    href: '/settings',
-  },
-  {
-    name: 'Team Settings',
-    href: '/team-settings',
-  },
-  {
-    name: 'Help & Feedback',
-    href: '/help',
-  },
-];
+import { menuItems } from '@/utils/constants';
 
 export default function AlternateNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
-  const user = session?.user;
+  
 
   return (
     <Navbar
@@ -93,7 +53,7 @@ export default function AlternateNavigation() {
           <Button radius='sm' color='primary'>
             <Link
               href='/home'
-              className='flex items-center gap-2 p-2 text-sm max-md:w-fit max-md:self-end text-foreground'
+              className='flex items-center gap-2 p-2 text-sm max-md:w-fit max-md:self-end text-white'
             >
               <span>Explore</span>
               <ArrowUpRight size={16} />
@@ -101,7 +61,7 @@ export default function AlternateNavigation() {
           </Button>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} href='/signup' variant='flat' radius='sm'>
+          <Button as={Link} href='/sign-up' variant='flat' radius='sm'>
             Login
           </Button>
         </NavbarItem>
@@ -121,11 +81,11 @@ export default function AlternateNavigation() {
             </Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem>
+        {/* <NavbarMenuItem>
           <DropdownItem key='logout' color='danger' onClick={() => signOut()}>
             Log Out
           </DropdownItem>
-        </NavbarMenuItem>
+        </NavbarMenuItem> */}
       </NavbarMenu>
     </Navbar>
   );

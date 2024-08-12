@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // import { usersTable } from '@/db/drizzleSchema';
 import { NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
-import { db, users } from '@/db/schema';
+import {  users } from '@/db/schema';
+import { db } from '@/db';
 
 // export const   PUT = async(req: NextResponse,{ params }: { params: { id: string } }) => {
 //     const id = parseInt(params.id)

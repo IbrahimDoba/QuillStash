@@ -1,5 +1,5 @@
 import Footer from '@/components/shared/Footer';
-import AlternateNavigation from './AlternateNavigation';
+import AlternateNavigation from '../../components/AlternateNavigation';
 
 export default function RootLayout({
   children,

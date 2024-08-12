@@ -26,7 +26,7 @@ function PageContent() {
     pageParam: number;
   }): Promise<PostsApiResponse> => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/blog/posts?page=${pageParam}&limit=${limit}`
+      `${process.env.NEXT_PUBLIC_API_URL}/posts?page=${pageParam}&limit=${limit}`
     );
     if (!res.ok) {
       throw new Error('Network response was not ok');

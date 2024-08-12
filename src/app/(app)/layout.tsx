@@ -8,10 +8,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Container>
+    <>
       <Navigation />
-      <main className='min-h-screen'>{children}</main>
+      <Container>
+        <main className='min-h-screen'>{children}</main>
+      </Container>
       <Footer />
-    </Container>
+    </>
   );
 }

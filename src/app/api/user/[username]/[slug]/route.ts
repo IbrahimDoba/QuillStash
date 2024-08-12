@@ -2,9 +2,8 @@ import { connectDb } from "@/lib/ConnetctDB";
 import User from "@/models/User";
 import Post from "@/models/Post";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import getSession from "@/lib/getSession";
 
 export const GET = async (
   req: NextRequest,
@@ -38,7 +37,7 @@ export const PUT = async (
   await connectDb();
 
   const { username, slug } = params;
-  const session = await getServerSession();
+  const session = await getSession();
 
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -86,7 +85,7 @@ export const DELETE = async (
   await connectDb();
 
   const { username, slug } = params;
-  const session = await getServerSession();
+  const session = await getSession();
 
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

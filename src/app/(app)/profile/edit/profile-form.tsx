@@ -1,116 +1,54 @@
 'use client';
-import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { User as UserProfileData } from '@/db/schema';
+import { UserProfileFormData, userProfileSchema } from '@/lib/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Avatar, Button, Input, Textarea } from '@nextui-org/react';
 import axios from 'axios';
-import PostlistCard from '@/components/blogs/postListCard';
-import { useSession } from 'next-auth/react';
-import { PostProps, UserProfileProps } from '@/lib/service';
-import { usePagination } from '@/context/paginationContext';
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Textarea,
-  Input,
-  Avatar,
-} from '@nextui-org/react';
-import Container from '@/components/Container';
-import { Camera, Edit } from 'lucide-react';
-import { ProfileData } from '../../[username]/page-content';
+import { Camera } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
+function ProfileForm({ profileData }: { profileData: UserProfileData }) {
+  const router = useRouter();
 
-
-const ProfileForm = ({ profileData }: any) => { // abeg fix typescript props
-  const { username } = useParams();
-  const { currentPage, setCurrentPage, totalPages, setTotalPages } =
-    usePagination();
-  const [user, setUser] = useState<UserProfileProps | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState<PostProps[]>([]);
-  const [error, setError] = useState('');
-  const { data: session, status } = useSession();
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
-    name: profileData.name || '',
-    bio: profileData.bio || '',
-    location: profileData.location || '',
-    pronouns: profileData.pronouns || '',
-    work: profileData.work || '',
-    github: profileData.github || '',
-  });
-  console.log(formData)
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await axios.get(
-  //         `/api/user/${username}?page=${currentPage}&limit=5`
-  //       );
-  //       setUser(response.data.user);
-  //       setPosts(response.data.userPosts);
-  //       setTotalPages(response.data.totalPages);
-  //       setFormData({
-  //         name: response.data.user.name || '',
-  //         bio: response.data.user.bio || '',
-  //         location: response.data.user.location || '',
-  //         pronouns: response.data.user.pronouns || '',
-  //         work: response.data.user.work || '',
-  //         github: response.data.user.github || '',
-  //       });
-  //     } catch (error) {
-  //       setError('Error fetching user data');
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   if (username) {
-  //     fetchUser();
-  //   }
-  // }, [username, currentPage]);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = new FormData();
-    form.append('name', formData.name);
-    form.append('bio', formData.bio);
-    form.append('location', formData.location);
-    form.append('pronouns', formData.pronouns);
-    form.append('work', formData.work);
-    form.append('github', formData.github);
-
+  const updateProfile = async (details: UserProfileFormData) => {
     try {
-      const response = await axios.put(`/api/user`, form, {
+      const response = await axios.put(`/api/user`, details, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setUser(response.data);
-      console.log(response)
-      setEditMode(false);
+      console.log(response);
     } catch (error) {
-      setError('Error updating user data');
+      console.error(error);
     }
   };
 
-  // if (loading) return <div>Loading...</div>;
-  // if (error) return <div>{error}</div>;
-  // if (!user) return <div>User not found</div>;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<UserProfileFormData>({
+    resolver: zodResolver(userProfileSchema),
+    defaultValues: profileData,
+  });
+
+  async function onSubmit(data: UserProfileFormData) {
+    try {
+      await updateProfile(data)
+        .then(() => {
+          toast.success('Profile updated successfully');
+        })
+        .then(() => router.push('/profile'));
+    } catch (error) {
+      toast.error('Failed to update profile');
+    }
+  }
 
   return (
     <form
-      onSubmit={handleFormSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className='max-w-screen-sm mx-auto py-14 space-y-8'
     >
       <div className='relative overflow-hidden w-fit rounded-full border z-10 mb-2'>
@@ -126,77 +64,94 @@ const ProfileForm = ({ profileData }: any) => { // abeg fix typescript props
       <div className='flex flex-col mb-4'>
         <Input
           type='text'
-          name='name'
+          id='name'
           label='Name'
           variant='faded'
           radius='sm'
           description='Your full name'
-          value={formData.name}
-          onChange={handleInputChange}
+          {...register('name')}
         />
+        {errors.name && (
+          <p className='px-1 text-xs text-red-600'>{errors.name.message}</p>
+        )}
       </div>
       <div className='flex flex-col mb-4'>
         <Textarea
-          name='bio'
-          value={formData.bio}
+          id='bio'
           label='Bio'
           variant='faded'
           radius='sm'
           description='Tell us about yourself'
-          onChange={handleInputChange}
+          {...register('bio')}
         />
+        {errors.bio && (
+          <p className='px-1 text-xs text-red-600'>{errors.bio.message}</p>
+        )}
       </div>
       <div className='flex flex-col mb-4'>
         <Input
           type='text'
-          name='location'
+          id='location'
           variant='faded'
           label='Location'
           description='Where are you based?'
           radius='sm'
-          value={formData.location}
-          onChange={handleInputChange}
+          {...register('location')}
         />
+        {errors.location && (
+          <p className='px-1 text-xs text-red-600'>{errors.location.message}</p>
+        )}
       </div>
       <div className='flex flex-col mb-4'>
         <Input
           type='text'
-          name='pronouns'
+          id='pronouns'
           label='Pronouns'
           radius='sm'
           variant='faded'
           description='How do you identify'
-          value={formData.pronouns}
-          onChange={handleInputChange}
+          {...register('pronouns')}
         />
+        {errors.pronouns && (
+          <p className='px-1 text-xs text-red-600'>{errors.pronouns.message}</p>
+        )}
       </div>
       <div className='flex flex-col mb-4'>
         <Input
           type='text'
-          name='work'
+          id='work'
           label='Work'
           variant='faded'
           description='Where do you work?'
           radius='sm'
-          value={formData.work}
-          onChange={handleInputChange}
+          {...register('work')}
         />
       </div>
       <div className='flex flex-col mb-4'>
         <Input
           type='text'
-          name='github'
+          id='github'
           variant='faded'
           label='Github'
           description='Your Github profile'
           radius='sm'
-          value={formData.github}
-          onChange={handleInputChange}
+          {...register('github')}
         />
+        {errors.github && (
+          <p className='px-1 text-xs text-red-600'>{errors.github.message}</p>
+        )}
       </div>
-      <Button type='submit'>Submit</Button>
+      <Button
+        type='submit'
+        color='primary'
+        radius='sm'
+        isLoading={isSubmitting}
+        disabled={isSubmitting}
+      >
+        Submit
+      </Button>
     </form>
   );
-};
+}
 
 export default ProfileForm;
