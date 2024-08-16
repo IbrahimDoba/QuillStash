@@ -32,6 +32,7 @@ function PageContent() {
       throw new Error('Network response was not ok');
     }
     const data: PostsApiResponse = await res.json();
+    console.log(data)
     return data;
   };
 

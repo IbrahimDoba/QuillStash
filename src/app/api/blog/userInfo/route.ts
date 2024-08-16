@@ -11,7 +11,7 @@ export const GET = async (
   req: Request,
 ) => {
   const session = await getSession();
-  console.log(session);
+  console.log("user session",session!.user);
   const sessionEmail = session?.user.email || null
 
   try {

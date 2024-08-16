@@ -29,6 +29,8 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const session = useSession();
   const user = session.data?.user;
+  console.log(user)
+  console.log(session)
   // const [loading, setLoading] = useState(true);
   // const [username, setUsername] = useState('');
 
@@ -75,10 +77,10 @@ export default function Navigation() {
       {!user ? (
         <NavbarContent justify='end'>
           <NavbarItem className='hidden lg:flex'>
-            <Link href='/sign-up'>Login</Link>
+            <Link href='/sign-in'>Login</Link>
           </NavbarItem>
           <NavbarItem>
-            <Button as={Link} color='primary' href='/signup' variant='flat'>
+            <Button as={Link} color='primary' href='/sign-up' variant='flat'>
               Sign Up
             </Button>
           </NavbarItem>
@@ -113,7 +115,7 @@ export default function Navigation() {
               <DropdownItem
                 key='profile'
                 className='h-14 gap-2'
-                href={`/${user?.username}`}
+                href={`/${user?.username}`} // should be username but its not being passed in d session
               >
                 <p className='font-semibold'>Signed in as</p>
                 <p className='font-semibold'>

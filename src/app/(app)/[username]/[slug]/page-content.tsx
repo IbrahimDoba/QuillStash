@@ -5,7 +5,7 @@ import { Post } from '@/db/schema';
 import ActionsDesktop from './Actions';
 import { Avatar } from '@nextui-org/avatar';
 
-interface PostContentProps extends Post {
+export interface PostContentProps extends Post {
   author: {
     username: string;
     image: string | null;

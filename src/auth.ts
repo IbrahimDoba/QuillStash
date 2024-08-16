@@ -18,8 +18,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     sessionsTable: sessions,
   }),
   providers: [
-    Google,
-    Discord,
+    Google({
+      async profile(profile) {
+        const username = generateUsername(profile.email);
+        const displayName = generateDisplayName();
+
+        return {
+          id: profile.sub,
+          name: displayName,
+          email: profile.email,
+          image: profile.picture,
+          username, 
+        };
+      },
+    }),
+    Discord({
+  
+      async profile(profile) {
+        const username = generateUsername(profile.email);
+        const displayName = generateDisplayName();
+
+        return {
+          id: profile.id,
+          name: displayName,
+          email: profile.email,
+          image: profile.avatar,
+          username, // Include the username
+        };
+      },
+    }),
     Credentials({
       credentials: {
         email: {},
@@ -38,13 +65,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           user = await db.query.users.findFirst({
             where: eq(users.email, email),
           });
-
+            
           if (!user) {
             // If user doesn't exist, create a new user
             const pwHash = await saltAndHashPassword(password);
             const username = generateUsername(email);
             const name = generateDisplayName();
-
+            console.log(username)
             const [newUser] = await db
               .insert(users)
               .values({
@@ -59,11 +86,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           } else {
             // The User exists so we compare the password
             const isPasswordValid = comparePassword(password, user.password!);
-
+            console.log(user)
             if (!isPasswordValid) {
               return null;
             }
           }
+          
           return user;
         } catch (error) {
           if (error instanceof ZodError) {
@@ -77,4 +105,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token, user }) {
+     return {
+      ...session,
+      user: {
+        ...session.user,
+        username: user.username
+      }
+     }
+    },
+  },
 });

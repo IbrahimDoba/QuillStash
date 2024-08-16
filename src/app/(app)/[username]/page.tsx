@@ -10,12 +10,12 @@ export default async function Page({
 }: {
   params: { username: string };
 }) {
-  const { username } = params;
-
+  const {username}  = params;
+  
   const profileData = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.username, username),
   });
-
+  console.log(profileData)
   const session = await getSession();
   const user = session?.user;
 
@@ -23,5 +23,5 @@ export default async function Page({
     return notFound();
   }
 
-  return <PageContent {...profileData} isCurrentUser={user?.email === profileData.email}/>;
+  return <PageContent {...profileData} isCurrentUser={user?.username === profileData.username}/>;
 }
