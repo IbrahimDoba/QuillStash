@@ -1,46 +1,59 @@
-import TruncatedText from "@/lib/truncatedText";
-import { Post } from "@/types";
-import { Card, CardBody, Image, Avatar, Button } from "@nextui-org/react";
-import { Heart,  MessageSquare } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import TruncatedText from '@/lib/truncatedText';
+import { Post } from '@/db/schema';
+import { Card, CardBody, Image, Avatar, Button } from '@nextui-org/react';
+import { Heart, MessageSquare } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 interface PostProps extends Post {
-  
+  author: {
+    name: string;
+    image: string;
+    username: string;
+  };
 }
 
-function PostCard({ title, tags, coverImage, body }: PostProps) {
+function PostCard({ title, tags, coverImage, summary, createdAt, author, slug }: PostProps) {
   const [liked, setLiked] = useState(false);
 
   return (
     <Card
-      shadow="none"
-      className="pt-6 rounded-none bg-transparent dark:border-foreground-50"
+      shadow='none'
+      className='pt-6 rounded-none bg-transparent dark:border-foreground-50'
     >
-      {/* <Link href={`/${username}/${slug}`}> */}
       <CardBody>
-        <div className="flex gap-6 items-center">
-          <div className="shrink-0">
+        <div className='flex gap-6 items-center'>
+          <Link href={`${author.username}/${slug}`} className='shrink-0 overflow-hidden'>
             <Image
-              alt="Card background"
-              className="object-cover rounded-xl"
-              src={coverImage}
-              width={270}
+              alt='Card background'
+              width={250}
+              height={160}
+              src={
+                coverImage ??
+                'https://nextui.org/images/hero-card-complete.jpeg'
+              }
+              className='object-cover rounded-lg aspect-video pointer-events-none'
             />
-          </div>
-          <div className="flex flex-col gap-4 justify-between">
-            <span className="flex items-center text-xs gap-2 mt-1">
+          </Link>
+          <div className='flex flex-col gap-4 justify-between'>
+            <span className='flex items-center text-xs gap-2 mt-1'>
               <Avatar
-                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                className="w-6 h-6 text-tiny"
+                src= {author.image ?? 'https://i.pravatar.cc/150?u=a042581f4e29026024d'}
+                className='w-6 h-6 text-tiny pointer-events-none'
                 showFallback
-                name="Jason Hughes"
+                name='Jason Hughes'
               />
-              <span>Jason Hughes</span>
+              <span>{author.name ?? "anonymous"}</span>
               on
-              <time>Aug 12, 2024</time>
+              <time>
+                {new Date(createdAt).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+              </time>
             </span>
-            <div className="flex gap-4 justify-start">
+            {/* <ul className="text-xs flex gap-4 justify-start">
               {tags?.map((tag, index) => (
                 <li key={`${tag}-${index}`}>
                   <Link  href={`/tags/${tag}`}>
@@ -48,43 +61,38 @@ function PostCard({ title, tags, coverImage, body }: PostProps) {
                   </Link>
                 </li>
               ))}
-            </div>
-            <div>
-              <h3 className="line-clamp-2 text-xl mb-3">{title}</h3>
-              <p className="line-clamp-2 text-foreground-500">
-                <TruncatedText content={body} maxLength={100} />
-              </p>
-            </div>
+            </ul> */}
+            <Link href={`${author.username}/${slug}`}>
+              <h3 className='line-clamp-2 text-xl mb-2'>{title}</h3>
+              <p className='line-clamp-2 text-foreground-500'>{summary}</p>
+            </Link>
 
-            <div className="flex gap-3 items-center">
+            <div className='flex gap-3 items-center'>
               <Button
                 isIconOnly
-                className="text-default-900/60 data-[hover]:bg-foreground/10 flex gap-1 text-xs items-center"
-                variant="light"
+                className='text-default-900/60 data-[hover]:bg-foreground/10 flex gap-1 text-xs items-center'
+                variant='light'
                 onPress={() => setLiked((v) => !v)}
               >
                 <Heart
-                  className={liked ? "[&>path]:stroke-transparent" : ""}
-                  fill={liked ? "currentColor" : "none"}
+                  className={liked ? '[&>path]:stroke-transparent' : ''}
+                  fill={liked ? 'currentColor' : 'none'}
                   size={16}
                 />
-                <span className="text-default-900/60">9</span>
+                <span className='text-default-900/60'>9</span>
               </Button>
-              <span className="flex gap-1">
+              <span className='flex gap-1'>
                 <MessageSquare
-                  className="text-default-900/60 stroke-transparent"
-                  fill="currentColor"
+                  className='text-default-900/60 stroke-transparent'
+                  fill='currentColor'
                   size={16}
                 />
-                <span className="text-default-900/60 text-xs">12</span>
+                <span className='text-default-900/60 text-xs'>12</span>
               </span>
             </div>
           </div>
         </div>
-
       </CardBody>
-      {/* </Link> */}
-
     </Card>
   );
 }

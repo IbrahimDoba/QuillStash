@@ -5,7 +5,7 @@ function PostSkeleton() {
     <div className='pt-8 dark:border-foreground-50'>
       <div className='flex gap-6 items-center py-2'>
         <div>
-          <Skeleton className='rounded-xl w-1/4 h-32 lg:w-[250px] lg:h-36' />
+          <Skeleton className='rounded-xl w-1/4 h-32 lg:w-[250px] lg:h-40' />
         </div>
         <div className='flex flex-col gap-4 justify-between w-full'>
           <span className='flex items-center text-xs gap-2 mt-1'>

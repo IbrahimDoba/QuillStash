@@ -18,19 +18,18 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/dropdown';
-import { Avatar, Link } from '@nextui-org/react';
+import { Avatar, Link, User } from '@nextui-org/react';
 import { useSession, signOut } from 'next-auth/react';
 import Search from '../Search';
 import { getUserInfo } from '@/lib/Apis';
 import { menuItems } from '@/utils/constants';
 
-
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const session = useSession();
   const user = session.data?.user;
-  console.log(user)
-  console.log(session)
+  console.log(user);
+  console.log(session);
   // const [loading, setLoading] = useState(true);
   // const [username, setUsername] = useState('');
 
@@ -117,10 +116,20 @@ export default function Navigation() {
                 className='h-14 gap-2'
                 href={`/${user?.username}`} // should be username but its not being passed in d session
               >
-                <p className='font-semibold'>Signed in as</p>
+                {/* <p className='font-semibold'>Signed in as</p>
                 <p className='font-semibold'>
                   {user?.email ?? 'zoey@example.com'}
-                </p>
+                </p> */}
+                <User
+                  name='Jane Doe'
+                  description='Product Designer'
+                  avatarProps={{
+                    src:
+                      user?.image ??
+                      'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+                      size: 'sm',
+                  }}
+                />
               </DropdownItem>
               <DropdownItem key='settings' href='/profile'>
                 Settings

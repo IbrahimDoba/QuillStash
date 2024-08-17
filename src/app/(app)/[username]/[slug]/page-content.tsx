@@ -7,7 +7,7 @@ import { Avatar } from '@nextui-org/avatar';
 
 export interface PostContentProps extends Post {
   author: {
-    username: string;
+    username: string | null;
     image: string | null;
     name: string;
   } | null;

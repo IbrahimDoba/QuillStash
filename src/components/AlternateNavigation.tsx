@@ -1,30 +1,23 @@
 'use client';
+import { AcmeLogo } from '@/components/Icons';
+import Search from '@/components/Search';
+import { menuItems } from '@/utils/constants';
 import { Button } from '@nextui-org/button';
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
+  NavbarMenuToggle,
 } from '@nextui-org/navbar';
-import { useState } from 'react';
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from '@nextui-org/dropdown';
 import { Link } from '@nextui-org/react';
-import { AcmeLogo } from '@/components/Icons';
-import Search from '@/components/Search';
 import { ArrowUpRight } from 'lucide-react';
-import { menuItems } from '@/utils/constants';
+import { useState } from 'react';
 
 export default function AlternateNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
 
   return (
     <Navbar
@@ -50,14 +43,15 @@ export default function AlternateNavigation() {
 
       <NavbarContent justify='end'>
         <NavbarItem className='hidden lg:flex'>
-          <Button radius='sm' color='primary'>
-            <Link
-              href='/home'
-              className='flex items-center gap-2 p-2 text-sm max-md:w-fit max-md:self-end text-white'
-            >
-              <span>Explore</span>
-              <ArrowUpRight size={16} />
-            </Link>
+          <Button
+            as={'link'}
+            href='/home'
+            radius='sm'
+            color='primary'
+            className='flex items-center gap-2 p-2 text-sm max-md:w-fit max-md:self-end text-white'
+          >
+            <span>Explore</span>
+            <ArrowUpRight size={16} />
           </Button>
         </NavbarItem>
         <NavbarItem>
@@ -81,11 +75,6 @@ export default function AlternateNavigation() {
             </Link>
           </NavbarMenuItem>
         ))}
-        {/* <NavbarMenuItem>
-          <DropdownItem key='logout' color='danger' onClick={() => signOut()}>
-            Log Out
-          </DropdownItem>
-        </NavbarMenuItem> */}
       </NavbarMenu>
     </Navbar>
   );

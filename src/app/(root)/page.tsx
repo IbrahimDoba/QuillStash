@@ -36,14 +36,16 @@ export default async function Home() {
               </p>
             </div>
             <div className='mt-8 flex w-full items-center justify-center'>
-              <Button size='md' radius='sm' color='primary'>
-                <Link
-                  href='/home'
-                  className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
-                >
-                  <span>Get started</span>
-                  <ArrowRight className='h-4 w-4' />
-                </Link>
+              <Button
+                size='md'
+                href='/home'
+                as={'link'}
+                radius='sm'
+                color='primary'
+                className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
+              >
+                <span>Explore stories</span>
+                <ArrowRight className='h-4 w-4' />
               </Button>
             </div>
           </div>
@@ -179,7 +181,7 @@ export default async function Home() {
               <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026708c' />
             </AvatarGroup>
             <p className='mb-4'>Join 200+ contributors today</p>
-            <Button href='/home' size='md' radius='sm' color='primary'>
+            <Button as={"link"} href='/home' size='md' radius='sm' color='primary'>
               Get started
               <ArrowUpRight className='h-4 w-4' />
             </Button>

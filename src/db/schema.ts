@@ -4,6 +4,7 @@ import {
   pgTable,
   text,
   integer,
+  primaryKey,
   json,
 } from 'drizzle-orm/pg-core';
 import { InferSelectModel, relations } from 'drizzle-orm';
@@ -49,7 +50,9 @@ export const accounts = pgTable(
     session_state: text('session_state'),
   },
   (account) => ({
-    compoundKey: (account.provider, account.providerAccountId),
+    compoundKey: primaryKey({
+      columns: [account.provider, account.providerAccountId],
+    }),
   })
 );
 
@@ -62,54 +65,19 @@ export const sessions = pgTable('session', {
   expires: timestamp('expires', { mode: 'date' }).notNull(),
 });
 
-// Verification tokens table
-export const verificationTokens = pgTable(
-  'verificationToken',
-  {
-    identifier: text('identifier').notNull(),
-    token: text('token').notNull(),
-    expires: timestamp('expires', { mode: 'date' }).notNull(),
-  },
-  (verificationToken) => ({
-    compositePk: (verificationToken.identifier, verificationToken.token),
-  })
-);
-
-// Authenticators table (Optional, based on your need)
-export const authenticators = pgTable(
-  'authenticator',
-  {
-    credentialID: text('credentialID').notNull().unique(),
-    userId: text('userId')
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    providerAccountId: text('providerAccountId').notNull(),
-    credentialPublicKey: text('credentialPublicKey').notNull(),
-    counter: integer('counter').notNull(),
-    credentialDeviceType: text('credentialDeviceType').notNull(),
-    credentialBackedUp: boolean('credentialBackedUp').notNull(),
-    transports: text('transports'),
-  },
-  (authenticator) => ({
-    compositePK: (authenticator.userId, authenticator.credentialID),
-  })
-);
-
 export const posts = pgTable('posts', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  slug: text('slug'),
+  slug: text('slug').unique().notNull(),
   title: text('title').notNull(),
   coverImage: text('coverImage'),
-  // summary: text('summary').notNull(), // for seo purposes we fit use ai generate am later user doesnt need to care about this
-  // keywords: json('keywords').$type<string[]>(), // also for seo purposes user doesnt need to care about this for now i think tags work
-  bodyImage: text('bodyImage'), // remove
+  summary: text('summary'), // for seo purposes we fit use ai generate am later user doesnt need to care about this
   body: text('body').notNull(),
-  featured: boolean('featured').default(false),
-  views: integer('views').default(0),
+  featured: boolean('featured').default(false).notNull(),
+  views: integer('views').default(0).notNull(),
   tags: json('tags').$type<string[]>(), // Tags are stored as a JSON array
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
 });
