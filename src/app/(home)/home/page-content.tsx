@@ -3,14 +3,22 @@ import React, { useEffect, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import PostSkeleton from './_components/PostSkeleton';
-import { Post } from '@/types';
+import { Post } from '@/db/schema';
 import PostCard from './_components/PostCard';
 import { Button } from '@nextui-org/button';
 import { Unplug } from 'lucide-react';
 import Link from 'next/link';
 
+interface PostWithAuthor extends Post {
+  author: {
+    name: string;
+    image: string;
+    username: string;
+  };
+}
+
 interface PostsApiResponse {
-  posts: Post[];
+  posts: PostWithAuthor[];
   nextPage: number | null;
   totalPages: number;
   hasNextPage: boolean;
@@ -32,7 +40,7 @@ function PageContent() {
       throw new Error('Network response was not ok');
     }
     const data: PostsApiResponse = await res.json();
-    console.log(data)
+    console.log(data);
     return data;
   };
 
@@ -92,7 +100,7 @@ function PageContent() {
     <>
       <ul className='flex flex-col gap-6 divide-y-1'>
         {allPosts?.map((post) => (
-          <li key={post._id} className='dark:border-foreground-50'>
+          <li key={post.id} className='dark:border-foreground-50'>
             <PostCard {...post} />
           </li>
         ))}
@@ -112,7 +120,10 @@ function PageContent() {
         <div className='text-foreground-500 text-center text-sm'>
           <p>You somehow made it to the end yay!!!</p>
           <span>
-            maybe checkout our <Link href='/' className='underline underline-offset-2 font-medium'>Discord?</Link>
+            maybe checkout our{' '}
+            <Link href='/' className='underline underline-offset-2 font-medium'>
+              Discord?
+            </Link>
           </span>
         </div>
       )}
