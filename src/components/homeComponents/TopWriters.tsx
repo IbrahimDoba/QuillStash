@@ -1,6 +1,5 @@
-import { Avatar } from '@nextui-org/avatar';
+import { Avatar } from '@nextui-org/react';
 import React from 'react';
-import { FaUser } from 'react-icons/fa';
 
 const TopWriters = () => {
   return (

@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { CommentProps, PostProps } from '@/lib/service';
 import { useSession } from 'next-auth/react';
 import { HeartIcon } from '@heroicons/react/16/solid';
-import { BiHeart } from 'react-icons/bi';
+import { Heart } from 'lucide-react';
+import { Post } from '@/db/schema';
 
 interface CommentContainerProps {
-  post: PostProps;
+  post: Post;
 }
 
 const CommentContainer: React.FC<CommentContainerProps> = ({ post }) => {
   const { data: session } = useSession();
-  const [comments, setComments] = useState<CommentProps[]>([]);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [newReply, setNewReply] = useState('');
@@ -128,7 +128,7 @@ const CommentContainer: React.FC<CommentContainerProps> = ({ post }) => {
                 {isLikedByUser(comment) ? (
                   <HeartIcon className="w-6 h-6 text-red-500" />
                 ) : (
-                  <BiHeart className="w-6 h-6 text-gray-500" />
+                  <Heart className="w-6 h-6 text-gray-500" />
                 )}
               </button>
               <span>{comment.likes.length}</span>

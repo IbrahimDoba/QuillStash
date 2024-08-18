@@ -8,10 +8,9 @@ import {
   PenLine,
 } from 'lucide-react';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@nextui-org/button';
-import { Avatar, AvatarGroup } from '@nextui-org/react';
+import { Avatar, AvatarGroup, Link, Button } from '@nextui-org/react';
 import getSession from '@/lib/getSession';
+
 
 export default async function Home() {
   const session = await getSession();
@@ -39,7 +38,7 @@ export default async function Home() {
               <Button
                 size='md'
                 href='/home'
-                as={'link'}
+                as={Link}
                 radius='sm'
                 color='primary'
                 className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
@@ -160,14 +159,14 @@ export default async function Home() {
             <p className='max-w-[85%] leading-normal text-foreground-500 sm:text-lg sm:leading-7'>
               Silver is built and powered by developers from africa.
               <br /> You can join the community on{' '}
-              <Link
+              <a
                 href={'/'}
                 target='_blank'
                 rel='noreferrer'
                 className='underline underline-offset-4'
               >
                 Discord
-              </Link>
+              </a>
               .{' '}
             </p>
           </div>
@@ -181,7 +180,7 @@ export default async function Home() {
               <Avatar src='https://i.pravatar.cc/150?u=a04258114e29026708c' />
             </AvatarGroup>
             <p className='mb-4'>Join 200+ contributors today</p>
-            <Button as={"link"} href='/home' size='md' radius='sm' color='primary'>
+            <Button as={Link} href='/home' size='md' radius='sm' color='primary'>
               Get started
               <ArrowUpRight className='h-4 w-4' />
             </Button>

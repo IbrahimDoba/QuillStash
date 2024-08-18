@@ -3,6 +3,7 @@
 import TagInput from '@/components/TagInput';
 import Container from '@/components/Container';
 import TextEditor from '@/components/editor/TextEditor';
+import { Post } from '@/db/schema';
 import { postSchema, PostValues } from '@/lib/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Textarea } from '@nextui-org/react';
@@ -11,12 +12,19 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-function PageContent() {
-  const [saving, setSaving] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
+function PageContent({ previousPostData }: { previousPostData: Post }) {
+  const [defaultValues] = useState({
+    title: previousPostData.title,
+    body: previousPostData.body,
+    summary: previousPostData.summary,
+    tags: previousPostData.tags,
+  });
+
+  const [tags, setTags] = useState<string[]>(defaultValues.tags || []);
 
   const form = useForm<PostValues>({
     resolver: zodResolver(postSchema),
+    defaultValues: previousPostData,
   });
   const {
     register,
@@ -25,7 +33,6 @@ function PageContent() {
     setValue,
     getValues,
     clearErrors,
-    control,
     formState: { isSubmitting, errors },
   } = form;
 
@@ -45,27 +52,7 @@ function PageContent() {
     }
   }
 
-  const handleSaveDraft = async () => {
-    setSaving(true);
-    const values = getValues();
-    const draftData = {
-      title: values.title,
-      body: values.body,
-      excerpt: values.summary,
-      categoryName: values.categoryName,
-    };
-
-    try {
-      toast.success('Draft saved successfully');
-    } catch {
-      toast.error('Failed to save draft');
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleEditorChange = (html: string) => {
-    //  setValue('body', sanitizeHtml(html));
     if (html.length > 0) {
       clearErrors('body');
     }
@@ -146,17 +133,6 @@ function PageContent() {
             <Button disabled={isSubmitting} radius='sm' color='primary'>
               {!isSubmitting && <Upload size={16} className='mr-2' />}
               {isSubmitting ? 'Publishing...' : 'Publish'}
-            </Button>
-            <Button
-              onClick={handleSaveDraft}
-              variant={'ghost'}
-              type='button'
-              radius='sm'
-              disabled={saving}
-              isLoading={saving}
-              className='border'
-            >
-              {saving ? 'Saving...' : 'Save to drafts'}
             </Button>
           </div>
         </form>

@@ -57,8 +57,19 @@ export async function generateMetadata({
 // generate all possible articles at compilation (SSG)
 
 export const generateStaticParams = async () => {
-  const posts = await db.query.posts.findMany({});
-  return posts.map((post) => post.slug);
+  const posts = await db.query.posts.findMany({
+    with: { 
+      author: {
+        columns: {
+          username: true,
+        },
+      },
+    },
+  });
+  return posts.map((post) => ({
+    username: post.author.username,
+    slug: post.slug,
+  }));
 };
 
 export const revalidate = 3600 * 12;

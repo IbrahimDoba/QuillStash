@@ -1,4 +1,4 @@
-import { Input } from '@nextui-org/input';
+import { Input } from '@nextui-org/react';
 import { SearchIcon } from 'lucide-react';
 import React from 'react';
 

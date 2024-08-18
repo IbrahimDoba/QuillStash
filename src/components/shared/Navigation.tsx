@@ -1,55 +1,31 @@
 'use client';
-import { Button } from '@nextui-org/button';
+import { menuItems } from '@/utils/constants';
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/dropdown';
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
+  NavbarMenuToggle,
 } from '@nextui-org/navbar';
+import { Avatar, Button, Link, User } from '@nextui-org/react';
+import { signOut, useSession } from 'next-auth/react';
+import { useState } from 'react';
 import { AcmeLogo } from '../Icons';
-import { useEffect, useState } from 'react';
-import { ThemeSwitch } from '../ThemeSwitch';
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from '@nextui-org/dropdown';
-import { Avatar, Link, User } from '@nextui-org/react';
-import { useSession, signOut } from 'next-auth/react';
 import Search from '../Search';
-import { getUserInfo } from '@/lib/Apis';
-import { menuItems } from '@/utils/constants';
+import { ThemeSwitch } from '../ThemeSwitch';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const session = useSession();
-  const user = session.data?.user;
-  console.log(user);
-  console.log(session);
-  // const [loading, setLoading] = useState(true);
-  // const [username, setUsername] = useState('');
-
-  // const fetchUserInfo = async () => {
-  //   if (status === 'authenticated' && session?.user?.id) {
-  //     try {
-  //       const userInfo = await getUserInfo();
-  //       setUsername(userInfo.username);
-
-  //     } catch (error) {
-  //       console.error('Failed to fetch user info:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchUserInfo();
-  // }, [status, session]);
+  const user = session.data?.user; // this is exposing all users data contrary to the type definition FIX!!!! 
 
   return (
     <Navbar
@@ -114,7 +90,7 @@ export default function Navigation() {
               <DropdownItem
                 key='profile'
                 className='h-14 gap-2'
-                href={`/${user?.username}`} // should be username but its not being passed in d session
+                href={`/${user?.username}`} 
               >
                 {/* <p className='font-semibold'>Signed in as</p>
                 <p className='font-semibold'>
