@@ -4,11 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { Eye, EyeOff } from 'lucide-react';
-import { CgGoogle } from 'react-icons/cg';
 import { toast } from 'sonner';
-import { Input } from '@nextui-org/input';
-import { Button } from '@nextui-org/button';
-import { FaDiscord } from 'react-icons/fa';
+import { Button, Input } from '@nextui-org/react';
+import { Discord, Google } from '@/components/Icons';
 import { useState } from 'react';
 import { AuthFormData, signInSchema } from '@/lib/zod';
 
@@ -155,7 +153,7 @@ export function AuthForm() {
           disabled={isCredentialsLoading || isGoogleLoading || isDiscordLoading}
           isLoading={isGoogleLoading}
         >
-          {!isGoogleLoading && <CgGoogle className='mr-2 h-4 w-4' />}
+          {!isGoogleLoading && <Google className='mr-2 h-4 w-4' />}
           Google
         </Button>
         <Button
@@ -165,7 +163,7 @@ export function AuthForm() {
           disabled={isCredentialsLoading || isGoogleLoading || isDiscordLoading}
           isLoading={isDiscordLoading}
         >
-          {!isDiscordLoading && <FaDiscord className='mr-2 h-4 w-4' />}
+          {!isDiscordLoading && <Discord className='mr-2 h-4 w-4' />}
           Discord
         </Button>
       </div>

@@ -1,8 +1,9 @@
-import CreatePost from '@/components/blogs/createPost';
+
 import React from 'react';
 import getSession from '@/lib/getSession';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
+import PageContent from './page-content';
 
 export const metadata: Metadata = {
   title: 'New post',
@@ -11,9 +12,9 @@ export const metadata: Metadata = {
 
 const Page = async () => {
   const session = await getSession();
-  if (!session) redirect('/auth/login');
+  if (!session) redirect('/sign-in');
 
-  return <CreatePost />;
+  return <PageContent />;
 };
 
 export default Page;

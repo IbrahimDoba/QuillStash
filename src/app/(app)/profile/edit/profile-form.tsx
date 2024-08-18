@@ -9,8 +9,17 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-function ProfileForm({ profileData }: { profileData: UserProfileData }) {
+function ProfileForm({ profileData, username }: { profileData: UserProfileData, username: string }) {
   const router = useRouter();
+
+  const defaultProfileValues = {
+    name: profileData.name,
+    bio: profileData.bio,
+    location: profileData.location,
+    pronouns: profileData.pronouns,
+    work: profileData.work,
+    github: profileData.github,
+  };
 
   const updateProfile = async (details: UserProfileFormData) => {
     try {
@@ -31,7 +40,7 @@ function ProfileForm({ profileData }: { profileData: UserProfileData }) {
     formState: { errors, isSubmitting },
   } = useForm<UserProfileFormData>({
     resolver: zodResolver(userProfileSchema),
-    defaultValues: profileData,
+    defaultValues: defaultProfileValues,
   });
 
   async function onSubmit(data: UserProfileFormData) {
@@ -40,7 +49,7 @@ function ProfileForm({ profileData }: { profileData: UserProfileData }) {
         .then(() => {
           toast.success('Profile updated successfully');
         })
-        .then(() => router.push('/profile'));
+        .then(() => router.push(`/${username}`));
     } catch (error) {
       toast.error('Failed to update profile');
     }

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { AuthForm } from '@/components/auth-form';
-import { Button } from '@nextui-org/button';
+import { Button } from '@nextui-org/react';
 import { AcmeLogo } from '@/components/Icons';
 import { ArrowLeft } from 'lucide-react';
 

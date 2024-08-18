@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Post } from '@/db/schema';
 import ActionsDesktop from './Actions';
-import { Avatar } from '@nextui-org/avatar';
+import { Avatar } from '@nextui-org/react';
 
 export interface PostContentProps extends Post {
   author: {
@@ -24,9 +24,9 @@ async function PostContent({ post }: { post: PostContentProps }) {
     <>
       <div className='relative w-fit mx-auto gap-x-8 lg:grid lg:grid-cols-[auto_1fr]'>
         <div className=' relative py-6 lg:py-10'>
-          <ActionsDesktop title={post.title} />
+          {/* <ActionsDesktop title={post.title} /> */}
         </div>
-        <article className='py-6 lg:py-10 px-6 md:px-10 flex flex-col gap-5 max-w-screen-md'>
+        <article className='py-6 lg:py-10 px-6 md:px-10 flex flex-col gap-5 max-w-screen-lg'>
           <section className='space-y-4'>
             <time
               className='text-zinc-600 text-sm tracking-tight'
@@ -83,7 +83,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
       <section className='py-6 lg:py-10 px-6 md:px-10 max-w-screen-md mx-auto space-y-6'>
         {/* <ActionsMobile title={post.title} /> */}
 
-        <div className='p-6 lg:p-10 flex flex-col items-center border border-input border-dashed rounded-xl max-w-screen-md mx-auto'>
+        <div className='p-6 lg:p-10 flex flex-col items-center border dark:border-muted-foreground-50 border-dashed rounded-xl max-w-screen-md mx-auto'>
           <div className='flex flex-col gap-6 lg:gap-8 text-center items-center'>
             <h3 className=' text-2xl lg:text-4xl font-bold'>Join us</h3>
             <p className=' max-w-prose md:text-lg lg:text-xl'>

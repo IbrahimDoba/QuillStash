@@ -26,3 +26,25 @@ export const userProfileSchema = object({
 });
 
 export type UserProfileFormData = z.infer<typeof userProfileSchema>;
+
+
+const stripHtmlTags = (html: string) => {
+  return html.replace(/<[^>]*>/g, "").trim();
+};
+
+const requiredEditorString = z.string().refine(
+  (val) => {
+    const strippedText = stripHtmlTags(val);
+    return strippedText.length > 0;
+  },
+  { message: "Required" },
+);
+
+export const postSchema = z.object({
+  title: z.string().min(1),
+  image: z.string().nullable(),
+  summary: z.string().nullable(),
+  body: requiredEditorString,
+  categoryName: z.string().min(1),
+});
+export type PostValues = z.infer<typeof postSchema>;

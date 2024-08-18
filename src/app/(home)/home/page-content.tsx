@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import PostSkeleton from './_components/PostSkeleton';
 import { Post } from '@/db/schema';
 import PostCard from './_components/PostCard';
-import { Button } from '@nextui-org/button';
+import { Button } from '@nextui-org/react';
 import { Unplug } from 'lucide-react';
 import Link from 'next/link';
 

@@ -2,7 +2,7 @@
 import { AcmeLogo } from '@/components/Icons';
 import Search from '@/components/Search';
 import { menuItems } from '@/utils/constants';
-import { Button } from '@nextui-org/button';
+import { Button } from '@nextui-org/react';
 import {
   Navbar,
   NavbarBrand,
