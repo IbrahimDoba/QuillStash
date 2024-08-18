@@ -3,7 +3,7 @@ import Post from "@/models/Post";
 import User from "@/models/User";
 import getSession from "@/lib/getSession";
 import { NextRequest, NextResponse } from "next/server";
-import { generateRandomString, generateSlug } from "@/lib/service";
+import {  generateSlug } from "@/lib/service";
 import { posts, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";

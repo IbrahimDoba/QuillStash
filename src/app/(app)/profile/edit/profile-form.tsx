@@ -44,6 +44,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
   });
 
   async function onSubmit(data: UserProfileFormData) {
+    console.log(data)
     try {
       await updateProfile(data)
         .then(() => {
