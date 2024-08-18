@@ -40,7 +40,7 @@ const PopularTopics = () => {
   return (
     <div className='p-4'>
       <h3 className='text-xl font-semibold mb-4'>Popular Topics</h3>
-      <ul className='flex gap-2 flex-wrap'>
+      {/* <ul className='flex gap-2 flex-wrap'>
         {tags?.map((tag, index) => (
           <li key={`${tag}-${index}`}>
             <Link isBlock href={`/tags/${tag}`} color='foreground'>
@@ -48,7 +48,7 @@ const PopularTopics = () => {
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };

@@ -1,12 +1,12 @@
 import { connectDb } from "@/lib/ConnetctDB";
-import Post from "@/models/Post";
-import User from "@/models/User";
+
 import getSession from "@/lib/getSession";
 import { NextRequest, NextResponse } from "next/server";
 import {  generateSlug } from "@/lib/service";
 import { posts, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
+import { insertTags } from "@/utils/insertTags";
 
 export const POST = async (req: NextRequest, res: any) => {
   const session = await getSession(); // Get the current user session
@@ -54,8 +54,9 @@ export const POST = async (req: NextRequest, res: any) => {
     };
 
     // Insert the post into the posts table
-    await db.insert(posts).values(newPost);
+   const [createdPost] = await db.insert(posts).values(newPost).returning();
 
+   await insertTags (createdPost.id,createdPost.tags)
  
 
     return NextResponse.json({ status: 200 });

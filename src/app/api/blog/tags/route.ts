@@ -1,5 +1,5 @@
+import { db } from "@/db";
 import { connectDb } from "@/lib/ConnetctDB";
-import Post from "@/models/Post";
 import { NextRequest, NextResponse } from "next/server";
 
 interface PostType {
@@ -8,14 +8,13 @@ interface PostType {
 
 export const GET = async (req: NextRequest) => {
   try {
-    await connectDb();
+    const posts = await db.query.posts.findMany();
 
-    const posts = await Post.find({}) as PostType[];
     
     const tagCount: { [key: string]: number } = {};
 
     posts.forEach(post => {
-      post.tags.forEach(tag => {
+      posts.tags.forEach(tag => {
         if (tagCount[tag]) {
           tagCount[tag]++;
         } else {

@@ -76,7 +76,7 @@ export const posts = pgTable('posts', {
   body: text('body').notNull(),
   featured: boolean('featured').default(false).notNull(),
   views: integer('views').default(0).notNull(),
-  tags: json('tags').$type<string[]>(), // Tags are stored as a JSON array
+  tags: json('tags').$type<string[]>().notNull(), // Tags are stored as a JSON array
   userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
@@ -140,7 +140,16 @@ export const tags = pgTable('tags', {
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name').unique().notNull(),
 });
-
+export const postsTags = pgTable('posts_tags', {
+  postId: text('post_id')
+    .notNull()
+    .references(() => posts.id, { onDelete: 'cascade' }),
+  tagId: text('tag_id')
+    .notNull()
+    .references(() => tags.id, { onDelete: 'cascade' }),
+}, (t) => ({
+  pk: primaryKey(t.postId, t.tagId),
+}));
 // Join table for posts and tags (many-to-many relationship)
 export const postTags = pgTable('post_tags', {
   postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }),

@@ -1,6 +1,6 @@
 import { users } from "@/db/schema";
 import { connectDb } from "@/lib/ConnetctDB";
-import User from "@/models/User";
+
 import { eq } from "drizzle-orm";
 import getSession from "@/lib/getSession";
 import { NextRequest, NextResponse } from "next/server";
