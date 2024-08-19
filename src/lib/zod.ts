@@ -27,9 +27,8 @@ export const userProfileSchema = object({
 
 export type UserProfileFormData = z.infer<typeof userProfileSchema>;
 
-
 const stripHtmlTags = (html: string) => {
-  return html.replace(/<[^>]*>/g, "").trim();
+  return html.replace(/<[^>]*>/g, '').trim();
 };
 
 const requiredEditorString = z.string().refine(
@@ -37,7 +36,7 @@ const requiredEditorString = z.string().refine(
     const strippedText = stripHtmlTags(val);
     return strippedText.length > 0;
   },
-  { message: "Required" },
+  { message: 'Required' }
 );
 
 export const postSchema = z.object({
@@ -48,3 +47,13 @@ export const postSchema = z.object({
   categoryName: z.string().min(1),
 });
 export type PostValues = z.infer<typeof postSchema>;
+
+// comments
+export const commentSchema = z.object({
+  postId: z.string().uuid(),
+  userId: z.string().uuid(),
+  body: z.string().min(1, 'You cannot submit an empty comment').max(1000),
+});
+export type CommentValues = z.infer<typeof commentSchema>;
+
+// dont think we need a reply schema since it will be the same as the comment schema

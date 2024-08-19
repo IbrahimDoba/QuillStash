@@ -1,16 +1,16 @@
 export const siteConfig = {
-    title: 'Geotech4All',
-    description:
-      'Geotech4all is a community that specializes in everything geoscience, from geological services to news, articles, webinars, conferences, and podcasts.',
-    url: 'https://www.geotech4all.com',
-    ogImage: 'https://www.geotech4all.com/og.jpg',
-    links: {
-      twitter: 'https://x.com/geotech4all',
-      linkedin: 'https://linkedin.com/company/geotech4all',
-      facebook: 'https://facebook.com/geotech4all',
-      youtube: 'https://youtube.com/@geotech4all'
-    },
-     keywords: []
-  };
-  
-  export type SiteConfig = typeof siteConfig;
+  title: 'Radar',
+  description:
+    'Radar is a modern React app that helps you create, publish, and discover articles.',
+  url: 'https://www.radar.com',
+  ogImage: 'https://www.radar.com/og.jpg',
+  links: {
+    twitter: 'https://x.com/radar',
+    linkedin: 'https://linkedin.com/company/radar',
+    facebook: 'https://facebook.com/radar',
+    youtube: 'https://youtube.com/@radar',
+  },
+  keywords: [],
+};
+
+export type SiteConfig = typeof siteConfig;

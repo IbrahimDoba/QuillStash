@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { posts, postsTags, tags } from "@/db/schema";
+import { posts, postTags, tags } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function insertTags(postId: string, tagNames: string[]) {
@@ -18,7 +18,7 @@ export async function insertTags(postId: string, tagNames: string[]) {
         }
 
         // Create the association
-        await tx.insert(postsTags).values({
+        await tx.insert(postTags).values({
           postId,
           tagId: tag.id,
         });

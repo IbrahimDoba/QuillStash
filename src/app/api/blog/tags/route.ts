@@ -8,13 +8,17 @@ interface PostType {
 
 export const GET = async (req: NextRequest) => {
   try {
-    const posts = await db.query.posts.findMany();
+    const posts = await db.query.posts.findMany({
+      with: {
+        tags: true,
+      },
+    });
 
     
     const tagCount: { [key: string]: number } = {};
 
     posts.forEach(post => {
-      posts.tags.forEach(tag => {
+      post.tags.forEach(tag => {
         if (tagCount[tag]) {
           tagCount[tag]++;
         } else {
