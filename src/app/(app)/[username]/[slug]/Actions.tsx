@@ -21,43 +21,37 @@ function ActionsDesktop({ title }: { title: string }) {
     <div className='w-fit lg:sticky top-0 hidden lg:flex flex-col gap-4 rounded-lg py-4'>
       <ul className='flex gap-6 flex-col'>
         <li>
-          <Button isIconOnly>
+          <Button variant='faded' isIconOnly>
             <Heart />
           </Button>
         </li>
         <li>
-          <Button isIconOnly>
+          <Button variant='faded' isIconOnly>
             <Bookmark />
           </Button>
         </li>
         <li>
-          <Button isIconOnly>
+          <Button variant='faded' isIconOnly>
             <Link
               href={`https://twitter.com/intent/tweet?text=${tweetText}&url=${pageUrl}`}
               target='_blank'
-              className='w-fit border border-input rounded-md p-2 grid place-content-center hover:text-red-400 hover:border-red-400 transition-all duration-300'
             >
               <Twitter className='w-6 h-6' />
             </Link>
           </Button>
         </li>
         <li>
-          <Button isIconOnly>
+          <Button variant='faded' isIconOnly>
             <Link
               href={`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`}
               target='_blank'
-              className='w-fit border border-input rounded-md p-2 grid place-content-center hover:text-red-400 hover:border-red-400 transition-all duration-300'
             >
               <Facebook className='w-6 h-6' />
             </Link>
           </Button>
         </li>
         <li>
-          <Button
-            isIconOnly
-            onClick={copyLink}
-            className='border border-input rounded-md p-2 grid place-content-center hover:text-red-400 hover:border-red-400 transition-all duration-300'
-          >
+          <Button variant='faded' isIconOnly onClick={copyLink}>
             <LinkIcon className='w-6 h-6' />
           </Button>
         </li>

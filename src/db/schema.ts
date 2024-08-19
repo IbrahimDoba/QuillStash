@@ -10,27 +10,6 @@ import {
 import { InferSelectModel, relations } from 'drizzle-orm';
 import type { AdapterAccountType } from 'next-auth/adapters';
 
-export const users = pgTable('users', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  username: text('username').unique(),
-  name: text('name').notNull(),
-  email: text('email').unique().notNull(),
-  emailVerified: timestamp('email_verified', { mode: 'date' }),
-  password: text('password'),
-  image: text('image'),
-  role: text('role').default('Blogger'),
-  bio: text('bio'),
-  location: text('location'),
-  pronouns: text('pronouns'),
-  work: text('work'),
-  github: text('github'),
-  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
-  updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
-});
-export type User = InferSelectModel<typeof users>; // export a type for the posts table just incase
-
 // Accounts table
 export const accounts = pgTable(
   'account',
@@ -65,6 +44,35 @@ export const sessions = pgTable('session', {
   expires: timestamp('expires', { mode: 'date' }).notNull(),
 });
 
+// user table
+export const users = pgTable('users', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  username: text('username').unique(),
+  name: text('name').notNull(),
+  email: text('email').unique().notNull(),
+  emailVerified: timestamp('email_verified', { mode: 'date' }),
+  password: text('password'),
+  image: text('image'),
+  role: text('role').default('Blogger'),
+  bio: text('bio'),
+  location: text('location'),
+  pronouns: text('pronouns'),
+  work: text('work'),
+  github: text('github'),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
+});
+export type User = InferSelectModel<typeof users>; // export a type for the posts table just incase
+
+// user relations
+export const usersRelations = relations(users, ({ many }) => ({
+  posts: many(posts),
+}));
+
+
+// Posts table
 export const posts = pgTable('posts', {
   id: text('id')
     .primaryKey()
@@ -77,61 +85,142 @@ export const posts = pgTable('posts', {
   featured: boolean('featured').default(false).notNull(),
   views: integer('views').default(0).notNull(),
   tags: json('tags').$type<string[]>().notNull(), // Tags are stored as a JSON array
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  userId: text('user_id')
+    .references(() => users.id, { onDelete: 'cascade' })
+    .notNull(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
 });
 export type Post = InferSelectModel<typeof posts>; // export a type for the posts table just incase
 
-export const postsRelations = relations(posts, ({ one }) => ({
+export const postsRelations = relations(posts, ({ one, many }) => ({
   author: one(users, {
     fields: [posts.userId],
     references: [users.id],
   }),
+  likes: many(likes), // Relation to the postLikes table
+  bookmarks: many(bookmarks), // Relation to the postBookmarks table
+  tags: many(tags),
+  // tags: many(tags, {
+  //   through: postTags,
+  //   fields: [posts.id],
+  //   references: [postTags.postId],
+  // }),
 }));
 
-export const usersRelations = relations(users, ({ many }) => ({
-  posts: many(posts),
+// Post Likes Table
+export const likes = pgTable(
+  'likes',
+  {
+    postId: text('post_id')
+      .references(() => posts.id, { onDelete: 'cascade' })
+      .notNull(),
+    userId: text('user_id')
+      .references(() => users.id, { onDelete: 'cascade' })
+      .notNull(),
+  },
+  (table) => ({
+    pk: primaryKey({columns: [table.postId, table.userId]}),
+  })
+);
+
+// Post Likes Relations
+export const likesRelations = relations(likes, ({ one }) => ({
+  post: one(posts, {
+    fields: [likes.postId],
+    references: [posts.id],
+  }),
+  user: one(users, {
+    fields: [likes.userId],
+    references: [users.id],
+  }),
 }));
 
-// Join table for post likes
-export const postLikes = pgTable('post_likes', {
-  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }),
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-  primaryKey: (text('post_id'), text('user_id')),
-});
+// Post Bookmarks Table
+export const bookmarks = pgTable(
+  'bookmarks',
+  {
+    postId: text('post_id')
+      .references(() => posts.id, { onDelete: 'cascade' })
+      .notNull(),
+    userId: text('user_id')
+      .references(() => users.id, { onDelete: 'cascade' })
+      .notNull(),
+  },
+  (table) => ({
+    pk: primaryKey({columns: [table.postId, table.userId]}),
+  })
+);
 
-// Join table for post bookmarks
-export const postBookmarks = pgTable('post_bookmarks', {
-  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }),
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-  primaryKey: (text('post_id'), text('user_id')),
-});
+// Post Bookmarks Relations
+export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
+  post: one(posts, {
+    fields: [bookmarks.postId],
+    references: [posts.id],
+  }),
+  user: one(users, {
+    fields: [bookmarks.userId],
+    references: [users.id],
+  }),
+}));
 
 // Comments table
 export const comments = pgTable('comments', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }),
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-  body: text('body').notNull(),
-  // Use JSON for storing likes as an array
-  likes: json('likes').$type<string[]>(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
+  body: text('body').notNull(),
+  postId: text('post_id')
+    .notNull()
+    .references(() => posts.id, { onDelete: 'cascade' }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
 });
+export type Comment = InferSelectModel<typeof comments>;
 
-// Recursive relation for comment replies
-export const commentReplies = pgTable('comment_replies', {
-  commentId: text('comment_id').references(() => comments.id, {
-    onDelete: 'cascade',
+// Comments relations
+export const commentsRelations = relations(comments, ({ one, many }) => ({
+  user: one(users, {
+    fields: [comments.userId],
+    references: [users.id],
   }),
-  replyId: text('reply_id').references(() => comments.id, {
-    onDelete: 'cascade',
+  post: one(posts, {
+    fields: [comments.postId],
+    references: [posts.id],
   }),
-  primaryKey: (text('comment_id'), text('reply_id')),
+  replies: many(replies),
+}));
+
+// Replies table
+export const replies = pgTable('replies', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
+  body: text('body').notNull(),
+  commentId: text('comment_id')
+    .notNull()
+    .references(() => comments.id, { onDelete: 'cascade' }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
 });
+export type Reply = InferSelectModel<typeof replies>;
+
+export const repliesRelations = relations(replies, ({ one }) => ({
+  user: one(users, {
+    fields: [replies.userId],
+    references: [users.id],
+  }),
+  parentComment: one(comments, {
+    fields: [replies.commentId],
+    references: [comments.id],
+  }),
+}));
 
 // Tags table
 export const tags = pgTable('tags', {
@@ -140,19 +229,25 @@ export const tags = pgTable('tags', {
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name').unique().notNull(),
 });
-export const postsTags = pgTable('posts_tags', {
+
+// join table for post and tags
+export const postTags = pgTable('post_tags', {
   postId: text('post_id')
     .notNull()
     .references(() => posts.id, { onDelete: 'cascade' }),
   tagId: text('tag_id')
     .notNull()
     .references(() => tags.id, { onDelete: 'cascade' }),
-}, (t) => ({
-  pk: primaryKey(t.postId, t.tagId),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.postId, table.tagId] }),
 }));
-// Join table for posts and tags (many-to-many relationship)
-export const postTags = pgTable('post_tags', {
-  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }),
-  tagId: text('tag_id').references(() => tags.id, { onDelete: 'cascade' }),
-  primaryKey: (text('post_id'), text('tag_id')),
-});
+
+// Relations for Tags
+export const tagsRelations = relations(tags, ({ many }) => ({
+  // posts: many(posts, {
+  //   through: postTags,
+  //   fields: [tags.id],
+  //   references: [postTags.tagId],
+  // }),
+  posts: many(posts),
+}));
