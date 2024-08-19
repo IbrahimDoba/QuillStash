@@ -23,7 +23,7 @@ export async function GET(
         },
       },
     });
-
+    console.log(postComments)
     // Fetch replies for these comments
     const commentIds = postComments.map((comment) => comment.id);
     const commentReplies = await db.query.replies.findMany({
@@ -45,7 +45,7 @@ export async function GET(
       ...comment,
       replies: commentReplies.filter((reply) => reply.commentId === comment.id),
     }));
-    
+      console.log("commentsIWthRepllies", commentsWithReplies)
 
     return Response.json(commentsWithReplies, { status: 200 });
   } catch (error) {

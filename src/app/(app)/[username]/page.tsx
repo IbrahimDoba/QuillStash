@@ -1,17 +1,21 @@
-import { notFound } from 'next/navigation';
-import PageContent from './page-content';
-import { users } from '@/db/schema';
-import { eq } from 'drizzle-orm';
-import { db } from '@/db';
-import getSession from '@/lib/getSession';
-import { Metadata } from 'next';
+import { notFound } from "next/navigation";
+import PageContent from "./page-content";
+import { users } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import getSession from "@/lib/getSession";
+import { Metadata } from "next";
 
-const getProfileData = async (username:string) => {
+const getProfileData = async (username: string) => {
   const profileData = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.username, username),
+    with: {
+      posts: true,
+    },
   });
-  return profileData
-}
+  // console.log(profileData);
+  return profileData;
+};
 
 export async function generateMetadata({
   params,
@@ -20,7 +24,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { username } = params;
   const profile = await getProfileData(username);
-
+  console.log(profile);
   if (!profile) return {};
 
   return {
@@ -36,9 +40,12 @@ export async function generateMetadata({
       // authors: [post?.author?.name || 'writer'],
       images: [
         {
-          url: profile.image || 'https://silver.vercel.app/login.jpg' || '/login.jpg',
-          width: '1200',
-          height: '630',
+          url:
+            profile.image ||
+            "https://silver.vercel.app/login.jpg" ||
+            "/login.jpg",
+          width: "1200",
+          height: "630",
           // alt: ''
         },
       ],
@@ -46,18 +53,21 @@ export async function generateMetadata({
   };
 }
 
-
 export default async function Page({
   params,
 }: {
   params: { username: string };
 }) {
-  const {username}  = params;
-  
+  const { username } = params;
+
   const profileData = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.username, username),
+    with: {
+      posts: true,
+      
+    },
   });
-  console.log(profileData)
+  console.log(profileData);
   const session = await getSession();
   const user = session?.user;
 
@@ -65,5 +75,10 @@ export default async function Page({
     return notFound();
   }
 
-  return <PageContent {...profileData} isCurrentUser={user?.username === profileData.username}/>;
+  return (
+    <PageContent
+      {...profileData}
+      isCurrentUser={user?.username === profileData.username}
+    />
+  );
 }

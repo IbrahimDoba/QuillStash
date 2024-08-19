@@ -5,9 +5,34 @@ import { Card, Avatar, Button, Tabs, Tab } from "@nextui-org/react";
 import { toast } from "sonner";
 import { User as ProfileData } from "@/db/schema";
 import { useSession } from "next-auth/react";
+import ContentCard from "./content-card";
 
 interface PageContentProps extends ProfileData {
   isCurrentUser: boolean;
+  posts: {
+    id: string;
+    title: string;
+    body: string;
+    coverImage: string | null;
+  }[];
+  // bookmarks: {
+  //   postId: string;
+  //   post: {
+  //     id: string;
+  //     title: string;
+  //     body: string;
+  //     coverImage: string;
+  //   };
+  // }[];
+  // likes: {
+  //   postId: string;
+  //   post: {
+  //     id: string;
+  //     title: string;
+  //     body: string;
+  //     coverImage: string;
+  //   };
+  // }[];
 }
 
 export default function PageContent({
@@ -19,6 +44,11 @@ export default function PageContent({
   image,
   github,
   isCurrentUser,
+  posts,
+  
+  // bookmarks,
+  // likes,
+
 }: PageContentProps) {
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -91,31 +121,72 @@ export default function PageContent({
       <div className="mt-6">
         <Tabs aria-label="Options" radius="sm">
           <Tab key="posts" title="Posts">
-            <Card
-              shadow="none"
-              className="bg-transparent flex items-center justify-center py-10 lg:py-20"
-            >
-              <Edit />
-              <p>This user has no posts yet. Check back later.</p>
-            </Card>
+          {posts && posts.length > 0 ? (
+              <div className="grid gap-4">
+                {posts.map((post) => (
+                  <ContentCard
+
+                    key={post.id}
+                    title={post.title}
+                    body={post.body}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Card
+                shadow="none"
+                className="bg-transparent flex items-center justify-center py-10 lg:py-20"
+              >
+                <Edit />
+                <p>This user has no posts yet. Check back later.</p>
+              </Card>
+            )}
           </Tab>
           <Tab key="bookmarks" title="Bookmarks">
-            <Card
-              shadow="none"
-              className="bg-transparent flex items-center justify-center py-10 lg:py-20"
-            >
-              <Edit />
-              <p>This user has no posts yet. Check back later.</p>
-            </Card>
+           {/* {bookmarks && bookmarks.length > 0 ? (
+              <div className="grid gap-4">
+                <p>bookmarks here</p>
+                {bookmarks.map((bookmark) => (
+                  <ContentCard
+                  
+                    key={post.id}
+                    title={post.title}
+                    body={post.body}
+                  />
+                ))}
+              </div>
+            ) : ( */}
+              <Card
+                shadow="none"
+                className="bg-transparent flex items-center justify-center py-10 lg:py-20"
+              >
+                <Edit />
+                <p>This user has no bookmarks yet. Check back later.</p>
+              </Card>
+            {/* )} */}
           </Tab>
           <Tab key="likes" title="Likes">
-            <Card
-              shadow="none"
-              className="bg-transparent flex items-center justify-center py-10 lg:py-20"
-            >
-              <Edit />
-              <p>This user has no posts yet. Check back later.</p>
-            </Card>
+          {/* {likes && likes.length > 0 ? (
+              <div className="grid gap-4">
+                <p>likes here</p>
+                {bookmarks.map((bookmark) => (
+                  <ContentCard
+                  
+                    key={post.id}
+                    title={post.title}
+                    body={post.body}
+                  />
+                ))}
+              </div>
+            ) : ( */}
+              <Card
+                shadow="none"
+                className="bg-transparent flex items-center justify-center py-10 lg:py-20"
+              >
+                <Edit />
+                <p>This user has no likes yet. Check back later.</p>
+              </Card>
+            {/* )} */}
           </Tab>
         </Tabs>
       </div>

@@ -20,6 +20,7 @@ export async function POST(req: Request) {
         body: validatedData.body,
       })
       .returning();
+      console.log(newComment)
 
     // Return the created comment
     return NextResponse.json(newComment, { status: 201 });
