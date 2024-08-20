@@ -44,7 +44,7 @@ export default function AlternateNavigation() {
       <NavbarContent justify='end'>
         <NavbarItem className='hidden lg:flex'>
           <Button
-            as={'link'}
+            // as={'link'}
             href='/home'
             radius='sm'
             color='primary'
@@ -55,7 +55,9 @@ export default function AlternateNavigation() {
           </Button>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} href='/sign-up' variant='flat' radius='sm'>
+          <Button 
+          // as={Link} 
+          href='/sign-up' variant='flat' radius='sm'>
             Login
           </Button>
         </NavbarItem>
