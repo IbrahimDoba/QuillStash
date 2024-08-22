@@ -53,7 +53,7 @@ function TextEditor({ value, onChange }: EditorProps) {
     editorProps: {
       attributes: {
         class:
-          'prose text-foreground min-h-52 w-full min-w-full p-4 border dark:border-foreground-50 outline-none focus-visible:border-transparent focus-visible:ring-primary focus-visible:ring-2 rounded-md',
+          'prose text-foreground min-h-96 w-full min-w-full p-4 border dark:border-foreground-50 outline-none focus-visible:border-transparent focus-visible:ring-primary focus-visible:ring-2 rounded-md',
       },
     },
   });

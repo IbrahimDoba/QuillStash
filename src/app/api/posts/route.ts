@@ -1,8 +1,11 @@
 import { db } from '@/db';
 import { posts } from '@/db/schema';
+import getSession from '@/lib/getSession';
+import { generateSlug } from '@/lib/service';
+import { postSchema } from '@/lib/zod';
+import { validateRequest } from '@/utils/validateRequest';
 import { sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
-
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
@@ -24,15 +27,6 @@ export const GET = async (req: NextRequest) => {
     const totalPosts = Number(count);
     const totalPages = Math.ceil(totalPosts / limit);
     console.log('test');
-
-    // Fetch paginated posts
-    // const fetchedPosts = await db
-    //   .select()
-    //   .from(posts)
-    //   .orderBy(desc(posts.createdAt))
-    //   .limit(limit)
-    //   .offset(skip);
-    // console.log(fetchedPosts)
 
     const fetchedPosts = await db.query.posts.findMany({
       limit: limit,
@@ -66,3 +60,38 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json({ message: 'server error' }, { status: 500 });
   }
 };
+
+export async function POST(req: Request) {
+  await  validateRequest();
+  const session = await getSession()
+  const user = session?.user
+
+  try {
+    const requestBody = await req.json();
+    const validatedData = postSchema.parse(requestBody);
+
+    const postSummary = validatedData.summary
+      ? validatedData.summary
+      : "this should now be GPT's response";
+
+    const [newPost] = await db
+      .insert(posts)
+      .values({
+        ...validatedData,
+        summary: postSummary,
+        slug: generateSlug(validatedData.title),
+        userId: user?.id!,
+      })
+      .returning();
+    console.log(newPost);
+
+    // Return the created comment
+    return NextResponse.json(newPost, { status: 201 });
+  } catch (error) {
+    console.error('Error creating comment:', error);
+    return NextResponse.json(
+      { error: 'Something went wrong' },
+      { status: 500 }
+    );
+  }
+}

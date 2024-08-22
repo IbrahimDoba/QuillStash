@@ -12,7 +12,7 @@ interface ReplyProps extends CommentReply {
 }
 
 function Reply({
-  id,
+  commentId,
   body,
   createdAt,
   updatedAt,
@@ -25,7 +25,10 @@ function Reply({
 
   return (
     <li className='grid gap-6'>
-      <Card className='grid gap-4 p-6'>
+      <Card
+        shadow='none'
+        className='grid gap-4 p-6 border dark:border-foreground-50 rounded-md'
+      >
         <div className='flex flex-col justify-between gap-2 sm:flex-row'>
           <div className='flex flex-row items-center gap-3'>
             <Image
@@ -54,7 +57,6 @@ function Reply({
             <div className='flex gap-4'>
               {/* <ReplyDeleteConfirm id={id} /> */}
               <Button
-                variant={'ghost'}
                 size={'sm'}
                 className='flex items-center gap-2 text-sm'
                 onClick={() => setIsEditing(!isEditing)}
@@ -65,7 +67,6 @@ function Reply({
             </div>
           ) : (
             <Button
-              variant={'ghost'}
               size={'sm'}
               className='flex items-center gap-2 text-sm'
               onClick={() => setIsReplying(!isReplying)}

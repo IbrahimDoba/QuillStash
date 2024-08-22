@@ -1,4 +1,4 @@
-import { commentSchema, CommentValues } from '@/lib/zod';
+import { replySchema, ReplyValues } from '@/lib/zod';
 import { CommentWithAuthorAndReplyWithAuthor } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Card, CardBody, Chip, Textarea } from '@nextui-org/react';
@@ -10,7 +10,6 @@ import { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import Reply from './reply';
-
 
 interface CommentProps extends CommentWithAuthorAndReplyWithAuthor {
   isCurrentUser: boolean;
@@ -29,56 +28,54 @@ export default function Comment({
   const [isReplying, setIsReplying] = useState(false);
   const queryClient = useQueryClient();
 
-  // const session = useSession();
-  // const user = session.data?.user;
-  // console.log(user?.id);
-
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
-  } = useForm<CommentValues>({
-    resolver: zodResolver(commentSchema),
+  } = useForm<ReplyValues>({
+    resolver: zodResolver(replySchema),
+    defaultValues: {
+      body: '',
+      commentId: id,
+      userId: user?.id,
+    },
   });
 
-  const createReply = async (replyData: CommentValues) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/comments`, {
+  const createReply = async (replyData: ReplyValues) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/replies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         ...replyData,
-        commentId: id,
-        userId: user?.id, 
       }),
     });
     if (!res.ok) {
-      throw new Error('Failed to create comment');
+      throw new Error('Failed to create reply');
     }
     return res.json();
   };
 
-  const mutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: createReply,
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['comments', id] });
-      toast('Comment created successfully');
+      toast('Reply created successfully');
       setIsReplying(false);
     },
     onError: (error) => {
-      toast(`Failed to create comment: ${error.message}`);
+      toast(`Failed to create reply: ${error.message}`);
     },
   });
 
-  const onSubmit = async (data: CommentValues) => {
-    mutation.mutate(data);
+  const onSubmit = async (data: ReplyValues) => {
+    mutate(data);
   };
 
   return (
     <li className='grid gap-6'>
-      <Card className='grid gap-4 p-6'>
+      <Card shadow='none' className='grid gap-4 p-6 border dark:border-foreground-50 rounded-md'>
         <div className='flex flex-col justify-between gap-2 sm:flex-row'>
           <div className='flex flex-row items-center gap-3'>
             <Image
@@ -107,7 +104,6 @@ export default function Comment({
             <div className='flex gap-4'>
               {/* <CommentDeleteConfirm id={id} /> */}
               <Button
-                variant={'ghost'}
                 size={'sm'}
                 className='flex items-center gap-2 text-sm'
                 onClick={() => setIsEditing(!isEditing)}
@@ -118,7 +114,6 @@ export default function Comment({
             </div>
           ) : (
             <Button
-              variant={'ghost'}
               size={'sm'}
               className='flex items-center gap-2 text-sm'
               onClick={() => setIsReplying(!isReplying)}
@@ -131,8 +126,8 @@ export default function Comment({
         {!isEditing ? (
           <CardBody>{body}</CardBody>
         ) : (
-         //  <EditCommentForm setIsOpen={setIsEditing} id={id} content={body} />
-         <div>this should be an edit form</div>
+          //  <EditCommentForm setIsOpen={setIsEditing} id={id} content={body} />
+          <div>this should be an edit form</div>
         )}
       </Card>
 
@@ -141,12 +136,12 @@ export default function Comment({
           <form onSubmit={handleSubmit(onSubmit)}>
             <Card className='flex flex-col gap-6 p-4'>
               <div>
-                <label htmlFor='comment' className='sr-only'>
-                  Comment
+                <label htmlFor='reply' className='sr-only'>
+                  Reply
                 </label>
                 <Textarea
                   {...register('body')}
-                  id='comment'
+                  id='reply'
                   placeholder='Your reply...'
                 />
                 {errors.body && (
@@ -154,21 +149,24 @@ export default function Comment({
                     {errors.body.message}
                   </p>
                 )}
+                <input hidden type="hidden" {...register('commentId')} />
+                <input hidden type="hidden" {...register('userId')} />
               </div>
 
               <div className='flex items-center justify-between'>
                 <div className='flex gap-4'>
                   <Button
-                    variant={'ghost'}
                     size={'sm'}
                     onClick={() => setIsReplying(!isReplying)}
                   >
                     Close
                   </Button>
                   <Button
-                    disabled={isSubmitting}
+                    disabled={isPending}
                     size={'sm'}
-                    isLoading={isSubmitting}
+                    color='primary'
+                    type='submit'
+                    isLoading={isPending}
                     className='flex w-fit items-center gap-2'
                   >
                     {isSubmitting ? 'Replying...' : 'Reply'}

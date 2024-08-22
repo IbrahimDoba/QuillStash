@@ -1,10 +1,8 @@
-import TruncatedText from '@/lib/truncatedText';
 import { Post } from '@/db/schema';
-import { Card, CardBody, Image, Avatar, Button } from '@nextui-org/react';
+import { Card, CardBody,Image,  Avatar, Button } from '@nextui-org/react';
 import { Heart, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-
 interface PostProps extends Post {
   author: {
     name: string;
@@ -22,8 +20,8 @@ function PostCard({ title, tags, coverImage, summary, createdAt, author, slug }:
       className='pt-6 rounded-none bg-transparent dark:border-foreground-50'
     >
       <CardBody>
-        <div className='flex gap-6 items-center'>
-          <Link href={`${author.username}/${slug}`} className='shrink-0 overflow-hidden'>
+        <div className='flex gap-4 lg:gap-6 items-center'>
+          <Link href={`${author.username}/${slug}`} className='hidden md:block shrink-0 overflow-hidden'>
             <Image
               alt='Card background'
               width={250}
@@ -32,10 +30,10 @@ function PostCard({ title, tags, coverImage, summary, createdAt, author, slug }:
                 coverImage ??
                 'https://nextui.org/images/hero-card-complete.jpeg'
               }
-              className='object-cover rounded-lg aspect-video pointer-events-none'
+              className='object-cover rounded-lg aspect-video pointer-events-none '
             />
           </Link>
-          <div className='flex flex-col gap-4 justify-between'>
+          <div className='flex flex-col gap-2 lg:gap-4 justify-between'>
             <span className='flex items-center text-xs gap-2 mt-1'>
               <Avatar
                 src= {author.image ?? 'https://i.pravatar.cc/150?u=a042581f4e29026024d'}

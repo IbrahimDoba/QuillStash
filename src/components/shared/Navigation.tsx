@@ -20,6 +20,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { AcmeLogo } from '../Icons';
 import Search from '../Search';
+import MobileSearch from '../MobileSearch';
 import { ThemeSwitch } from '../ThemeSwitch';
 
 export default function Navigation() {
@@ -47,6 +48,7 @@ export default function Navigation() {
           </Link>
         </NavbarBrand>
         <Search />
+        <MobileSearch/>
       </NavbarContent>
 
       {!user ? (
