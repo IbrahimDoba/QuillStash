@@ -11,6 +11,16 @@ const getProfileData = async (username: string) => {
     where: (users, { eq }) => eq(users.username, username),
     with: {
       posts: true,
+      bookmarks: {
+        with: {
+          post: true,
+        },
+      },
+      likes: {
+        with: {
+          post: true,
+        },
+      },
     },
   });
   // console.log(profileData);
@@ -64,7 +74,16 @@ export default async function Page({
     where: (users, { eq }) => eq(users.username, username),
     with: {
       posts: true,
-      
+      bookmarks: {
+        with: {
+          post: true,
+        },
+      },
+      likes: {
+        with: {
+          post: true,
+        },
+      },
     },
   });
   console.log(profileData);

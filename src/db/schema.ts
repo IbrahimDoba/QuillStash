@@ -69,6 +69,8 @@ export type User = InferSelectModel<typeof users>; // export a type for the post
 // user relations
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
+  bookmarks: many(bookmarks),
+  likes: many(likes),
 }));
 
 

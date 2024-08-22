@@ -9,30 +9,34 @@ import ContentCard from "./content-card";
 
 interface PageContentProps extends ProfileData {
   isCurrentUser: boolean;
+
   posts: {
     id: string;
     title: string;
-    body: string;
+    summary: string;
     coverImage: string | null;
+    slug: string | null;
   }[];
-  // bookmarks: {
-  //   postId: string;
-  //   post: {
-  //     id: string;
-  //     title: string;
-  //     body: string;
-  //     coverImage: string;
-  //   };
-  // }[];
-  // likes: {
-  //   postId: string;
-  //   post: {
-  //     id: string;
-  //     title: string;
-  //     body: string;
-  //     coverImage: string;
-  //   };
-  // }[];
+  bookmarks: {
+    postId: string;
+    post: {
+      id: string;
+      title: string;
+      summary: string;
+      coverImage: string;
+      slug: string;
+    };
+  }[];
+  likes: {
+    postId: string;
+    post: {
+      id: string;
+      title: string;
+      summary: string;
+      slug: string;
+      coverImage: string;
+    };
+  }[];
 }
 
 export default function PageContent({
@@ -45,10 +49,10 @@ export default function PageContent({
   github,
   isCurrentUser,
   posts,
-  
-  // bookmarks,
-  // likes,
-
+  bookmarks,
+  summary,
+  likes,
+  slug,
 }: PageContentProps) {
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -121,14 +125,16 @@ export default function PageContent({
       <div className="mt-6">
         <Tabs aria-label="Options" radius="sm">
           <Tab key="posts" title="Posts">
-          {posts && posts.length > 0 ? (
+            {posts && posts.length > 0 ? (
               <div className="grid gap-4">
                 {posts.map((post) => (
                   <ContentCard
-
                     key={post.id}
                     title={post.title}
-                    body={post.body}
+                    summary={post.summary}
+                    coverImage={post.coverImage}
+                    username={username}
+                    slug={post.slug}
                   />
                 ))}
               </div>
@@ -138,55 +144,57 @@ export default function PageContent({
                 className="bg-transparent flex items-center justify-center py-10 lg:py-20"
               >
                 <Edit />
-                <p>This user has no posts yet. Check back later.</p>
+                <p>You have no posts yet. Write a post and Check back later.</p>
               </Card>
             )}
           </Tab>
           <Tab key="bookmarks" title="Bookmarks">
-           {/* {bookmarks && bookmarks.length > 0 ? (
+            {bookmarks && bookmarks.length > 0 ? (
               <div className="grid gap-4">
-                <p>bookmarks here</p>
                 {bookmarks.map((bookmark) => (
                   <ContentCard
-                  
-                    key={post.id}
-                    title={post.title}
-                    body={post.body}
+                    username={username}
+                    slug={bookmark.post.slug}
+                    key={bookmark.post.id}
+                    title={bookmark.post.title}
+                    summary={bookmark.post.summary}
+                    coverImage={bookmark.post.coverImage}
                   />
                 ))}
               </div>
-            ) : ( */}
+            ) : (
               <Card
                 shadow="none"
                 className="bg-transparent flex items-center justify-center py-10 lg:py-20"
               >
                 <Edit />
-                <p>This user has no bookmarks yet. Check back later.</p>
+                <p>You have no bookmarks yet. Check back later.</p>
               </Card>
-            {/* )} */}
+            )}
           </Tab>
           <Tab key="likes" title="Likes">
-          {/* {likes && likes.length > 0 ? (
+            {likes && likes.length > 0 ? (
               <div className="grid gap-4">
-                <p>likes here</p>
-                {bookmarks.map((bookmark) => (
+                {likes.map((like) => (
                   <ContentCard
-                  
-                    key={post.id}
-                    title={post.title}
-                    body={post.body}
+                    username={username}
+                    slug={like.post.slug}
+                    key={like.post.id}
+                    title={like.post.title}
+                    summary={like.post.summary}
+                    coverImage={like.post.coverImage}
                   />
                 ))}
               </div>
-            ) : ( */}
+            ) : (
               <Card
                 shadow="none"
                 className="bg-transparent flex items-center justify-center py-10 lg:py-20"
               >
                 <Edit />
-                <p>This user has no likes yet. Check back later.</p>
+                <p>You have no likes yet. Check back later.</p>
               </Card>
-            {/* )} */}
+            )}
           </Tab>
         </Tabs>
       </div>
