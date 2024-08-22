@@ -7,7 +7,7 @@ function Search() {
     <>
       <Input
         classNames={{
-          base: 'max-w-full ml-4 md:w-[20rem] h-10',
+          base: 'max-w-full ml-4 md:w-[20rem] h-10 max-lg:hidden',
           mainWrapper: 'h-full',
           input: 'text-small',
           inputWrapper:

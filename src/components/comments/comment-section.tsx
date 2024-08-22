@@ -4,12 +4,12 @@ import { CommentWithAuthorAndReplyWithAuthor } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar, Button, Card, Textarea } from '@nextui-org/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import Comment from './comment';
+import CommentForm from './comment-form';
 import CommentSectionSkeleton from './comment-section-skeleton';
 
 interface CommentSectionProps {
@@ -104,7 +104,7 @@ function CommentSection({ id, user }: CommentSectionProps) {
                 placeholder='join the conversation...'
               />
               {errors.body && (
-                <p className='px-1 text-xs text-red-600'>
+                <p className='px-1 text-xs text-red-600 mt-1'>
                   {errors.body.message}
                 </p>
               )}
@@ -138,9 +138,10 @@ function CommentSection({ id, user }: CommentSectionProps) {
       ) : (
         <>
           {user ? (
-            <Button onClick={() => setShowInput(!showInput)} radius='sm'>
-              Post comment
-            </Button>
+            // <Button onClick={() => setShowInput(!showInput)} radius='sm'>
+            //   Post comment
+            // </Button>
+            <CommentForm userId={id} postId={user?.id}/>
           ) : (
             <Button radius='sm'>
               <Link href='/sign-in'>Sign in to join the conversation</Link>
