@@ -1,9 +1,11 @@
 import { db } from '@/db';
-import { comments } from '@/db/schema'; // Adjust the import path as necessary
+import { comments } from '@/db/schema'; 
 import { commentSchema } from '@/lib/zod';
 import { NextResponse } from 'next/server';
+import { validateRequest } from '@/utils/validateRequest';
 
 export async function POST(req: Request) {
+  await validateRequest();
   try {
     // Parse the request body
     const body = await req.json();

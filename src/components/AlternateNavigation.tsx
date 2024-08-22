@@ -1,6 +1,7 @@
 'use client';
 import { AcmeLogo } from '@/components/Icons';
 import Search from '@/components/Search';
+import MobileSearch from '@/components/MobileSearch';
 import { menuItems } from '@/utils/constants';
 import { Button } from '@nextui-org/react';
 import {
@@ -39,26 +40,13 @@ export default function AlternateNavigation() {
           </Link>
         </NavbarBrand>
         <Search />
+        <MobileSearch />
       </NavbarContent>
 
       <NavbarContent justify='end'>
-        <NavbarItem className='hidden lg:flex'>
-          <Button
-            // as={'link'}
-            href='/home'
-            radius='sm'
-            color='primary'
-            className='flex items-center gap-2 p-2 text-sm max-md:w-fit max-md:self-end text-white'
-          >
-            <span>Explore</span>
-            <ArrowUpRight size={16} />
-          </Button>
-        </NavbarItem>
         <NavbarItem>
-          <Button 
-          // as={Link} 
-          href='/sign-up' variant='flat' radius='sm'>
-            Login
+          <Button variant='flat' radius='sm'>
+            Sign up
           </Button>
         </NavbarItem>
       </NavbarContent>

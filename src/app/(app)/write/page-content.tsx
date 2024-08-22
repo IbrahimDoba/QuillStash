@@ -3,10 +3,9 @@
 import TagInput from '@/components/TagInput';
 import Container from '@/components/Container';
 import TextEditor from '@/components/editor/TextEditor';
-import { postSchema, PostValues } from '@/lib/zod';
+import { clientPostSchema, ClientPostValues } from '@/lib/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Textarea } from '@nextui-org/react';
-import { Upload } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -15,8 +14,8 @@ function PageContent() {
   const [saving, setSaving] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
 
-  const form = useForm<PostValues>({
-    resolver: zodResolver(postSchema),
+  const form = useForm<ClientPostValues>({
+    resolver: zodResolver(clientPostSchema),
   });
   const {
     register,
@@ -29,14 +28,14 @@ function PageContent() {
     formState: { isSubmitting, errors },
   } = form;
 
-  async function onSubmit(values: PostValues) {
+  async function onSubmit(values: ClientPostValues) {
     const formData = new FormData();
 
-    Object.entries(values).forEach(([key, value]) => {
-      if (value) {
-        formData.append(key, value);
-      }
-    });
+    // Object.entries(values).forEach(([key, value]) => {
+    //   if (value) {
+    //     formData.append(key, value);
+    //   }
+    // });
 
     try {
       console.log('Form data:', formData);
@@ -52,7 +51,7 @@ function PageContent() {
       title: values.title,
       body: values.body,
       excerpt: values.summary,
-      categoryName: values.categoryName,
+      tags: values.tags,
     };
 
     try {
@@ -65,7 +64,6 @@ function PageContent() {
   };
 
   const handleEditorChange = (html: string) => {
-    //  setValue('body', sanitizeHtml(html));
     if (html.length > 0) {
       clearErrors('body');
     }
@@ -99,7 +97,7 @@ function PageContent() {
               variant='faded'
               radius='sm'
               size='md'
-              description='Your post title, it should be invinting'
+              description='Your post title, it should be inviting'
               {...register('title')}
             />
             {errors.title && (
@@ -110,7 +108,7 @@ function PageContent() {
           </div>
 
           <div className='flex flex-col mb-4'>
-            <TagInput tags={tags} setTags={setTags} />
+            <TagInput tags={tags} setTags={setTags} control={control} />
           </div>
 
           <div className='flex flex-col mb-4'>
@@ -136,16 +134,15 @@ function PageContent() {
               onChange={handleEditorChange}
             />
             {errors.body && (
-              <p className='font-semibold text-destructive'>
+              <p className='px-1 text-xs text-red-600'>
                 {errors.body.message}
               </p>
             )}
           </div>
 
           <div className='flex items-center gap-6'>
-            <Button disabled={isSubmitting} radius='sm' color='primary'>
-              {!isSubmitting && <Upload size={16} className='mr-2' />}
-              {isSubmitting ? 'Publishing...' : 'Publish'}
+            <Button disabled={isSubmitting} type='submit' radius='sm' color='primary'>
+              {isSubmitting ? 'Publishing...' : 'Publish post'}
             </Button>
             <Button
               onClick={handleSaveDraft}

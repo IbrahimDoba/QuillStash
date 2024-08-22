@@ -1,18 +1,29 @@
 import { Chip, Input } from '@nextui-org/react';
-import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
+import { useController, Control } from 'react-hook-form';
+import { ClientPostValues } from '@/lib/zod';
 
 interface TagInputProps {
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
   tags: string[];
+  control: Control<ClientPostValues>;
 }
 
-function TagInput({ setTags, tags }: TagInputProps) {
+function TagInput({ setTags, tags, control }: TagInputProps) {
   const [tagInputValue, setTagInputValue] = useState<string>('');
+
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
+    name: 'tags',
+    control,
+    defaultValue: [],
+  });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.target.value.trim().toLowerCase();
     const lastCharacter = currentValue.slice(-1);
-    setTagInputValue(currentValue);
 
     if (lastCharacter === ',') {
       const tag = currentValue.slice(0, -1);
@@ -33,7 +44,6 @@ function TagInput({ setTags, tags }: TagInputProps) {
     <div className='flex flex-col gap-2'>
       <Input
         type='text'
-        value={tagInputValue}
         onChange={handleInputChange}
         placeholder={tags.length < 4 ? '' : 'Max tags reached'}
         radius='sm'
@@ -51,6 +61,7 @@ function TagInput({ setTags, tags }: TagInputProps) {
           </Chip>
         ))}
       </div>
+      {error && <p className='text-red-500 text-sm'>{error.message}</p>}
     </div>
   );
 }
