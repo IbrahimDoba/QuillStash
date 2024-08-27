@@ -17,6 +17,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     accountsTable: accounts,
     sessionsTable: sessions,
   }),
+  session: {
+    strategy: "database",
+  },
   providers: [
     Google({
       async profile(profile) {
@@ -78,66 +81,57 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       authorize: async (credentials): Promise<User | null> => {
         try {
-          let user = null;
-
-          // verify shape of credentials with zod schema
-          const { email, password } = await signInSchema.parseAsync(
-            credentials
-          );
-
-          // if credentials are valid verify if the user exists
-          user = await db.query.users.findFirst({
+          const { email, password } = await signInSchema.parseAsync(credentials);
+    
+          // Check if the user exists
+          const user = await db.query.users.findFirst({
             where: eq(users.email, email),
           });
-            
           if (!user) {
-            // If user doesn't exist, create a new user
-            const pwHash = await saltAndHashPassword(password);
-            const username = generateUsername(email);
-            const name = generateDisplayName();
-            console.log(username)
-            const [newUser] = await db
-              .insert(users)
-              .values({
-                email,
-                password: pwHash,
-                username: username,
-                name: name,
-              })
-              .returning();
-
-            user = newUser;
-          } else {
-            // The User exists so we compare the password
-            const isPasswordValid = comparePassword(password, user.password!);
-            console.log(user)
-            if (!isPasswordValid) {
-              return null;
-            }
-          }
-          
-          return user;
-        } catch (error) {
-          if (error instanceof ZodError) {
-            // Return `null` to indicate that the credentials are invalid
+            // User doesn't exist, return an error
             return null;
           }
-          // Log the error
-          console.error('Authorization error:', error);
+    
+          // Verify the password
+          const isPasswordValid = await comparePassword(password, user.password!);
+          if (!isPasswordValid) {
+            return null; // Return null if password is incorrect
+          }
+          console.log("userhere", user)
+          return user; // Return the user if login is successful
+        } catch (error) {
+          if (error instanceof ZodError) {
+            console.error("Unexpected error during authorization:", error);
+            return null; // Invalid credentials shape
+          }
+          console.error("Authorization error:", error);
           return null;
         }
       },
-    }),
+    })
   ],
   callbacks: {
-    async session({ session, token, user }) {
-     return {
-      ...session,
-      user: {
-        ...session.user,
-        username: user.username
+    async jwt({ token, user }) {
+      if (user) {
+        console.log(user)
+        token.username = user.username;
       }
-     }
+      return token;
+    },
+    async session({ session, token, user }) {
+      if (user) {
+        // console.log("Session callback - session:", session);
+        // console.log("Session callback - token:", token);
+        // console.log("Session callback - user:", user);
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            username: user.username
+          }
+        }
+      }
+      return session;
     },
   },
 });

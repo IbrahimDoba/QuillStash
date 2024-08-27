@@ -4,6 +4,7 @@ import { Bookmark, Facebook, Heart, LinkIcon, Twitter } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { useState, useEffect } from "react";
 
 function ActionsDesktop({
   postId,
@@ -14,12 +15,35 @@ function ActionsDesktop({
   userId: string;
   title: string;
 }) {
+  const [likesCount, setLikesCount] = useState(0);
   const baseUrl = "https://productionurl.com";
   const pathname = usePathname();
+  async function fetchLikesCount() {
+    try {
+      const response = await fetch(`/api/like?postId=${postId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setLikesCount(data.likesCount);
+        console.log(response)
+      }
+    } catch (error) {
+      console.error("Error fetching likes count:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchLikesCount();
+  }, [postId]);
+
   async function handleLike() {
     try {
       console.log("IDS",postId, userId)
       // Call the API endpoint to handle the like action
+      if (!userId) {
+        toast.error('Please sign in to like or bookmark a post.', { position: 'top-right' });
+        return;
+      }
+
       const response = await fetch(`/api/like`, {
         method: 'POST',
         headers: {
@@ -30,7 +54,7 @@ function ActionsDesktop({
           userId,
         }),
       });
-
+      console.log(response)
       if (response.ok) {
         // Handle successful like action
         toast.success('Post liked!', { position: 'top-right' });
@@ -49,6 +73,11 @@ function ActionsDesktop({
   async function handleBookmark() {
     try {
       // Call the API endpoint to handle the bookmark action
+      if (!userId) {
+        toast.error('Please sign in to like or bookmark a post.', { position: 'top-right' });
+        return;
+      }
+
       const response = await fetch(`/api/bookmark`, {
         method: 'POST',
         headers: {
@@ -86,11 +115,12 @@ function ActionsDesktop({
   return (
     <div className="w-fit lg:sticky top-0 hidden lg:flex flex-col gap-4 rounded-lg py-4">
       <ul className="flex gap-6 flex-col">
-        <li>
+        <li className="flex flex-col justify-around items-center ">
           <Button variant="faded" isIconOnly onClick={handleLike}>
             
             <Heart />
           </Button>
+            <span className="text-xl mt-1">{likesCount}</span>
         </li>
         <li>
           <Button variant="faded" isIconOnly onClick={handleBookmark}>

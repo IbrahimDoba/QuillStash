@@ -1,37 +1,57 @@
 import { db } from "@/db";
-import { connectDb } from "@/lib/ConnetctDB";
+import { posts, tags, postTags } from "@/db/schema"; // Make sure to import your schema
+import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
-
-interface PostType {
-  tags: string[];
-}
 
 export const GET = async (req: NextRequest) => {
   try {
-    const posts = await db.query.posts.findMany({
-      with: {
-        tags: true,
-      },
+    // Then, attempt to join postTags and tags to get the result
+    const postTagRelations = await db
+      .select({
+        postId: postTags.postId,
+        tagName: tags.name,
+      })
+      .from(postTags)
+      .leftJoin(tags, eq(postTags.tagId, tags.id));
+
+    const tagsByPost: Record<string, string[]> = {};
+
+    // Populate tagsByPost with tags for each post
+    postTagRelations.forEach((relation) => {
+      if (!tagsByPost[relation.postId]) {
+        tagsByPost[relation.postId] = [];
+      }
+      // Only add the tag if it's not null
+      if (relation.tagName !== null) {
+        tagsByPost[relation.postId].push(relation.tagName);
+      }
     });
 
-    
-    const tagCount: { [key: string]: number } = {};
+    // console.log(tagsByPost);
 
-    posts.forEach(post => {
-      post.tags.forEach(tag => {
-        if (tagCount[tag]) {
-          tagCount[tag]++;
-        } else {
-          tagCount[tag] = 1;
-        }
-      });
+    return new Response(JSON.stringify(tagsByPost), {
+      headers: { "Content-Type": "application/json" },
     });
-
-    const popularTags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a]).slice(0, 5);
-
-    return NextResponse.json(popularTags);
   } catch (err) {
-    console.log(err);
-    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+    console.error("Error fetching popular tags:", err);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 };
+
+// // FOR DEBBUGING
+//   // Fetch all post-tag relationships first
+//   const postTagsData = await db.select().from(postTags);
+//   console.log("Post-Tag Relations:", postTagsData);
+
+//   // Fetch all tags separately
+//   const tagsData = await db.select().from(tags);
+//   console.log("Tags Data:", tagsData);
+
+//   const tagIdsInPostTags = postTagsData.map((pt) => pt.tagId);
+//   const tagIdsInTags = tagsData.map((t) => t.id);
+
+//   console.log("Tag IDs in postTags:", tagIdsInPostTags);
+//   console.log("Tag IDs in tags:", tagIdsInTags);

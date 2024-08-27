@@ -2,7 +2,7 @@ import { db } from '@/db';
 import { posts } from '@/db/schema';
 import getSession from '@/lib/getSession';
 import { generateSlug } from '@/lib/service';
-import { postSchema } from '@/lib/zod';
+import { clientPostSchema } from '@/lib/zod';
 import { validateRequest } from '@/utils/validateRequest';
 import { sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
 
   try {
     const requestBody = await req.json();
-    const validatedData = postSchema.parse(requestBody);
+    const validatedData = clientPostSchema.parse(requestBody);
 
     const postSummary = validatedData.summary
       ? validatedData.summary

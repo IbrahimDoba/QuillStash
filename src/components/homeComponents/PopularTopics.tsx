@@ -6,8 +6,15 @@ import { Link, Skeleton } from '@nextui-org/react';
 const PopularTopics = () => {
   const getTags = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/tags`);
-    const data: string[] = await res.json();
-    return data;
+    const data: Record<string, string[]> = await res.json();    console.log("TAGS RESPOSNSE",data)
+
+    // Extract all tags and remove duplicates
+    const tagSet = new Set<string>();
+    Object.values(data).forEach(tagsArray => {
+      tagsArray.forEach(tag => tagSet.add(tag));
+    });
+    
+    return Array.from(tagSet);
   };
 
   const {
@@ -40,15 +47,19 @@ const PopularTopics = () => {
   return (
     <div className='p-4'>
       <h3 className='text-xl font-semibold mb-4'>Popular Topics</h3>
-      {/* <ul className='flex gap-2 flex-wrap'>
-        {tags?.map((tag, index) => (
+      <ul className='flex gap-2 flex-wrap'>
+      {tags && tags.length > 0 ? (
+        tags.map((tag, index) => (
           <li key={`${tag}-${index}`}>
             <Link isBlock href={`/tags/${tag}`} color='foreground'>
               #{tag}
             </Link>
           </li>
-        ))}
-      </ul> */}
+        ))
+      ) : (
+        <li>No tags found</li>
+      )}
+      </ul>
     </div>
   );
 };

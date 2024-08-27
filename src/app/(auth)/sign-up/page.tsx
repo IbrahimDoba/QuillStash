@@ -3,6 +3,7 @@ import { AuthForm } from '@/components/auth-form';
 import { Button } from '@nextui-org/react';
 import { AcmeLogo } from '@/components/Icons';
 import { ArrowLeft } from 'lucide-react';
+import { SignupAuthForm } from '@/components/signup-auth-form';
 
 export const metadata = {
   title: 'Create an account',
@@ -34,7 +35,7 @@ export default function RegisterPage() {
               Enter your email below to create your account
             </p>
           </div>
-          <AuthForm />
+          <SignupAuthForm /> 
           <p className='px-8 text-center text-sm text-muted-foreground'>
             Already have an account?{' '}
             <Link

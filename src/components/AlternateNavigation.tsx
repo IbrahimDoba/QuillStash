@@ -45,9 +45,12 @@ export default function AlternateNavigation() {
 
       <NavbarContent justify='end'>
         <NavbarItem>
+          <Link href='/sign-up'>
           <Button variant='flat' radius='sm'>
             Sign up
           </Button>
+          </Link>
+
         </NavbarItem>
       </NavbarContent>
 
