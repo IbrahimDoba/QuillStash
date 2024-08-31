@@ -1,30 +1,34 @@
 'use client';
 
-import TagInput from '@/components/TagInput';
 import Container from '@/components/Container';
 import TextEditor from '@/components/editor/TextEditor';
-import { Post } from '@/db/schema';
 import { postSchema, PostValues } from '@/lib/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, Textarea } from '@nextui-org/react';
-import { Upload } from 'lucide-react';
-import { useState } from 'react';
+import { Button } from '@nextui-org/react';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import ConfirmModal from '@/components/editor/confirm-modal';
+import { Post } from '@/db/schema';
 
-function PageContent({ previousPostData }: { previousPostData: Post }) {
-  const [defaultValues] = useState({
+function PageContent({previousPostData}: {previousPostData: Post}) {
+  const [saving, setSaving] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
+  
+  const [previousValues] = useState<PostValues>({
     title: previousPostData.title,
     body: previousPostData.body,
     summary: previousPostData.summary,
     tags: previousPostData.tags,
+    image: previousPostData.coverImage,
   });
-
-  const [tags, setTags] = useState<string[]>(defaultValues.tags || []);
 
   const form = useForm<PostValues>({
     resolver: zodResolver(postSchema),
-    defaultValues: previousPostData,
+    defaultValues: previousValues,
   });
   const {
     register,
@@ -33,132 +37,146 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
     setValue,
     getValues,
     clearErrors,
+    control,
     formState: { isSubmitting, errors },
   } = form;
 
   async function onSubmit(values: PostValues) {
-    const formData = new FormData();
-
-    Object.entries(values).forEach(([key, value]) => {
-      if (value) {
-        formData.append(key, value);
-      }
-    });
-
     try {
-      console.log('Form data:', formData);
+      console.log('Form data:', values);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${previousPostData.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.ok) {
+        toast.success('Post updated successfully');
+        router.push('/home');
+      } else {
+        toast.error('Failed to update post');
+      }
     } catch {
       toast.error('Something went wrong, please try again.');
     }
   }
 
+  const handleSaveDraft = async () => {
+    setSaving(true);
+    const values = getValues();
+    const draftData = {
+      title: values.title,
+      body: values.body,
+      excerpt: values.summary,
+      tags: values.tags,
+    };
+
+    try {
+      // create a new draft
+      toast.success('Draft saved successfully');
+    } catch {
+      toast.error('Failed to save draft');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleEditorChange = (html: string) => {
     if (html.length > 0) {
       clearErrors('body');
     }
+    setValue('body', html);
   };
 
   return (
-    <Container className='grid lg:grid-cols-4 py-20'>
-      <div className='p-4 flex flex-col col-span-3'>
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-8'>
-          <div className='flex flex-col mb-4'>
-            <Input
-              type='file'
-              id='image'
-              variant='faded'
-              radius='sm'
-              description='Add a cover image for your post (optional).'
-              {...register('image')}
-            />
-            {errors.image && (
-              <p className='px-1 text-xs text-red-600'>
-                {errors.image.message}
-              </p>
-            )}
-          </div>
-
-          <div className='flex flex-col mb-4'>
-            <Input
-              type='text'
-              id='title'
-              label='Title'
-              variant='faded'
-              radius='sm'
-              size='md'
-              description='Your post title, it should be invinting'
-              {...register('title')}
-            />
-            {errors.title && (
-              <p className='px-1 text-xs text-red-600'>
-                {errors.title.message}
-              </p>
-            )}
-          </div>
-
-          <div className='flex flex-col mb-4'>
-            <TagInput tags={tags} setTags={setTags} />
-          </div>
-
-          <div className='flex flex-col mb-4'>
-            <Textarea
-              type='summary'
-              id='summary'
-              label='Summary'
-              variant='faded'
-              radius='sm'
-              description='This can be a short introdution to your post (optional).'
-              {...register('summary')}
-            />
-            {errors.summary && (
-              <p className='px-1 text-xs text-red-600'>
-                {errors.summary.message}
-              </p>
-            )}
-          </div>
-
-          <div className='flex flex-col gap-3'>
-            <TextEditor
-              value={getValues().body}
-              onChange={handleEditorChange}
-            />
-            {errors.body && (
-              <p className='font-semibold text-destructive'>
-                {errors.body.message}
-              </p>
-            )}
-          </div>
-
-          <div className='flex items-center gap-6'>
-            <Button disabled={isSubmitting} radius='sm' color='primary'>
-              {!isSubmitting && <Upload size={16} className='mr-2' />}
-              {isSubmitting ? 'Publishing...' : 'Publish'}
-            </Button>
-          </div>
-        </form>
-      </div>
-
-      <aside className='relative py-20'>
-        <div className='p-4 rounded sticky top-40'>
-          <h2 className='text-lg font-semibold mb-2'>Publishing Tips</h2>
-          <ul className='list-disc list-inside'>
-            <li>
-              Ensure your post has a <b>cover image</b> set to make the most of
-              the home feed and social media platforms.
-            </li>
-            <li>
-              Share your post on social media platforms or with your co-workers
-              or local communities.
-            </li>
-            <li>
-              Ask people to leave questions for you in the comments. It’s a
-              great way to spark additional discussion describing personally why
-              you wrote it or why people might find it helpful.
-            </li>
-          </ul>
+    <>
+      <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
+        <Button variant='light'>
+          <ArrowLeft size={16} />
+          <span>Back</span>
+        </Button>
+        <div className='flex gap-6'>
+          <ConfirmModal
+            control={control}
+            formRef={formRef}
+            register={register}
+            setValue={setValue}
+            errors={errors}
+            isSubmitting={isSubmitting}
+          />
+          <Button
+            onClick={handleSaveDraft}
+            variant={'ghost'}
+            type='button'
+            radius='sm'
+            disabled={saving}
+            isLoading={saving}
+            className='border'
+          >
+            {saving ? 'Saving...' : 'Save to drafts'}
+          </Button>
         </div>
-      </aside>
-    </Container>
+      </nav>
+
+      {/* editor */}
+      <Container className='grid lg:grid-cols-4 pt-4 pb-20'>
+        <div className='p-4 flex flex-col col-span-3'>
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit(onSubmit)}
+            className='space-y-8'
+          >
+            <div className='flex flex-col mb-4'>
+              <label htmlFor='title' className='sr-only' />
+              <input
+                placeholder='Your post title'
+                {...register('title')}
+                className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none border-l px-4'
+              />
+              {errors.title && (
+                <p className='px-1 text-xs text-red-600'>
+                  {errors.title.message}
+                </p>
+              )}
+            </div>
+
+            <div className='flex flex-col gap-3'>
+              <TextEditor
+                value={watch('body')}
+                onChange={handleEditorChange}
+              />
+              {errors.body && (
+                <p className='px-1 text-xs text-red-600'>
+                  {errors.body.message}
+                </p>
+              )}
+            </div>
+          </form>
+        </div>
+
+        <aside className='relative py-20'>
+          <div className='p-4 rounded sticky top-40'>
+            <h2 className='text-lg font-semibold mb-2'>Publishing Tips</h2>
+            <ul className='list-disc list-inside'>
+              <li>
+                Ensure your post has a <b>cover image</b> set to make the most
+                of the home feed and social media platforms.
+              </li>
+              <li>
+                Share your post on social media platforms or with your
+                co-workers or local communities.
+              </li>
+              <li>
+                Ask people to leave questions for you in the comments. It’s a
+                great way to spark additional discussion describing personally
+                why you wrote it or why people might find it helpful.
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </Container>
+    </>
   );
 }
 

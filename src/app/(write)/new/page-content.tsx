@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import ConfirmModal from './confirm-modal';
+import ConfirmModal from '@/components/editor/confirm-modal';
 
 function PageContent() {
   const [saving, setSaving] = useState(false);
@@ -64,7 +64,16 @@ function PageContent() {
 
     try {
       // create a new draft
-      toast.success('Draft saved successfully');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/draft`, {
+        method: 'POST',
+        body: JSON.stringify(draftData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.ok) {
+        toast.success('Draft saved successfully');
+      }
     } catch {
       toast.error('Failed to save draft');
     } finally {
@@ -132,10 +141,7 @@ function PageContent() {
             </div>
 
             <div className='flex flex-col gap-3'>
-              <TextEditor
-                value={watch('body')}
-                onChange={handleEditorChange}
-              />
+              <TextEditor value={watch('body')} onChange={handleEditorChange} />
               {errors.body && (
                 <p className='px-1 text-xs text-red-600'>
                   {errors.body.message}

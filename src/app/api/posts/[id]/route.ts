@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { posts } from '@/db/schema'; 
-import { serverPostSchema } from '@/lib/zod';
+import { postSchema } from '@/lib/zod';
 import { validateRequest } from '@/utils/validateRequest';
 import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
@@ -38,7 +38,7 @@ export async function PATCH(
   await validateRequest();
 
   const requestBody = await req.json();
-  const validatedData = serverPostSchema.parse(requestBody);
+  const validatedData = postSchema.parse(requestBody);
 
   try {
     const [updatedPost] = await db
