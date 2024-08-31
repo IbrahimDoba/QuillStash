@@ -63,13 +63,20 @@ export default async function Page({
   const profileData = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.username, username),
     with: {
-      posts: true,
+      posts: {
+        orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+      },
+      drafts: {
+        orderBy: (drafts, { desc }) => [desc(drafts.createdAt)],
+      },
       bookmarks: {
+        orderBy: (bookmarks, { desc }) => [desc(bookmarks.createdAt)],
         with: {
           post: true,
         },
       },
       likes: {
+        orderBy: (likes, { desc }) => [desc(likes.createdAt)],
         with: {
           post: true,
         },

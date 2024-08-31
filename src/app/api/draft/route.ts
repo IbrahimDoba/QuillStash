@@ -1,7 +1,9 @@
 import getSession from '@/lib/getSession';
-import { postSchema } from '@/lib/zod';
+import { draftSchema, postSchema } from '@/lib/zod';
 import { validateRequest } from '@/utils/validateRequest';
 import { NextResponse } from 'next/server';
+import { drafts } from '@/db/schema';
+import { db } from '@/db';
 
 export async function POST(req: Request) {
   await validateRequest();
@@ -10,13 +12,19 @@ export async function POST(req: Request) {
 
   try {
     const requestBody = await req.json();
-    const validatedData = postSchema.parse(requestBody);
+    const validatedData = draftSchema.parse(requestBody);
 
-    //   const [newPost] = await db
+    const [newDraft] = await db
+      .insert(drafts)
+      .values({
+        ...validatedData,
+        userId: user?.id!,
+      })
+      .returning();
 
-    return NextResponse.json('Draft saved', { status: 201 });
+    return NextResponse.json(newDraft.id, { status: 201 });
   } catch (error) {
-    console.error('Error creating comment:', error);
+    console.error('Error saving draft:', error);
     return NextResponse.json(
       { error: 'Something went wrong' },
       { status: 500 }

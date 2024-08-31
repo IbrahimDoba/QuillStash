@@ -42,13 +42,23 @@ const requiredEditorString = z.string().refine(
 
 export const postSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title is too long'),
-  image: z.string().nullable(),
+  coverImage: z.string().nullable(),
   summary: z.string().nullable(),
   body: requiredEditorString,
   tags: z.array(z.string().min(1)),
 });
 
 export type PostValues = z.infer<typeof postSchema>;
+
+export const draftSchema = z.object({
+  title: z.string().min(1, 'Title is required').max(100, 'Title is too long').nullable(),
+  coverImage: z.string().nullable().optional(),
+  summary: z.string().nullable().optional(),
+  body: z.string().nullable().optional(),
+  tags: z.array(z.string().min(1)).nullable().optional(),
+});
+
+export type DraftValues = z.infer<typeof draftSchema>;
 
 // comments
 export const commentSchema = z.object({

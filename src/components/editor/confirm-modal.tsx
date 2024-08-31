@@ -58,7 +58,7 @@ export default function ConfirmModal({
       })
       .then((res) => {
         setImageUrl(res.url);
-        setValue('image', res.url);
+        setValue('coverImage', res.url);
         setProgress(0);
         toast.success('Image uploaded successfully', { position: 'top-right' });
       })

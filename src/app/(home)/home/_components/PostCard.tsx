@@ -1,5 +1,5 @@
 import { Post } from '@/db/schema';
-import { Card, CardBody,Image,  Avatar, Button } from '@nextui-org/react';
+import { Card, CardBody, Image, Avatar, Button } from '@nextui-org/react';
 import { Heart, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -11,7 +11,15 @@ interface PostProps extends Post {
   };
 }
 
-function PostCard({ title, tags, coverImage, summary, createdAt, author, slug }: PostProps) {
+function PostCard({
+  title,
+  tags,
+  coverImage,
+  summary,
+  createdAt,
+  author,
+  slug,
+}: PostProps) {
   const [liked, setLiked] = useState(false);
 
   return (
@@ -21,7 +29,10 @@ function PostCard({ title, tags, coverImage, summary, createdAt, author, slug }:
     >
       <CardBody>
         <div className='flex gap-4 lg:gap-6 items-center'>
-          <Link href={`${author.username}/${slug}`} className='hidden md:block shrink-0 overflow-hidden'>
+          <Link
+            href={`${author.username}/${slug}`}
+            className='hidden md:block shrink-0 overflow-hidden'
+          >
             <Image
               alt='Card background'
               width={250}
@@ -36,12 +47,15 @@ function PostCard({ title, tags, coverImage, summary, createdAt, author, slug }:
           <div className='flex flex-col gap-2 lg:gap-4 justify-between'>
             <span className='flex items-center text-xs gap-2 mt-1'>
               <Avatar
-                src= {author.image ?? 'https://i.pravatar.cc/150?u=a042581f4e29026024d'}
+                src={
+                  author.image ??
+                  'https://i.pravatar.cc/150?u=a042581f4e29026024d'
+                }
                 className='w-6 h-6 text-tiny pointer-events-none'
                 showFallback
                 name='Jason Hughes'
               />
-              <span>{author.name ?? "anonymous"}</span>
+              <span>{author.name ?? 'anonymous'}</span>
               on
               <time>
                 {new Date(createdAt).toLocaleDateString('en-US', {
@@ -66,19 +80,22 @@ function PostCard({ title, tags, coverImage, summary, createdAt, author, slug }:
             </Link>
 
             <div className='flex gap-3 items-center'>
-              <Button
-                isIconOnly
-                className='text-default-900/60 data-[hover]:bg-foreground/10 flex gap-1 text-xs items-center'
-                variant='light'
-                onPress={() => setLiked((v) => !v)}
-              >
-                <Heart
-                  className={liked ? '[&>path]:stroke-transparent' : ''}
-                  fill={liked ? 'currentColor' : 'none'}
-                  size={16}
-                />
-                <span className='text-default-900/60'>9</span>
-              </Button>
+              <div className='flex items-center gap-0.5'>
+                <Button
+                  isIconOnly
+                  className='text-default-900/60 data-[hover]:bg-foreground/10 flex gap-1 items-center rounded-full'
+                  variant='light'
+                  size='sm'
+                  onPress={() => setLiked((v) => !v)}
+                >
+                  <Heart
+                    className={liked ? '[&>path]:stroke-transparent' : ''}
+                    fill={liked ? 'currentColor' : 'none'}
+                    size={16}
+                  />
+                </Button>
+                <span className='text-default-900/60 text-xs'>9</span>
+              </div>
               <span className='flex gap-1'>
                 <MessageSquare
                   className='text-default-900/60 stroke-transparent'

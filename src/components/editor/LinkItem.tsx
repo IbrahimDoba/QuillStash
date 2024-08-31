@@ -35,13 +35,17 @@ function LinkItem({ editor }: { editor: Editor }) {
     <>
       <Popover placement='bottom' showArrow offset={10} backdrop='opaque'>
         <PopoverTrigger>
-          <button
+          <Button
             className={`p-1.5 rounded-md border dark:border-foreground-50`}
             type='button'
             title='image'
+            isIconOnly
+            size='sm'
+            radius='sm'
+            variant={editor?.isActive('link') ? 'flat' : 'ghost'}
           >
             <Link size={18} />
-          </button>
+          </Button>
         </PopoverTrigger>
         <PopoverContent className='w-[240px]'>
           {(titleProps) => (
@@ -55,11 +59,11 @@ function LinkItem({ editor }: { editor: Editor }) {
               <div className='mt-2 flex gap-2 w-full'>
                 <Input
                   defaultValue=''
-                  label='Url'
                   value={enteredUrl}
                   onChange={(e) => setEnteredUrl(e.target.value)}
                   size='sm'
                   variant='bordered'
+                  placeholder='https://example.com'
                 />
                 <Button
                   title='set link'
