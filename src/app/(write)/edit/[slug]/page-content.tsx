@@ -6,24 +6,23 @@ import { postSchema, PostValues } from '@/lib/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import ConfirmModal from '@/components/editor/confirm-modal';
 import { Post } from '@/db/schema';
 
-function PageContent({previousPostData}: {previousPostData: Post}) {
-  const [saving, setSaving] = useState(false);
+function PageContent({ previousPostData }: { previousPostData: Post }) {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
-  
+
   const [previousValues] = useState<PostValues>({
     title: previousPostData.title,
     body: previousPostData.body,
     summary: previousPostData.summary,
     tags: previousPostData.tags,
-    image: previousPostData.coverImage,
+    coverImage: previousPostData.coverImage,
   });
 
   const form = useForm<PostValues>({
@@ -44,13 +43,16 @@ function PageContent({previousPostData}: {previousPostData: Post}) {
   async function onSubmit(values: PostValues) {
     try {
       console.log('Form data:', values);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${previousPostData.id}`, {
-        method: 'PUT',
-        body: JSON.stringify(values),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/posts/${previousPostData.id}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify(values),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       if (res.ok) {
         toast.success('Post updated successfully');
         router.push('/home');
@@ -62,26 +64,6 @@ function PageContent({previousPostData}: {previousPostData: Post}) {
     }
   }
 
-  const handleSaveDraft = async () => {
-    setSaving(true);
-    const values = getValues();
-    const draftData = {
-      title: values.title,
-      body: values.body,
-      excerpt: values.summary,
-      tags: values.tags,
-    };
-
-    try {
-      // create a new draft
-      toast.success('Draft saved successfully');
-    } catch {
-      toast.error('Failed to save draft');
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleEditorChange = (html: string) => {
     if (html.length > 0) {
       clearErrors('body');
@@ -92,31 +74,19 @@ function PageContent({previousPostData}: {previousPostData: Post}) {
   return (
     <>
       <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
-        <Button variant='light'>
+        <Button variant='light' href='/home'>
           <ArrowLeft size={16} />
           <span>Back</span>
         </Button>
-        <div className='flex gap-6'>
-          <ConfirmModal
-            control={control}
-            formRef={formRef}
-            register={register}
-            setValue={setValue}
-            errors={errors}
-            isSubmitting={isSubmitting}
-          />
-          <Button
-            onClick={handleSaveDraft}
-            variant={'ghost'}
-            type='button'
-            radius='sm'
-            disabled={saving}
-            isLoading={saving}
-            className='border'
-          >
-            {saving ? 'Saving...' : 'Save to drafts'}
-          </Button>
-        </div>
+
+        <ConfirmModal
+          control={control}
+          formRef={formRef}
+          register={register}
+          setValue={setValue}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
       </nav>
 
       {/* editor */}
@@ -142,10 +112,7 @@ function PageContent({previousPostData}: {previousPostData: Post}) {
             </div>
 
             <div className='flex flex-col gap-3'>
-              <TextEditor
-                value={watch('body')}
-                onChange={handleEditorChange}
-              />
+              <TextEditor value={watch('body')} onChange={handleEditorChange} />
               {errors.body && (
                 <p className='px-1 text-xs text-red-600'>
                   {errors.body.message}

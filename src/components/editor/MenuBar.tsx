@@ -103,7 +103,7 @@ export default function MenuBar({ editor }: { editor: Editor }) {
   ];
 
   return (
-    <div className='flex flex-wrap items-center gap-3 border py-2 px-4 dark:border-foreground-50 rounded-md '>
+    <div className='flex flex-wrap items-center gap-3 border py-2 px-3 dark:border-foreground-50 rounded-md '>
       {items.map((item, index) => (
         <Fragment key={index}>
           {item.type === 'divider' ? (

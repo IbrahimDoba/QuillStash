@@ -4,9 +4,9 @@ import Container from '@/components/Container';
 import TextEditor from '@/components/editor/TextEditor';
 import { postSchema, PostValues } from '@/lib/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
+import { Button, Link } from '@nextui-org/react';
 import { ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -54,28 +54,24 @@ function PageContent() {
 
   const handleSaveDraft = async () => {
     setSaving(true);
-    const values = getValues();
-    const draftData = {
-      title: values.title,
-      body: values.body,
-      excerpt: values.summary,
-      tags: values.tags,
-    };
+    const draftData = getValues();
 
     try {
       // create a new draft
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/draft`, {
         method: 'POST',
-        body: JSON.stringify(draftData),
+        body: JSON.stringify({...draftData}),
         headers: {
           'Content-Type': 'application/json',
         },
       });
       if (res.ok) {
         toast.success('Draft saved successfully');
+      } else {
+        toast.error('Failed to save draft');
       }
     } catch {
-      toast.error('Failed to save draft');
+      toast.error('Something went wrong, please try again.');
     } finally {
       setSaving(false);
     }
@@ -91,7 +87,7 @@ function PageContent() {
   return (
     <>
       <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
-        <Button variant='light'>
+        <Button variant='light' href='/home' as={Link}>
           <ArrowLeft size={16} />
           <span>Back</span>
         </Button>

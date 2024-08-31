@@ -3,7 +3,7 @@ import { Calendar, Edit, LinkIcon, MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { Card, Avatar, Button, Tabs, Tab } from '@nextui-org/react';
 import { toast } from 'sonner';
-import { User as ProfileData, Post as UserPosts } from '@/db/schema';
+import { Draft, User as ProfileData, Post as UserPosts } from '@/db/schema';
 import { useSession } from 'next-auth/react';
 import ContentCard from './content-card';
 import LinksModal from './links-modal';
@@ -11,6 +11,7 @@ import LinksModal from './links-modal';
 interface PageContentProps extends ProfileData {
   isCurrentUser: boolean;
   posts: UserPosts[];
+  drafts: Draft[];
   bookmarks: {
     postId: string;
     post: {
@@ -44,6 +45,7 @@ export default function PageContent({
   isCurrentUser,
   posts,
   bookmarks,
+  drafts,
   likes,
 }: PageContentProps) {
   const copyLink = () => {
@@ -118,7 +120,7 @@ export default function PageContent({
 
       {/* user data */}
       <div className='mt-6'>
-        <Tabs aria-label='Options' radius='sm'>
+        <Tabs aria-label='Options' radius='sm' fullWidth>
           <Tab key='posts' title='Posts'>
             {posts && posts.length > 0 ? (
               <div className='grid gap-4'>
@@ -130,6 +132,7 @@ export default function PageContent({
                     coverImage={post.coverImage}
                     username={username}
                     slug={post.slug}
+                    requiresAction
                   />
                 ))}
               </div>
@@ -140,6 +143,23 @@ export default function PageContent({
               >
                 <Edit />
                 <p>You have no posts yet. Write a post and Check back later.</p>
+              </Card>
+            )}
+          </Tab>
+          <Tab key='drafts' title='Drafts'>
+            {drafts && drafts.length > 0 ? (
+              <div className='grid gap-4'>
+                {drafts.map((draft) => (
+                  <div key={draft.id} className='py-4'>Draft: {draft.id}</div>
+                ))}
+              </div>
+            ) : (
+              <Card
+                shadow='none'
+                className='bg-transparent flex items-center justify-center py-10 lg:py-20'
+              >
+                <Edit />
+                <p>Anything saved to your drafts will appear here.</p>
               </Card>
             )}
           </Tab>

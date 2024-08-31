@@ -69,10 +69,10 @@ export type User = InferSelectModel<typeof users>; // export a type for the post
 // user relations
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
+  drafts: many(drafts),
   bookmarks: many(bookmarks),
   likes: many(likes),
 }));
-
 
 // Posts table
 export const posts = pgTable('posts', {
@@ -103,7 +103,7 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
   likes: many(likes), // Relation to the postLikes table
   bookmarks: many(bookmarks), // Relation to the postBookmarks table
   tags: many(tags),
-  postTags: many(postTags), 
+  postTags: many(postTags),
   // tags: many(tags, {
   //   through: postTags,
   //   fields: [posts.id],
@@ -121,9 +121,10 @@ export const likes = pgTable(
     userId: text('user_id')
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
+    createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   },
   (table) => ({
-    pk: primaryKey({columns: [table.postId, table.userId]}),
+    pk: primaryKey({ columns: [table.postId, table.userId] }),
   })
 );
 
@@ -149,9 +150,10 @@ export const bookmarks = pgTable(
     userId: text('user_id')
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
+    createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   },
   (table) => ({
-    pk: primaryKey({columns: [table.postId, table.userId]}),
+    pk: primaryKey({ columns: [table.postId, table.userId] }),
   })
 );
 
@@ -163,6 +165,31 @@ export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
   }),
   user: one(users, {
     fields: [bookmarks.userId],
+    references: [users.id],
+  }),
+}));
+
+export const drafts = pgTable('drafts', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  title: text('title'),
+  coverImage: text('coverImage'),
+  summary: text('summary'),
+  body: text('body'),
+  tags: json('tags').$type<string[]>(),
+  userId: text('user_id')
+    .references(() => users.id, { onDelete: 'cascade' })
+    .notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
+});
+export type Draft = InferSelectModel<typeof drafts>;
+
+// Drafts relations
+export const draftsRelations = relations(drafts, ({ one }) => ({
+  user: one(users, {
+    fields: [drafts.userId],
     references: [users.id],
   }),
 }));
@@ -234,16 +261,20 @@ export const tags = pgTable('tags', {
 });
 
 // join table for post and tags
-export const postTags = pgTable('post_tags', {
-  postId: text('post_id')
-    .notNull()
-    .references(() => posts.id, { onDelete: 'cascade' }),
-  tagId: text('tag_id')
-    .notNull()
-    .references(() => tags.id, { onDelete: 'cascade' }),
-}, (table) => ({
-  pk: primaryKey({ columns: [table.postId, table.tagId] }),
-}));
+export const postTags = pgTable(
+  'post_tags',
+  {
+    postId: text('post_id')
+      .notNull()
+      .references(() => posts.id, { onDelete: 'cascade' }),
+    tagId: text('tag_id')
+      .notNull()
+      .references(() => tags.id, { onDelete: 'cascade' }),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.postId, table.tagId] }),
+  })
+);
 
 // Relations for Tags
 export const tagsRelations = relations(tags, ({ many }) => ({
