@@ -85,22 +85,32 @@ export default function PageContent({
             className='w-24 h-24 text-large'
           />
         </div>
-        <div className='flex gap-2 mt-2'>
+        <div className='gap-4 flex'>
           {isCurrentUser && (
-            <Button radius='sm' color='primary'>
-              <Link
-                href={'/profile/edit'}
-                className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
-              >
-                <span>Edit profile</span>
-              </Link>
-            </Button>
+            <div className='gap-4 flex w-fit'>
+              <Button radius='sm' color='primary'>
+                <Link
+                  href={'/profile/edit'}
+                  className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
+                >
+                  <span>Edit profile</span>
+                </Link>
+              </Button>
+              <Button radius='sm'>
+                <Link
+                  href={'/write'}
+                  className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
+                >
+                  <span>New post</span>
+                </Link>
+              </Button>
+            </div>
           )}
-          <Button radius='sm' onClick={() => copyLink()} size='sm'>
+          {/* <Button radius='sm' onClick={() => copyLink()}>
             <LinkIcon size={16} />
             <span>Copy link</span>
-          </Button>
-          <Button radius='sm' isIconOnly size='sm'>
+          </Button> */}
+          <Button radius='sm' isIconOnly>
             <MoreHorizontal size={16} />
           </Button>
         </div>

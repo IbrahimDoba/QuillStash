@@ -36,37 +36,19 @@ const requiredEditorString = z.string().refine(
     const strippedText = stripHtmlTags(val);
     return strippedText.length > 0;
   },
-  { message: 'Required' }
+  { message: 'You have not written anything yet.' }
 );
 
-// Client-side schema
-export const clientPostSchema = z.object({
-  title: z.string().min(1),
-  image: z
-  .custom<File | undefined>()
-  .refine(
-    (file) => !file || (file instanceof File && file.type.startsWith("image/")),
-    "Must be an image file",
-  )
-  .refine((file) => {
-    return !file || file.size < 1024 * 1024 * 2;
-  }, "File must be less than 1MB"),
-  summary: z.string().nullable(),
-  body: requiredEditorString,
-  tags: z.array(z.string().min(1)),
-});
 
-// Server-side schema (remains the same)
-export const serverPostSchema = z.object({
-  title: z.string().min(1),
+export const postSchema = z.object({
+  title: z.string().min(1, 'Title is required').max(100, 'Title is too long'),
   image: z.string().nullable(),
   summary: z.string().nullable(),
   body: requiredEditorString,
   tags: z.array(z.string().min(1)),
 });
 
-export type ClientPostValues = z.infer<typeof clientPostSchema>;
-export type ServerPostValues = z.infer<typeof serverPostSchema>;
+export type PostValues = z.infer<typeof postSchema>;
 
 // comments
 export const commentSchema = z.object({

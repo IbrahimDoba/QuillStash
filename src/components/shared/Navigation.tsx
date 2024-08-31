@@ -65,7 +65,7 @@ export default function Navigation() {
       ) : (
         <NavbarContent as='div' justify='end' className='flex gap-4'>
           <Button
-            href='/write'
+            href='/new'
             as={Link}
             color='primary'
             variant='solid'

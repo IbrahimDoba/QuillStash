@@ -24,7 +24,7 @@ function TextEditor({ value, onChange }: EditorProps) {
         },
       }),
       Placeholder.configure({
-        placeholder: 'Write something ...',
+        placeholder: 'Your story ...',
       }),
       Link.configure({
         openOnClick: false,
