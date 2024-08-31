@@ -2,7 +2,7 @@ export const siteConfig = {
   title: 'Radar',
   description:
     'Radar is a modern React app that helps you create, publish, and discover articles.',
-  url: 'https://www.radar.com',
+  url: 'https://silver-tech-pulse.vercel.app',
   ogImage: 'https://www.radar.com/og.jpg',
   links: {
     twitter: 'https://x.com/radar',

@@ -1,19 +1,17 @@
 import { Chip, Input } from '@nextui-org/react';
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { useController, Control } from 'react-hook-form';
-import { ClientPostValues } from '@/lib/zod';
+import { PostValues } from '@/lib/zod';
 
 interface TagInputProps {
-  setTags: React.Dispatch<React.SetStateAction<string[]>>;
-  tags: string[];
-  control: Control<ClientPostValues>;
+  control: Control<PostValues>;
 }
 
-function TagInput({ setTags, tags, control }: TagInputProps) {
+function TagInput({ control }: TagInputProps) {
   const [tagInputValue, setTagInputValue] = useState<string>('');
 
   const {
-    field,
+    field: { onChange, value },
     fieldState: { error },
   } = useController({
     name: 'tags',
@@ -22,40 +20,54 @@ function TagInput({ setTags, tags, control }: TagInputProps) {
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const currentValue = e.target.value.trim().toLowerCase();
-    const lastCharacter = currentValue.slice(-1);
+    setTagInputValue(e.target.value);
+  };
 
-    if (lastCharacter === ',') {
-      const tag = currentValue.slice(0, -1);
-      if (tags.indexOf(tag) === -1) {
-        setTags([...tags, tag]);
-      }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === ',' || e.key === 'Enter') {
+      e.preventDefault();
+      addTag();
+      console.log(value)
+    }
+  };
+
+  const addTag = () => {
+    const trimmedValue = tagInputValue.trim().toLowerCase();
+    if (trimmedValue && !value.includes(trimmedValue) && value.length < 4) {
+      onChange([...value, trimmedValue]);
       setTagInputValue('');
-      console.log(tag);
     }
   };
 
   const handleRemoveTag = (tagToDelete: string) => {
-    const newTags = tags.filter((tag) => tag !== tagToDelete);
-    setTags(newTags);
+    onChange(value.filter((tag: string) => tag !== tagToDelete));
   };
+
+  useEffect(() => {
+    // Ensure the input is cleared when tags are updated externally
+    if (value.length === 0) {
+      setTagInputValue('');
+    }
+  }, [value]);
 
   return (
     <div className='flex flex-col gap-2'>
       <Input
         type='text'
+        value={tagInputValue}
         onChange={handleInputChange}
-        placeholder={tags.length < 4 ? '' : 'Max tags reached'}
+        onKeyDown={handleKeyDown}
+        onBlur={addTag}
+        placeholder={value.length < 4 ? 'Add a tag' : 'Max tags reached'}
         radius='sm'
-        label='Tags'
-        disabled={tags.length >= 4}
-        description='Type in a comma after a tag name to add it.'
+        disabled={value.length >= 4}
+        description='Press Enter or comma to add a tag.'
       />
-      <div className='flex gap-3'>
-        {tags.map((tag, index) => (
+      <div className='flex flex-wrap gap-2'>
+        {value.map((tag: string, index: number) => (
           <Chip
             key={`${tag}-${index}`}
-            onClose={() => handleRemoveTag(tag)} // Remove tag when the close button is clicked
+            onClose={() => handleRemoveTag(tag)}
           >
             {tag}
           </Chip>

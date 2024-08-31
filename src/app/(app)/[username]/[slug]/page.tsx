@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import React, { cache } from 'react';
 import PageContent from './page-content';
 import { db } from '@/db';
+import { siteConfig } from '@/lib/site-config';
 
 const getPost = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
@@ -32,19 +33,19 @@ export async function generateMetadata({
   if (!post) return {};
 
   return {
-    metadataBase: new URL('https://silver.vercel.app/'),
+    metadataBase: new URL(siteConfig.url),
     title: post?.title,
     keywords: post?.tags || ['news'],
     openGraph: {
       type: 'article',
       url: `https://silver.vercel.app/${post?.author?.username}/${slug}`,
       title: post.title,
-      siteName: 'Geotech4All',
+      siteName: siteConfig.title,
       publishedTime: new Date(post.createdAt).toISOString(),
       authors: [post?.author?.name || 'writer'],
       images: [
         {
-          url: post.coverImage || 'https://silver.vercel.app/login.jpg' || '/login.jpg',
+          url: post.coverImage || '/login.jpg',
           width: '1200',
           height: '630',
           // alt: ''

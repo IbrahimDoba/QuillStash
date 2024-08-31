@@ -2,7 +2,8 @@ import { db } from '@/db';
 import { posts } from '@/db/schema';
 import getSession from '@/lib/getSession';
 import { generateSlug } from '@/lib/service';
-import { clientPostSchema } from '@/lib/zod';
+import { postSchema } from '@/lib/zod';
+import { notifyServer } from '@/utils/notify-server';
 import { validateRequest } from '@/utils/validateRequest';
 import { sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
@@ -62,13 +63,13 @@ export const GET = async (req: NextRequest) => {
 };
 
 export async function POST(req: Request) {
-  await  validateRequest();
-  const session = await getSession()
-  const user = session?.user
+  await validateRequest();
+  const session = await getSession();
+  const user = session?.user;
 
   try {
     const requestBody = await req.json();
-    const validatedData = clientPostSchema.parse(requestBody);
+    const validatedData = postSchema.parse(requestBody);
 
     const postSummary = validatedData.summary
       ? validatedData.summary
@@ -83,9 +84,14 @@ export async function POST(req: Request) {
         userId: user?.id!,
       })
       .returning();
-    console.log(newPost);
 
-    // Return the created comment
+    // Ping the discord server
+    notifyServer({
+      author: user?.name!,
+      title: newPost.title,
+      slug: newPost.slug,
+    }).catch(error => console.error('Failed to send notification:', error));
+
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
     console.error('Error creating comment:', error);

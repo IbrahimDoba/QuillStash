@@ -11,24 +11,14 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import ConfirmModal from '@/components/editor/confirm-modal';
-import { Post } from '@/db/schema';
 
-function PageContent({previousPostData}: {previousPostData: Post}) {
+function PageContent() {
   const [saving, setSaving] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
-  
-  const [previousValues] = useState<PostValues>({
-    title: previousPostData.title,
-    body: previousPostData.body,
-    summary: previousPostData.summary,
-    tags: previousPostData.tags,
-    image: previousPostData.coverImage,
-  });
 
   const form = useForm<PostValues>({
     resolver: zodResolver(postSchema),
-    defaultValues: previousValues,
   });
   const {
     register,
@@ -44,18 +34,18 @@ function PageContent({previousPostData}: {previousPostData: Post}) {
   async function onSubmit(values: PostValues) {
     try {
       console.log('Form data:', values);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${previousPostData.id}`, {
-        method: 'PUT',
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
+        method: 'POST',
         body: JSON.stringify(values),
         headers: {
           'Content-Type': 'application/json',
         },
       });
       if (res.ok) {
-        toast.success('Post updated successfully');
+        toast.success('Post created successfully');
         router.push('/home');
       } else {
-        toast.error('Failed to update post');
+        toast.error('Failed to create post');
       }
     } catch {
       toast.error('Something went wrong, please try again.');
@@ -74,7 +64,16 @@ function PageContent({previousPostData}: {previousPostData: Post}) {
 
     try {
       // create a new draft
-      toast.success('Draft saved successfully');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/draft`, {
+        method: 'POST',
+        body: JSON.stringify(draftData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.ok) {
+        toast.success('Draft saved successfully');
+      }
     } catch {
       toast.error('Failed to save draft');
     } finally {
@@ -142,10 +141,7 @@ function PageContent({previousPostData}: {previousPostData: Post}) {
             </div>
 
             <div className='flex flex-col gap-3'>
-              <TextEditor
-                value={watch('body')}
-                onChange={handleEditorChange}
-              />
+              <TextEditor value={watch('body')} onChange={handleEditorChange} />
               {errors.body && (
                 <p className='px-1 text-xs text-red-600'>
                   {errors.body.message}
