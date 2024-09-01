@@ -9,14 +9,31 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { LinkIcon, Globe } from 'lucide-react';
-import { Github, Discord, X } from '@/components/Icons';
+import { Github, Discord, X, Reddit, Linkedin } from '@/components/Icons';
 
 interface LinksModalProps {
-  links: string[];
-};
+  socials: string[] | null;
+  website: string | null;
+  name: string;
+}
 
-function LinksModal() {
+function LinksModal({ name, website, socials }: LinksModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const getLinkDetails = (url: string) => {
+    if (url.includes('github.com')) {
+      return { Icon: Github, label: 'Github' };
+    } else if (url.includes('discord.gg') || url.includes('discord.com')) {
+      return { Icon: Discord, label: 'Discord' };
+    } else if (url.includes('x.com') || url.includes('twitter.com')) {
+      return { Icon: X, label: 'Twitter (X)' };
+    }  else if (url.includes('reddit.com')) {
+      return { Icon: Reddit, label: 'Reddit' };
+    }
+    // Fallback for unknown links
+    return { Icon: LinkIcon, label: 'Link' };
+  };
+
   return (
     <>
       <button
@@ -36,30 +53,38 @@ function LinksModal() {
           {(onClose) => (
             <>
               <ModalHeader className='flex flex-col gap-1'>
-                Doba&apos;s Social Links
+                {name}&apos;s Links
               </ModalHeader>
               <ModalBody>
                 <ul className='flex flex-col gap-4'>
-                  <li className='flex gap-2 items-center'>
-                    <Globe className='size-4' />
-                    <a href='https://ibrahimdoba.dev'>Website</a>
-                  </li>
-                  <li className='flex gap-2 items-center'>
-                    <X className='size-4' />
-                    <a href='https://x.com/ibrahimdoba/'>Twitter (X)</a>
-                  </li>
-                  <li className='flex gap-2 items-center'>
-                    <Github className='size-4' />
-                    <a href='https://github.com/ibrahimdoba/'>Github</a>
-                  </li>
-                  <li className='flex gap-2 items-center'>
-                    <Discord className='size-4' />
-                    <a href='https://www.discord.gg/silverfangs/'>Discord</a>
-                  </li>
+                  {website && (
+                    <li className='flex gap-2 items-center'>
+                      <Globe className='size-4' />
+                      <a href={website ?? undefined} target='_blank'>
+                        Website
+                      </a>
+                    </li>
+                  )}
+                  {/* socials */}
+                  {socials?.map((socialUrl, index) => {
+                    const { Icon, label } = getLinkDetails(socialUrl);
+                    return (
+                      <li key={`${socialUrl}-${index}`} className='flex gap-2 items-center'>
+                        <Icon className='size-4' />
+                        <a
+                          href={socialUrl}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          {label}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </ModalBody>
               <ModalFooter>
-                <Button color='primary' onPress={onClose}>
+                <Button color='primary' size='sm' radius='sm' onPress={onClose}>
                   Close
                 </Button>
               </ModalFooter>

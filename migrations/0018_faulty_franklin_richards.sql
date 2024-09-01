@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "pronouns" SET DEFAULT 'don't specify';

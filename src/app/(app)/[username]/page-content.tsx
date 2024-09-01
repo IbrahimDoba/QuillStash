@@ -41,12 +41,13 @@ export default function PageContent({
   createdAt,
   bio,
   image,
-  github,
+  website,
   isCurrentUser,
   posts,
   bookmarks,
   drafts,
   likes,
+  socials,
 }: PageContentProps) {
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -69,7 +70,7 @@ export default function PageContent({
               <p className='text-sm text-foreground-500'>@{username}</p>
             </div>
             <div className='flex items-center gap-4'>
-              <LinksModal />
+              <LinksModal name={name} website={website} socials={socials}/>
               <span className='flex items-center gap-1 text-sm'>
                 <Calendar size={16} />
                 {new Date(createdAt).toLocaleDateString('en-US', {
