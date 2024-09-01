@@ -4,6 +4,8 @@ import React, { cache } from 'react';
 import PageContent from './page-content';
 import { db } from '@/db';
 import { siteConfig } from '@/lib/site-config';
+import { posts } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 const getPost = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
@@ -18,6 +20,13 @@ const getPost = cache(async (slug: string) => {
       },
     },
   });
+  if (!post) return null;
+  // Increment the views count
+  await db.update(posts)
+    .set({
+      views: post.views + 1,  // increment the views
+    })
+    .where(eq(posts.slug, slug));
 
   return post;
 });

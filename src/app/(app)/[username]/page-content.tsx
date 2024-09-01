@@ -100,7 +100,7 @@ export default function PageContent({
               </Button>
               <Button radius='sm'>
                 <Link
-                  href={'/write'}
+                  href={'/new'}
                   className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
                 >
                   <span>New post</span>
