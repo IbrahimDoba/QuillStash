@@ -32,22 +32,24 @@ function PostActions({
   const [likesCount, setLikesCount] = useState(0);
   const baseUrl = siteConfig.url;
   const pathname = usePathname();
-  async function fetchLikesCount() {
-    try {
-      const response = await fetch(`/api/like?postId=${postId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setLikesCount(data.likesCount);
-        console.log(response);
-      }
-    } catch (error) {
-      console.error('Error fetching likes count:', error);
-    }
-  }
-
+  
   useEffect(() => {
+    async function fetchLikesCount() {
+      try {
+        const response = await fetch(`/api/like?postId=${postId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setLikesCount(data.likesCount);
+          console.log(response);
+        }
+      } catch (error) {
+        console.error('Error fetching likes count:', error);
+      }
+    }
+
     fetchLikesCount();
-  }, [postId]);
+    // eslint-disable-next-line
+  }, []);
 
   async function handleLike() {
     if (!userId) {

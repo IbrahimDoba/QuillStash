@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import SearchResults from "./SearchResults";
 
 interface Post {
-  id: number;
+  id: string;
   title: string;
   tags: string[];
   username: string;

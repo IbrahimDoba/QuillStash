@@ -4,8 +4,8 @@ import { sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 
-export const GET = async (req: NextRequest, {params} : {params: {tag:string}}) => {
-  const {tag} = params
+export const GET = async (req: NextRequest, {params} : {params: {name:string}}) => {
+  const {name} = params
   const { searchParams } = new URL(req.url);
   const pageParam = searchParams.get('page');
   const limitParam = searchParams.get('limit');
@@ -41,7 +41,7 @@ export const GET = async (req: NextRequest, {params} : {params: {tag:string}}) =
       offset: skip,
       orderBy: (posts, { desc }) => [desc(posts.createdAt)],
       where: (posts) => 
-        sql`${posts.tags}::jsonb @> ${sql`${JSON.stringify([tag])}`}::jsonb`,
+        sql`${posts.tags}::jsonb @> ${sql`${JSON.stringify([name])}`}::jsonb`,
       with: {
         author: {
           columns: {
