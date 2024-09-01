@@ -1,7 +1,7 @@
 import getSession from '@/lib/getSession';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
-import { users } from '@/db/schema'; // Assuming you've defined your schema
+import { users } from '@/db/schema';
 import { db } from '@/db';
 import { validateRequest } from '@/utils/validateRequest';
 import { serverUserProfileSchema } from '@/lib/zod';
@@ -35,6 +35,6 @@ export const PUT = async (req: any) => {
       { status: 500 }
     );
   }
-};
+}
 
 export const dynamic = 'force-dynamic';

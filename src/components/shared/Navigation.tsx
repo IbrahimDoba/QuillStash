@@ -99,8 +99,8 @@ export default function Navigation() {
                   {user?.email ?? 'zoey@example.com'}
                 </p> */}
                 <User
-                  name='Jane Doe'
-                  description='Product Designer'
+                  name= {user.name}
+                  description={user.work}
                   avatarProps={{
                     src:
                       user?.image ??

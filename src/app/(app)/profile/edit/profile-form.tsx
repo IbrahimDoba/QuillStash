@@ -25,13 +25,13 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
 
   const [defaultProfileValues] = useState({
     name: profileData.name,
+    username: profileData.username,
     bio: profileData.bio,
     location: profileData.location,
     pronouns: profileData.pronouns,
     work: profileData.work,
     image: profileData.image,
     website: profileData.website,
-    username: profileData.username,
     socials: profileData.socials
       ? profileData.socials.map((link) => ({ link }))
       : [{ link: '' }],
@@ -114,7 +114,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='max-w-screen-sm mx-auto py-14 space-y-8'
+      className="max-w-screen-sm mx-auto py-14 space-y-8"
     >
       <div className='relative group overflow-hidden w-fit rounded-full border z-10 mb-2 mx-auto'>
         <Avatar
@@ -138,7 +138,21 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
         />
       </div>
 
-      <div className='flex flex-col mb-4'>
+      <div className="flex flex-col mb-4">
+        <Input
+          type="text"
+          id="name"
+          label="Name"
+          variant="faded"
+          radius="sm"
+          description="Your full name"
+          {...register("name")}
+        />
+        {errors.name && (
+          <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
+        )}
+      </div>
+      <div className="flex flex-col mb-4">
         <Input
           type='text'
           id='name'
@@ -148,7 +162,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('name')}
         />
         {errors.name && (
-          <p className='px-1 text-xs text-red-600'>{errors.name.message}</p>
+          <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
         )}
       </div>
 
@@ -176,10 +190,10 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('bio')}
         />
         {errors.bio && (
-          <p className='px-1 text-xs text-red-600'>{errors.bio.message}</p>
+          <p className="px-1 text-xs text-red-600">{errors.bio.message}</p>
         )}
       </div>
-      <div className='flex flex-col mb-4'>
+      <div className="flex flex-col mb-4">
         <Input
           type='text'
           id='location'
@@ -189,13 +203,12 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('location')}
         />
         {errors.location && (
-          <p className='px-1 text-xs text-red-600'>{errors.location.message}</p>
+          <p className="px-1 text-xs text-red-600">{errors.location.message}</p>
         )}
       </div>
       <div className='flex flex-col mb-4'>
         <Select
-          label='Pronouns'
-          
+          label='Pronouns'          
           defaultSelectedKeys={[defaultProfileValues.pronouns || 'Prefer not to say',]}
           radius='sm'
           fullWidth
@@ -207,10 +220,10 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           ))}
         </Select>
         {errors.pronouns && (
-          <p className='px-1 text-xs text-red-600'>{errors.pronouns.message}</p>
+          <p className="px-1 text-xs text-red-600">{errors.pronouns.message}</p>
         )}
       </div>
-      <div className='flex flex-col mb-4'>
+      <div className="flex flex-col mb-4">
         <Input
           type='text'
           id='work'
@@ -220,7 +233,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('work')}
         />
       </div>
-      <div className='flex flex-col mb-4'>
+      <div className="flex flex-col mb-4">
         <Input
           type='text'
           id='website'
@@ -285,9 +298,9 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
         </div>
       </section>
       <Button
-        type='submit'
-        color='primary'
-        radius='sm'
+        type="submit"
+        color="primary"
+        radius="sm"
         isLoading={isSubmitting}
         disabled={isSubmitting}
       >
