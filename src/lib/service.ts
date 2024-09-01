@@ -1,9 +1,10 @@
 import { nanoid } from 'nanoid';
 export interface Post {
-  id: number;
+  id: string;
   title: string;
   tags: string[];
 }
+
 export function generateSlug(title: string) {
   const slug = title
     .trim() // Remove leading and trailing spaces

@@ -1,18 +1,18 @@
 import { db } from "@/db";
-import { posts, tags, postTags } from "@/db/schema"; // Make sure to import your schema
+import { posts, tags, postToTags } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    // Then, attempt to join postTags and tags to get the result
+    // Query to join postToTags and tags
     const postTagRelations = await db
       .select({
-        postId: postTags.postId,
+        postId: postToTags.postId,
         tagName: tags.name,
       })
-      .from(postTags)
-      .leftJoin(tags, eq(postTags.tagId, tags.id));
+      .from(postToTags)
+      .leftJoin(tags, eq(postToTags.tagId, tags.id));
 
     const tagsByPost: Record<string, string[]> = {};
 
@@ -21,19 +21,14 @@ export const GET = async (req: NextRequest) => {
       if (!tagsByPost[relation.postId]) {
         tagsByPost[relation.postId] = [];
       }
-      // Only add the tag if it's not null
       if (relation.tagName !== null) {
         tagsByPost[relation.postId].push(relation.tagName);
       }
     });
 
-    // console.log(tagsByPost);
-
-    return new Response(JSON.stringify(tagsByPost), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(tagsByPost, { status: 200 });
   } catch (err) {
-    console.error("Error fetching popular tags:", err);
+    console.error("Error fetching tags:", err);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

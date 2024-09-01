@@ -102,13 +102,7 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
   }),
   likes: many(likes), // Relation to the postLikes table
   bookmarks: many(bookmarks), // Relation to the postBookmarks table
-  tags: many(tags),
-  postTags: many(postTags),
-  // tags: many(tags, {
-  //   through: postTags,
-  //   fields: [posts.id],
-  //   references: [postTags.postId],
-  // }),
+  tags: many(postToTags), // relation to tags through the junction table
 }));
 
 // Post Likes Table
@@ -169,6 +163,7 @@ export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
   }),
 }));
 
+// draft table
 export const drafts = pgTable('drafts', {
   id: text('id')
     .primaryKey()
@@ -241,6 +236,7 @@ export const replies = pgTable('replies', {
 });
 export type Reply = InferSelectModel<typeof replies>;
 
+// replies relations
 export const repliesRelations = relations(replies, ({ one }) => ({
   user: one(users, {
     fields: [replies.userId],
@@ -258,11 +254,17 @@ export const tags = pgTable('tags', {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name').unique().notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 });
 
+// Relations for Tags
+export const tagsRelations = relations(tags, ({ many }) => ({
+  posts: many(postToTags),
+}));
+
 // join table for post and tags
-export const postTags = pgTable(
-  'post_tags',
+export const postToTags = pgTable(
+  'post_to_tags',
   {
     postId: text('post_id')
       .notNull()
@@ -275,14 +277,3 @@ export const postTags = pgTable(
     pk: primaryKey({ columns: [table.postId, table.tagId] }),
   })
 );
-
-// Relations for Tags
-export const tagsRelations = relations(tags, ({ many }) => ({
-  // posts: many(posts, {
-  //   through: postTags,
-  //   fields: [tags.id],
-  //   references: [postTags.tagId],
-  // }),
-  posts: many(posts),
-  postTags: many(postTags),
-}));

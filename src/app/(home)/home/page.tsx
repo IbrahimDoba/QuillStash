@@ -1,7 +1,13 @@
-import TopWriters from '@/components/homeComponents/TopWriters';
+import TopWriters from '@/components/top-writers';
 import React from 'react';
 import PageContent from './page-content';
-import PopularTopics from '@/components/homeComponents/PopularTopics';
+import PopularTags from '@/components/popular-tags';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Explore',
+  description: 'explore our dynamic feed',
+};
 
 const HomePage = () => {
   return (
@@ -11,7 +17,7 @@ const HomePage = () => {
       </div>
       <div className='relative  dark:border-foreground-100'>
         <aside className='flex flex-col space-y-3 sticky top-16'>
-          <PopularTopics />
+          <PopularTags />
           <TopWriters />
         </aside>
       </div>

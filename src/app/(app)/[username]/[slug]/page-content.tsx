@@ -26,7 +26,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
   const user = session?.user;
 
   return (
-    <Container>
+    <div>
       <section className='relative grid-rows-1 justify-center gap-x-8 lg:flex lg:grid-cols-[auto_1fr_auto]'>
         {/* main content */}
         <div className='max-w-screen-md space-y-8 w-full'>
@@ -123,7 +123,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
           </div>
         </div>
       </section>
-    </Container>
+    </div>
   );
 }
 
