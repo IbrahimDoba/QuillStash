@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-import PostSkeleton from './_components/PostSkeleton';
+import PostSkeleton from './PostSkeleton';
 import { Post } from '@/db/schema';
-import PostCard from './_components/PostCard';
+import PostCard from '@/components/post-card';
 import { Button } from '@nextui-org/react';
 import { Unplug } from 'lucide-react';
 import Link from 'next/link';

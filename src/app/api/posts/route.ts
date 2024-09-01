@@ -4,6 +4,7 @@ import getSession from '@/lib/getSession';
 import { generateSlug } from '@/lib/service';
 import { postSchema } from '@/lib/zod';
 import { notifyServer } from '@/utils/notify-server';
+import { insertTags } from '@/utils/insert-tags';
 import { validateRequest } from '@/utils/validateRequest';
 import { sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
@@ -85,12 +86,22 @@ export async function POST(req: Request) {
       })
       .returning();
 
+    // Insert tags
+    if (validatedData.tags && validatedData.tags.length > 0) {
+      try {
+        await insertTags(newPost.id, validatedData.tags);
+      } catch (tagError) {
+        console.error('Error inserting tags:', tagError);
+        
+      }
+    }
+
     // Ping the discord server
     notifyServer({
       author: user?.name!,
       title: newPost.title,
       slug: newPost.slug,
-    }).catch(error => console.error('Failed to send notification:', error));
+    }).catch((error) => console.error('Failed to send notification:', error));
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {

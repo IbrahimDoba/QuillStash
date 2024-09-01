@@ -1,3 +1,4 @@
+"use client"
 import { Post } from '@/db/schema';
 import { Card, CardBody, Image, Avatar, Button } from '@nextui-org/react';
 import { Heart, MessageSquare } from 'lucide-react';
@@ -7,7 +8,7 @@ interface PostProps extends Post {
   author: {
     name: string;
     image: string;
-    username: string;
+    username: string ;
   };
 }
 
@@ -34,23 +35,20 @@ function PostCard({
             className='hidden md:block shrink-0 overflow-hidden'
           >
             <Image
-              alt='Card background'
+              alt='post cover image'
               width={250}
               height={160}
               src={
                 coverImage ??
                 'https://nextui.org/images/hero-card-complete.jpeg'
               }
-              className='object-cover rounded-lg aspect-video pointer-events-none '
+              className='object-cover rounded-lg aspect-square lg:aspect-video pointer-events-none '
             />
           </Link>
           <div className='flex flex-col gap-2 lg:gap-4 justify-between'>
             <span className='flex items-center text-xs gap-2 mt-1'>
               <Avatar
-                src={
-                  author.image ??
-                  'https://i.pravatar.cc/150?u=a042581f4e29026024d'
-                }
+                src={author.image ?? '/user-1.jpg'}
                 className='w-6 h-6 text-tiny pointer-events-none'
                 showFallback
                 name='Jason Hughes'
