@@ -19,10 +19,12 @@ export const userProfileSchema = object({
   name: z.string(),
   bio: z.string().nullable(),
   location: z.string().nullable(),
-  email: z.string().email(),
+  // email: z.string().email(),
   github: z.string().url().nullable(),
   pronouns: z.string().nullable(),
   work: z.string().nullable(),
+  image: z.string().nullable().optional(),
+
 });
 
 export type UserProfileFormData = z.infer<typeof userProfileSchema>;

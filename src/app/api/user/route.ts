@@ -1,10 +1,10 @@
 import getSession from '@/lib/getSession';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
-import { users } from '@/db/schema'; // Assuming you've defined your schema
+import { users } from '@/db/schema';
 import { db } from '@/db';
 
-export const PUT = async (req: any) => {
+export async function PUT(req: NextRequest) {
   try {
     const session = await getSession();
 
@@ -13,20 +13,28 @@ export const PUT = async (req: any) => {
     }
 
     const form = await req.formData();
-    console.log(form);
-    const name = form.get('name') as string;
-    const bio = form.get('bio') as string;
-    const location = form.get('location') as string;
-    const pronouns = form.get('pronouns') as string;
-    const work = form.get('work') as string;
-    const github = form.get('github') as string;
+    console.log("Received form data:", Object.fromEntries(form.entries()));
+
+    const updateData: Partial<typeof users.$inferInsert> = {};
+    const fields = ['name', 'bio', 'location', 'pronouns', 'work', 'github', 'image'];
+
+    fields.forEach(field => {
+      const value = form.get(field);
+      if (value !== null && value !== undefined && value !== '') {
+        updateData[field] = value.toString();
+      }
+    });
+
+    console.log("Update data:", updateData);
 
     const [updatedUser] = await db
       .update(users)
-      .set({ name, bio, location, pronouns, work, github })
-      .where(eq(users.email, session?.user.email!))
+      .set(updateData)
+      .where(eq(users.email, session.user.email!))
       .returning();
-    console.log(updatedUser);
+
+    console.log("Updated user:", updatedUser);
+
     if (!updatedUser) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
@@ -39,6 +47,6 @@ export const PUT = async (req: any) => {
       { status: 500 }
     );
   }
-};
+}
 
 export const dynamic = 'force-dynamic';
