@@ -49,18 +49,19 @@ export const users = pgTable('users', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  username: text('username').unique(),
+  username: text('username').unique().notNull(),
   name: text('name').notNull(),
   email: text('email').unique().notNull(),
   emailVerified: timestamp('email_verified', { mode: 'date' }),
   password: text('password'),
   image: text('image'),
-  role: text('role').default('Blogger'),
+  role: text('role').default('writer'),
   bio: text('bio'),
   location: text('location'),
-  pronouns: text('pronouns'),
+  pronouns: text('pronouns').default('Prefer not to say'),
   work: text('work'),
-  github: text('github'),
+  website: text('website'),
+  socials: json('socials').$type<string[]>(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
 });

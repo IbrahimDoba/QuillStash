@@ -33,7 +33,7 @@ const ContentCard = ({
   };
 
   return (
-    <Card shadow='none' className='py-4'>
+    <Card shadow='none'>
       <CardBody className='flex flex-row items-start gap-2'>
         <div className='w-1/3'>
           <Link href={`/${username}/${slug}`}>

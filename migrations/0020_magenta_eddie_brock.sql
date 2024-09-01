@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "pronouns" SET DEFAULT 'Prefer not to say';

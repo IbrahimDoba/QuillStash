@@ -40,17 +40,18 @@ function CommentForm({ userId, postId }: { userId: string; postId: string }) {
     mutationFn: createComment,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', 'ffdfd'] });
-      toast('Comment created successfully');
+      toast.success('Comment created successfully');
+      onOpenChange();
     },
     onError: (error) => {
-      toast(`Failed to create comment: ${error.message}`);
+      toast.error(`Failed to create comment: ${error.message}`);
     },
   });
 
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm<CommentValues>({
     resolver: zodResolver(commentSchema),
     defaultValues: {
@@ -113,9 +114,11 @@ function CommentForm({ userId, postId }: { userId: string; postId: string }) {
                       <Button
                         color='primary'
                         type='submit'
+                        disabled={isPending}
+                        isLoading={isPending}
                         className='flex w-fit items-center gap-2'
                       >
-                        {isSubmitting ? 'Posting...' : 'Post'}
+                        {isPending ? 'Posting...' : 'Post'}
                       </Button>
                     </div>
                   </div>

@@ -19,12 +19,33 @@ export const userProfileSchema = object({
   name: z.string(),
   bio: z.string().nullable(),
   location: z.string().nullable(),
-  email: z.string().email(),
-  github: z.string().url().nullable(),
+  image: z.string().nullable(),
+  website: z.string().url({ message: "Please enter a valid URL" }).nullable(),
+  socials: z
+    .array(
+      z.object({
+        link: z.string().url({ message: "Please enter a valid URL" }).or(z.literal('')),
+      })
+    )
+    .max(5)
+    .nullable(),
   pronouns: z.string().nullable(),
   work: z.string().nullable(),
 });
 
+export const serverUserProfileSchema = object({
+  username: z.string(),
+  name: z.string(),
+  image: z.string().nullable(),
+  bio: z.string().nullable(),
+  location: z.string().nullable(),
+  website: z.string().url({ message: "Please enter a valid URL" }).nullable(),
+  socials: z.array(z.string().url({ message: "Please enter a valid URL" })).max(5).nullable(),
+  pronouns: z.string().nullable(),
+  work: z.string().nullable(),
+});
+
+export type ServerUserProfileFormData = z.infer<typeof serverUserProfileSchema>;
 export type UserProfileFormData = z.infer<typeof userProfileSchema>;
 
 const stripHtmlTags = (html: string) => {
@@ -39,7 +60,6 @@ const requiredEditorString = z.string().refine(
   { message: 'You have not written anything yet.' }
 );
 
-
 export const postSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title is too long'),
   coverImage: z.string().nullable(),
@@ -51,7 +71,11 @@ export const postSchema = z.object({
 export type PostValues = z.infer<typeof postSchema>;
 
 export const draftSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title is too long').nullable(),
+  title: z
+    .string()
+    .min(1, 'Title is required')
+    .max(100, 'Title is too long')
+    .nullable(),
   coverImage: z.string().nullable().optional(),
   summary: z.string().nullable().optional(),
   body: z.string().nullable().optional(),
