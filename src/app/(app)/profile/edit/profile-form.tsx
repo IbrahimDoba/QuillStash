@@ -19,7 +19,13 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { toast } from 'sonner';
 import { pronouns } from '@/utils/constants';
 
-function ProfileForm({ profileData, username }: { profileData: UserProfileData, username:string }) {
+function ProfileForm({
+  profileData,
+  username,
+}: {
+  profileData: UserProfileData;
+  username: string;
+}) {
   const router = useRouter();
   const { edgestore } = useEdgeStore();
 
@@ -114,7 +120,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-screen-sm mx-auto py-14 space-y-8"
+      className='max-w-screen-sm mx-auto py-14 space-y-8'
     >
       <div className='relative group overflow-hidden w-fit rounded-full border z-10 mb-2 mx-auto'>
         <Avatar
@@ -138,21 +144,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
         />
       </div>
 
-      <div className="flex flex-col mb-4">
-        <Input
-          type="text"
-          id="name"
-          label="Name"
-          variant="faded"
-          radius="sm"
-          description="Your full name"
-          {...register("name")}
-        />
-        {errors.name && (
-          <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
-        )}
-      </div>
-      <div className="flex flex-col mb-4">
+      <div className='flex flex-col mb-4'>
         <Input
           type='text'
           id='name'
@@ -162,7 +154,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('name')}
         />
         {errors.name && (
-          <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
+          <p className='px-1 text-xs text-red-600'>{errors.name.message}</p>
         )}
       </div>
 
@@ -190,10 +182,10 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('bio')}
         />
         {errors.bio && (
-          <p className="px-1 text-xs text-red-600">{errors.bio.message}</p>
+          <p className='px-1 text-xs text-red-600'>{errors.bio.message}</p>
         )}
       </div>
-      <div className="flex flex-col mb-4">
+      <div className='flex flex-col mb-4'>
         <Input
           type='text'
           id='location'
@@ -203,27 +195,31 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('location')}
         />
         {errors.location && (
-          <p className="px-1 text-xs text-red-600">{errors.location.message}</p>
+          <p className='px-1 text-xs text-red-600'>{errors.location.message}</p>
         )}
       </div>
       <div className='flex flex-col mb-4'>
         <Select
-          label='Pronouns'          
-          defaultSelectedKeys={[defaultProfileValues.pronouns || 'Prefer not to say',]}
+          label='Pronouns'
+          defaultSelectedKeys={[
+            defaultProfileValues.pronouns || 'Prefer not to say',
+          ]}
           radius='sm'
           fullWidth
           description='How do you identify?'
           onChange={handleSelectionChange}
         >
           {pronouns.map((pronoun) => (
-            <SelectItem key={pronoun.key} value={pronoun.key}>{pronoun.label}</SelectItem>
+            <SelectItem key={pronoun.key} value={pronoun.key}>
+              {pronoun.label}
+            </SelectItem>
           ))}
         </Select>
         {errors.pronouns && (
-          <p className="px-1 text-xs text-red-600">{errors.pronouns.message}</p>
+          <p className='px-1 text-xs text-red-600'>{errors.pronouns.message}</p>
         )}
       </div>
-      <div className="flex flex-col mb-4">
+      <div className='flex flex-col mb-4'>
         <Input
           type='text'
           id='work'
@@ -233,7 +229,7 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
           {...register('work')}
         />
       </div>
-      <div className="flex flex-col mb-4">
+      <div className='flex flex-col mb-4'>
         <Input
           type='text'
           id='website'
@@ -262,16 +258,16 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
                     radius='sm'
                     {...register(`socials.${index}.link` as const)}
                   />
-                  {index > 0 && (
-                    <Button
-                      isIconOnly
-                      title='remove field'
-                      size='sm'
-                      onClick={() => remove(index)}
-                    >
-                      <XIcon size={16} />
-                    </Button>
-                  )}
+                  <Button
+                    isIconOnly
+                    title='remove field'
+                    size='sm'
+                    onClick={() => remove(index)}
+                    disabled={fields.length === 1}
+                    className={`${fields.length === 1 && 'cursor-not-allowed'}`}
+                  >
+                    <XIcon size={16} />
+                  </Button>
                 </div>
                 {errors.socials && errors.socials[index] && (
                   <p className='px-1 text-xs text-red-600'>
@@ -298,9 +294,9 @@ function ProfileForm({ profileData, username }: { profileData: UserProfileData, 
         </div>
       </section>
       <Button
-        type="submit"
-        color="primary"
-        radius="sm"
+        type='submit'
+        color='primary'
+        radius='sm'
         isLoading={isSubmitting}
         disabled={isSubmitting}
       >

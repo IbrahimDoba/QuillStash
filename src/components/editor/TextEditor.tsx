@@ -9,6 +9,7 @@ import Link from '@tiptap/extension-link';
 import Code from '@tiptap/extension-code';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import MenuBar from './MenuBar';
+import FloatingMenubar from './FloatingMenuBar';
 
 interface EditorProps {
   value: string;
@@ -43,7 +44,7 @@ function TextEditor({ value, onChange }: EditorProps) {
       Highlight,
       Code,
     ],
-    immediatelyRender: false, // This is important for SSR to avoid hydration errors
+    immediatelyRender: false,
     content: value,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
@@ -52,7 +53,7 @@ function TextEditor({ value, onChange }: EditorProps) {
     editorProps: {
       attributes: {
         class:
-          'prose text-foreground min-h-96 w-full min-w-full p-4 border dark:border-foreground-50 outline-none focus-visible:ring-0 rounded-md',
+          'prose text-foreground min-h-96 w-full min-w-full p-4 outline-none focus-visible:ring-0',
       },
     },
   });
@@ -64,6 +65,7 @@ function TextEditor({ value, onChange }: EditorProps) {
   return (
     <div className='flex flex-col justify-stretch gap-2'>
       <MenuBar editor={editor} />
+      <FloatingMenubar editor={editor} />
       <EditorContent editor={editor} />
     </div>
   );

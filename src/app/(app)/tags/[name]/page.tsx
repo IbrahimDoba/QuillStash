@@ -11,7 +11,7 @@ export async function generateMetadata({
   const { name } = params;
 
   return {
-    title: name,
+    title: name.charAt(0).toUpperCase() + name.slice(1),
     description: `explore our collection of articles related to ${name}`,
   };
 }

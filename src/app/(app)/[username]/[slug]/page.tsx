@@ -44,7 +44,7 @@ export async function generateMetadata({
   return {
     metadataBase: new URL(siteConfig.url),
     title: post?.title,
-    keywords: post?.tags || ['news'],
+    keywords: post?.tags,
     openGraph: {
       type: 'article',
       url: `https://silver.vercel.app/${post?.author?.username}/${slug}`,
