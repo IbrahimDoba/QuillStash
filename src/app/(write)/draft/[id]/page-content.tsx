@@ -16,6 +16,7 @@ import { Draft } from '@/db/schema';
 function PageContent({ draftData }: { draftData: Draft }) {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
+  const [saving, setSaving] = useState(false);
 
   const [previousValues] = useState<PostValues>({
     title: draftData.title || '',
@@ -33,8 +34,9 @@ function PageContent({ draftData }: { draftData: Draft }) {
     register,
     handleSubmit,
     watch,
-    setValue,
     clearErrors,
+    setValue,
+    getValues,
     control,
     formState: { isSubmitting, errors },
   } = form;
@@ -62,6 +64,34 @@ function PageContent({ draftData }: { draftData: Draft }) {
     }
   }
 
+  const handleSaveDraft = async () => {
+    if (getValues().title.trim().length === 0) {
+      return toast.error('Please add a title to save the draft');
+    }
+    setSaving(true);
+    const draftData = getValues();
+
+    try {
+      // Update the existing draft
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/draft/${draftData.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ ...draftData }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.ok) {
+        toast.success('Draft updated successfully');
+      } else {
+        toast.error('Failed to update draft');
+      }
+    } catch {
+      toast.error('Something went wrong, please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleEditorChange = (html: string) => {
     if (html.length > 0) {
       clearErrors('body');
@@ -77,14 +107,28 @@ function PageContent({ draftData }: { draftData: Draft }) {
           <span>Back</span>
         </Button>
 
-        <ConfirmModal
-          control={control}
-          formRef={formRef}
-          register={register}
-          setValue={setValue}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
+        <div className='flex gap-6'>
+          <ConfirmModal
+            control={control}
+            formRef={formRef}
+            register={register}
+            setValue={setValue}
+            errors={errors}
+            isSubmitting={isSubmitting}
+          />
+          <Button
+            onClick={handleSaveDraft}
+            variant={'ghost'}
+            type='button'
+            radius='sm'
+            disabled={saving}
+            isLoading={saving}
+            className='border'
+          >
+            {saving ? 'Saving...' : 'Save to drafts'}
+          </Button>
+          
+        </div>
       </nav>
 
       {/* editor */}

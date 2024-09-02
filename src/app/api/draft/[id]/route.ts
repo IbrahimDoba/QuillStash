@@ -1,6 +1,6 @@
 import { db } from '@/db';
 import { posts, drafts } from '@/db/schema';
-import { postSchema } from '@/lib/zod';
+import { draftSchema, postSchema } from '@/lib/zod';
 import { validateRequest } from '@/utils/validateRequest';
 import { NextResponse } from 'next/server';
 import getSession from '@/lib/getSession';
@@ -68,3 +68,37 @@ export async function POST(
 }
 
 //  UPDATE
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  await validateRequest();
+
+  const session = await getSession();
+  const user = session?.user;
+
+  try {
+    const requestBody = await req.json();
+    const validatedData = draftSchema.parse(requestBody);
+
+    const [updatedDraft] = await db
+      .update(drafts)
+      .set({
+        ...validatedData,
+        userId: user?.id!,
+        updatedAt: new Date(),
+      })
+      .where(eq(drafts.id, id))
+      .returning();
+
+    return NextResponse.json(updatedDraft, { status: 200 });
+  } catch (error) {
+    console.error('Error updating draft:', error);
+    return NextResponse.json(
+      { error: 'Something went wrong' },
+      { status: 500 }
+    );
+  }
+}
