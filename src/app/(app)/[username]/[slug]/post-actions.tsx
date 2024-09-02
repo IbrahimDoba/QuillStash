@@ -2,6 +2,7 @@
 import {
   Bookmark,
   Copy,
+  Eye,
   Heart,
   LinkIcon,
   MoreVertical,
@@ -16,40 +17,39 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Skeleton,
 } from '@nextui-org/react';
 import { siteConfig } from '@/lib/site-config';
 import { X, Facebook } from '@/components/Icons';
+import { useQuery } from '@tanstack/react-query';
 
 function PostActions({
   postId,
   userId,
   title,
+  views,
 }: {
   postId: string;
   userId: string;
   title: string;
+  views: number;
 }) {
   const [likesCount, setLikesCount] = useState(0);
   const baseUrl = siteConfig.url;
   const pathname = usePathname();
-  
-  useEffect(() => {
-    async function fetchLikesCount() {
-      try {
-        const response = await fetch(`/api/like?postId=${postId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setLikesCount(data.likesCount);
-          console.log(response);
-        }
-      } catch (error) {
-        console.error('Error fetching likes count:', error);
-      }
-    }
 
-    fetchLikesCount();
-    // eslint-disable-next-line
-  }, []);
+  async function fetchLikesCount() {
+    const response = await fetch(`/api/like?postId=${postId}`);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  }
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['likes'],
+    queryFn: fetchLikesCount,
+  });
 
   async function handleLike() {
     if (!userId) {
@@ -136,18 +136,30 @@ function PostActions({
   return (
     <div className='w-full py-2 flex justify-between border-y dark:border-y-foreground-50'>
       <ul className='flex gap-6 '>
-        <li className='flex gap-1 items-center '>
-          <Button
-            variant='light'
-            isIconOnly
-            className='rounded-full'
-            size='sm'
-            onClick={handleLike}
-          >
-            <Heart className="size-4" />
-          </Button>
-          <span className='text-xs'>{likesCount}</span>
-        </li>
+        {isLoading ? (
+          <li className='flex gap-0.5 items-center'>
+            <Skeleton className='w-20 h-4' />
+          </li>
+        ) : (
+          <>
+            <li className='flex gap-0.5 items-center'>
+              <Button
+                variant='light'
+                isIconOnly
+                className='rounded-full'
+                size='sm'
+                onClick={handleLike}
+              >
+                <Heart className='size-4' />
+              </Button>
+              <span className='text-xs'>{likesCount}</span>
+            </li>
+            <li className='flex gap-1 items-center'>
+              <Eye className='size-4' />
+              <span className='text-xs'>{likesCount}</span>
+            </li>
+          </>
+        )}
         <li>
           <Button
             variant='light'
@@ -156,7 +168,7 @@ function PostActions({
             size='sm'
             onClick={handleBookmark}
           >
-            <Bookmark className="size-4" />
+            <Bookmark className='size-4' />
           </Button>
         </li>
       </ul>
@@ -177,7 +189,7 @@ function PostActions({
             <DropdownItem
               href={`https://twitter.com/intent/tweet?text=${tweetText}&url=${pageUrl}`}
               target='_blank'
-              startContent={<X className='size-4'/>}
+              startContent={<X className='size-4' />}
             >
               <span>Share on Twitter</span>
             </DropdownItem>
@@ -190,7 +202,7 @@ function PostActions({
             </DropdownItem>
             <DropdownItem
               onClick={copyLink}
-              startContent={<Copy className="size-4" />}
+              startContent={<Copy className='size-4' />}
             >
               <span>Copy post link</span>
             </DropdownItem>

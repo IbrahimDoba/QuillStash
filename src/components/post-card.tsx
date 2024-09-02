@@ -63,15 +63,7 @@ function PostCard({
                 })}
               </time>
             </span>
-            {/* <ul className="text-xs flex gap-4 justify-start">
-              {tags?.map((tag, index) => (
-                <li key={`${tag}-${index}`}>
-                  <Link  href={`/tags/${tag}`}>
-                    #{tag}
-                  </Link>
-                </li>
-              ))}
-            </ul> */}
+
             <Link href={`${author.username}/${slug}`}>
               <h3 className='line-clamp-2 text-xl mb-2'>{title}</h3>
               <p className='line-clamp-2 text-foreground-500'>{summary}</p>
@@ -81,7 +73,7 @@ function PostCard({
               <div className='flex items-center gap-0.5'>
                 <Button
                   isIconOnly
-                  className='text-default-900/60 data-[hover]:bg-foreground/10 flex gap-1 items-center rounded-full'
+                  className='text-default-900/60 data-[hover]:bg-foreground/10 flex gap-0.5 items-center rounded-full'
                   variant='light'
                   size='sm'
                   onPress={() => setLiked((v) => !v)}

@@ -2,7 +2,7 @@ import Container from '@/components/Container';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'New post',
+  title: 'New article',
   description: 'Write a new post',
 };
 

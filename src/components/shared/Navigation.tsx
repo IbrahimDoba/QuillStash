@@ -26,7 +26,7 @@ import { ThemeSwitch } from '../ThemeSwitch';
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const session = useSession();
-  const user = session.data?.user; // this is exposing all users data contrary to the type definition FIX!!!! 
+  const user = session.data?.user; // this is exposing all users data contrary to the type definition FIX!!!!
 
   return (
     <Navbar
@@ -48,7 +48,7 @@ export default function Navigation() {
           </Link>
         </NavbarBrand>
         <Search />
-        <MobileSearch/>
+        <MobileSearch />
       </NavbarContent>
 
       {!user ? (
@@ -92,20 +92,16 @@ export default function Navigation() {
               <DropdownItem
                 key='profile'
                 className='h-14 gap-2'
-                href={`/${user?.username}`} 
+                href={`/${user?.username}`}
               >
-                {/* <p className='font-semibold'>Signed in as</p>
-                <p className='font-semibold'>
-                  {user?.email ?? 'zoey@example.com'}
-                </p> */}
                 <User
-                  name= {user.name}
-                  description={user.work}
+                  name={user.name}
+                  description={user.email}
                   avatarProps={{
                     src:
                       user?.image ??
                       'https://i.pravatar.cc/150?u=a042581f4e29026704d',
-                      size: 'sm',
+                    size: 'sm',
                   }}
                 />
               </DropdownItem>

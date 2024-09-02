@@ -90,19 +90,19 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
       </nav>
 
       {/* editor */}
-      <Container className='grid lg:grid-cols-4 pt-4 pb-20'>
-        <div className='p-4 flex flex-col col-span-3'>
+      <Container className='grid pt-4 pb-20 max-w-screen-lg'>
+        <div className='p-4 flex flex-col'>
           <form
             ref={formRef}
             onSubmit={handleSubmit(onSubmit)}
-            className='space-y-8'
+            className='space-y-8 border dark:border-foreground-50 rounded-md p-4'
           >
-            <div className='flex flex-col mb-4'>
+            <div className='flex flex-col'>
               <label htmlFor='title' className='sr-only' />
               <input
-                placeholder='Your post title'
+                placeholder='Title'
                 {...register('title')}
-                className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none border-l px-4'
+                className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none px-4'
               />
               {errors.title && (
                 <p className='px-1 text-xs text-red-600'>
@@ -121,27 +121,6 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
             </div>
           </form>
         </div>
-
-        <aside className='relative py-20'>
-          <div className='p-4 rounded sticky top-40'>
-            <h2 className='text-lg font-semibold mb-2'>Publishing Tips</h2>
-            <ul className='list-disc list-inside'>
-              <li>
-                Ensure your post has a <b>cover image</b> set to make the most
-                of the home feed and social media platforms.
-              </li>
-              <li>
-                Share your post on social media platforms or with your
-                co-workers or local communities.
-              </li>
-              <li>
-                Ask people to leave questions for you in the comments. It’s a
-                great way to spark additional discussion describing personally
-                why you wrote it or why people might find it helpful.
-              </li>
-            </ul>
-          </div>
-        </aside>
       </Container>
     </>
   );

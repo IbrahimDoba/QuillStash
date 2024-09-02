@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Post } from "@/db/schema";
 import PostActions from "./post-actions";
 import { Button, Chip, User } from "@nextui-org/react";
-import Container from "@/components/Container";
 import CommentSection from "@/components/comments/comment-section";
 import getSession from "@/lib/getSession";
 
@@ -32,27 +31,24 @@ async function PostContent({ post }: { post: PostContentProps }) {
         <div className="max-w-screen-md space-y-8 w-full">
           <article className="flex flex-col gap-5 lg:py-10">
             <section className="space-y-3">
-              <div className="">
+              <div className="space-y-0.5">
                 <time
                   className="text-foreground-500 text-sm tracking-tight"
                   dateTime={new Date(post.createdAt).toISOString()}
                 >
                   Published on {formattedDate}
                 </time>
-                <p className="text-sm text-foreground-500">
-                  {post.views} views
-                </p>
-                <h1 className="font-bold text-2xl md:text-3xl lg:text-5xl">
+                <h1 className="font-bold text-2xl md:text-3xl lg:text-5xl leading-8 tracking-wide">
                   {post.title}
                 </h1>
               </div>
-              <ul className="flex gap-2 items-center flex-wrap">
+              {/* <ul className="flex gap-2 items-center flex-wrap">
                 {post.tags.map((tag) => (
                   <Chip key={tag} size="sm">
                     {tag}
                   </Chip>
                 ))}
-              </ul>
+              </ul> */}
               <User
                 name={post.author?.name ?? "site user"}
                 description="Product Designer"
@@ -68,6 +64,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
                   title={post.title}
                   userId={user?.id || ""}
                   postId={post.id}
+                  views={post.views}
                 />
               </div>
             </section>
