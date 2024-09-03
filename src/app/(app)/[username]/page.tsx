@@ -3,6 +3,8 @@ import PageContent from './page-content';
 import { db } from '@/db';
 import getSession from '@/lib/getSession';
 import { Metadata } from 'next';
+export const dynamicParams = true;
+export const revalidate = 60;
 
 const getProfileData = async (username: string) => {
   const profileData = await db.query.users.findFirst({
@@ -48,7 +50,7 @@ export async function generateMetadata({
   };
 }
 
-export const generateStaticParams = async () => {
+export async function generateStaticParams() {
   const users = await db.query.users.findMany();
   return users.map((user) => ({ params: { username: user.username } }));
 };
@@ -84,8 +86,8 @@ export default async function Page({
     },
   });
   console.log(profileData);
-  const session = await getSession();
-  const user = session?.user;
+  const session = await getSession().catch(() => null);
+    const user = session?.user;
 
   if (!profileData) {
     return notFound();
@@ -98,3 +100,4 @@ export default async function Page({
     />
   );
 }
+
