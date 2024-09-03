@@ -21,20 +21,19 @@ function TagPostCard({
   author,
   slug,
 }: PostProps) {
-  const [liked, setLiked] = useState(false);
 
   return (
-    <Card shadow='none'>
+    <Card shadow='sm'>
       <CardBody>
-        <div className='flex flex-col gap-2 items-center'>
+        <div className='flex flex-col gap-4'>
           <Link
-            href={`${author.username}/${slug}`}
+            href={`/${author.username}/${slug}`}
             className='flex flex-col gap-2'
           >
             <Image
-              alt='post cover image'
-              width={250}
-              height={150}
+              alt={title}
+              width={300}
+              height={180}
               src={
                 coverImage ??
                 'https://nextui.org/images/hero-card-complete.jpeg'
@@ -42,21 +41,14 @@ function TagPostCard({
               className='object-cover rounded-lg aspect-square lg:aspect-video pointer-events-none '
             />
             <h3 className='line-clamp-2 font-semibold'>{title}</h3>
+            <p className='text-sm line-clamp-2'>{summary}</p>
           </Link>
-          <div className='flex justify-between'>
-            <Button
-              isIconOnly
-              className='text-default-900/60 data-[hover]:bg-foreground/10 flex gap-1 items-center rounded-full'
-              variant='light'
-              size='sm'
-              onPress={() => setLiked((v) => !v)}
-            >
-              <Heart
-                className={liked ? '[&>path]:stroke-transparent' : ''}
-                fill={liked ? 'currentColor' : 'none'}
-                size={16}
-              />
-            </Button>
+          <div className='flex items-center justify-between'>
+            <p className='text-xs'>2,000 views</p>
+            <div className='flex items-center gap-0.5 text-xs'>
+              <MessageSquare size={16}/>
+              40
+            </div>
           </div>
         </div>
       </CardBody>

@@ -74,7 +74,7 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
   return (
     <>
       <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
-        <Button variant='light' href='/home'>
+        <Button variant='light' radius='sm' href='/home'>
           <ArrowLeft size={16} />
           <span>Back</span>
         </Button>

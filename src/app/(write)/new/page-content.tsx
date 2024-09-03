@@ -4,7 +4,7 @@ import Container from '@/components/Container';
 import TextEditor from '@/components/editor/TextEditor';
 import { postSchema, PostValues } from '@/lib/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Link } from '@nextui-org/react';
+import { Button, Link, Tooltip } from '@nextui-org/react';
 import { ArrowLeft, HelpCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -91,7 +91,7 @@ function PageContent() {
   return (
     <>
       <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
-        <Button variant='light' href='/home' as={Link}>
+        <Button variant='light' href='/home' radius="sm" as={Link}>
           <ArrowLeft size={16} />
           <span>Back</span>
         </Button>
@@ -115,15 +115,17 @@ function PageContent() {
           >
             {saving ? 'Saving...' : 'Save to drafts'}
           </Button>
-          <Button
-            variant={'ghost'}
-            type='button'
-            isIconOnly
-            radius='sm'
-            className='border '
-          >
-            <HelpCircle size={16} />
-          </Button>
+          <Tooltip content='Editor tips'>
+            <Button
+              variant={'ghost'}
+              type='button'
+              isIconOnly
+              radius='sm'
+              className='border '
+            >
+              <HelpCircle size={16} />
+            </Button>
+          </Tooltip>
         </div>
       </nav>
 

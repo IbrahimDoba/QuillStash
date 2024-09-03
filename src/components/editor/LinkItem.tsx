@@ -36,7 +36,7 @@ function LinkItem({ editor }: { editor: Editor }) {
       <Popover placement='bottom' showArrow offset={10} backdrop='opaque'>
         <PopoverTrigger>
           <Button
-            className={`p-1.5 rounded-md border dark:border-foreground-50`}
+            className='p-1.5 rounded-md border-none'
             type='button'
             title='image'
             isIconOnly

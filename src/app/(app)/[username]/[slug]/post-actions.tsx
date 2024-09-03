@@ -138,7 +138,7 @@ function PostActions({
       <ul className='flex gap-6 '>
         {isLoading ? (
           <li className='flex gap-0.5 items-center'>
-            <Skeleton className='w-20 h-4' />
+            <Skeleton className='w-24 h-6' />
           </li>
         ) : (
           <>
