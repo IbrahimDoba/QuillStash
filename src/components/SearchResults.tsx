@@ -1,13 +1,8 @@
+import { Post } from "@/lib/service";
 import Link from "next/link";
 import React from "react";
 
-interface Post {
-  id: number;
-  title: string;
-  tags: string[];
-  username: string;
-  slug: string;
-}
+
 
 interface SearchResultsProps {
   results: Post[];

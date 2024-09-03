@@ -3,8 +3,9 @@ export interface Post {
   id: string;
   title: string;
   tags: string[];
+  username: string;
+  slug: string;
 }
-
 export function generateSlug(title: string) {
   const slug = title
     .trim() // Remove leading and trailing spaces

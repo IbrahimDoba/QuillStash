@@ -44,6 +44,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           following: null,
           createdAt: new Date(),  
           updatedAt: new Date(),
+          website: null,
+          socials: null,
         };
       },
     }),
@@ -66,11 +68,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           location: null,
           pronouns: null,
           work: null,
-          github: null,
           followers: null,
           following: null,
           createdAt: new Date(),  
           updatedAt: new Date(),
+          website: null,
+          socials: null,
         };
       },
     }),

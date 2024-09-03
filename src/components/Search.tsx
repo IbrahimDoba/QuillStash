@@ -1,17 +1,11 @@
-import { searchPosts } from "@/lib/service";
+import { Post, searchPosts } from "@/lib/service";
 import useDebounce from "@/lib/useDebounce";
 import { Input } from "@nextui-org/react";
 import { SearchIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import SearchResults from "./SearchResults";
 
-interface Post {
-  id: string;
-  title: string;
-  tags: string[];
-  username: string;
-  slug: string;
-}
+
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState("");
