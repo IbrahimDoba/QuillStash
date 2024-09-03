@@ -53,7 +53,7 @@ function TextEditor({ value, onChange }: EditorProps) {
     editorProps: {
       attributes: {
         class:
-          'prose text-foreground min-h-96 w-full min-w-full p-4 outline-none focus-visible:ring-0',
+          'prose dark:prose-invert text-foreground min-h-96 w-full min-w-full p-4 outline-none focus-visible:ring-0',
       },
     },
   });

@@ -49,7 +49,7 @@ function ImageItem({ editor }: { editor: Editor }) {
     <>
       <Button
         isIconOnly
-        className='border'
+        className='border-none'
         size='sm'
         radius='sm'
         variant={editor.isActive('image') ? 'flat' : 'ghost'}

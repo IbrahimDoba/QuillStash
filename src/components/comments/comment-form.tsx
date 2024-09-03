@@ -16,10 +16,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-function CommentForm({ userId, postId }: { userId: string; postId: string }) {
+interface CommentFormProps {
+  userId: string;
+  postId: string;
+  userImage: string | null | undefined;
+}
+
+function CommentForm({ userId, postId, userImage }: CommentFormProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const queryClient = useQueryClient();
-  
+
   const createComment = async (commentData: CommentValues) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/comments`, {
       method: 'POST',
@@ -102,13 +108,17 @@ function CommentForm({ userId, postId }: { userId: string; postId: string }) {
                 <ModalFooter className='justify-start'>
                   <div className='flex items-center justify-between w-full'>
                     <Avatar
-                      src={'/user-1.png'}
+                      src={userImage ?? '/user-1.png'}
                       alt='profile picture'
                       size='sm'
                       name={'User'}
                     />
                     <div className='flex gap-4'>
-                      <Button color='danger' variant='light' onPress={onClose}>
+                      <Button
+                        variant='light'
+                        radius='sm'
+                        onPress={onClose}
+                      >
                         Close
                       </Button>
                       <Button
@@ -116,6 +126,7 @@ function CommentForm({ userId, postId }: { userId: string; postId: string }) {
                         type='submit'
                         disabled={isPending}
                         isLoading={isPending}
+                        radius='sm'
                         className='flex w-fit items-center gap-2'
                       >
                         {isPending ? 'Posting...' : 'Post'}

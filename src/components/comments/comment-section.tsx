@@ -36,11 +36,11 @@ function CommentSection({ id, user }: CommentSectionProps) {
   });
 
   return (
-    <section id='comments' className='space-y-10 border-y py-10'>
+    <section id='comments' className='space-y-10 border-y py-10 dark:border-y-foreground-100'>
       <h1 className='text-2xl font-semibold'>Comments</h1>
 
       {user ? (
-        <CommentForm userId={user?.id} postId={id} />
+        <CommentForm userId={user?.id} postId={id} userImage={user?.image}/>
       ) : (
         <Button radius='sm'>
           <Link href='/sign-in'>Sign in to join the conversation</Link>

@@ -69,13 +69,13 @@ function PageContent({ draftData }: { draftData: Draft }) {
       return toast.error('Please add a title to save the draft');
     }
     setSaving(true);
-    const draftData = getValues();
+    const data = getValues();
 
     try {
       // Update the existing draft
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/draft/${draftData.id}`, {
         method: 'PATCH',
-        body: JSON.stringify({ ...draftData }),
+        body: JSON.stringify({ ...data }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -102,7 +102,7 @@ function PageContent({ draftData }: { draftData: Draft }) {
   return (
     <>
       <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
-        <Button variant='light' href='/home'>
+        <Button variant='light' radius='sm' href='/home'>
           <ArrowLeft size={16} />
           <span>Back</span>
         </Button>
