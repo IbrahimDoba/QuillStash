@@ -6,6 +6,7 @@ type MenuItemProps = {
   title?: string;
   action?: () => void;
   isActive?: (() => boolean) | null;
+  floating?: boolean;
 };
 
 export default function MenuItem({
@@ -23,7 +24,7 @@ export default function MenuItem({
       radius='sm'
       variant={isActive && isActive() ? 'flat' : 'ghost'}
       size='sm'
-      className='border'
+      className='border-none'
     >
       {Icon && <Icon size={18} />}
     </Button>

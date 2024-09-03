@@ -24,7 +24,7 @@ function CommentSectionSkeleton() {
           </div>
         </Card>
 
-        <ul className='ml-10 flex flex-col gap-6 border-l-2 pl-10'>
+        <ul className='ml-10 flex flex-col gap-6 border-l-1.5 dark:border-l-foreground-100 pl-10'>
           {replies.map((_) => (
             <li key={crypto.randomUUID()}>
               <Card shadow='none' className='grid gap-4 p-6'>

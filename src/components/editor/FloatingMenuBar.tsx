@@ -47,7 +47,7 @@ export default function FloatingMenuBar({ editor }: { editor: Editor }) {
 
   return (
     <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-      <div className='flex flex-wrap items-center gap-3 border py-2 px-3 dark:border-foreground-50 mx-4 rounded-md bg-background'>
+      <div className='flex flex-wrap items-center gap-3 border p-1.5 dark:border-foreground-50 mx-4 rounded-md bg-background'>
         {items.map((item, index) => (
           <Fragment key={index}>
             <MenuItem {...item} />

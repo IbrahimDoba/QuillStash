@@ -1,7 +1,10 @@
 import PostCard from '@/components/post-card';
 import TagPostCard from '@/components/tag-post-card';
 import { db } from '@/db';
+import { Button } from '@nextui-org/react';
+import { Frown } from 'lucide-react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export async function generateMetadata({
   params,
@@ -25,7 +28,11 @@ export default async function Page({ params }: { params: { name: string } }) {
   });
 
   if (!tag) {
-    return <div>No posts found for this tag.</div>;
+    return (
+      <div className='py-40 grid place-content-center'>
+        <TagNotFound />
+      </div>
+    );
   }
 
   // Find all post IDs associated with the tag ID
@@ -52,14 +59,16 @@ export default async function Page({ params }: { params: { name: string } }) {
   return (
     <div>
       <section className='py-10 grid place-content-center'>
-        <h1 className='max-w-prose relative text-center text-balance text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl xl:text-5xl'>
-          Showing Posts that were tagged{' '}
-          <span className='text-primary'>{name}</span>
-        </h1>
+        <div className='max-w-prose text-center mt-10 space-y-3'>
+          <h1 className='max-w-prose relative text-center text-balance text-2xl font-bold leading-10 tracking-tight md:text-3xl lg:text-4xl xl:text-5xl'>
+            Showing results for articles tagged <span>&quot;{name}&quot;</span>
+          </h1>
+          <p>A curated collection of articles about {name}</p>
+        </div>
       </section>
       <section className='py-6'>
         {posts.length ? (
-          <ul className='grid grid-cols-[repeat(auto-fill,_minmax(19rem,_1fr))] gap-8 md:gap-12 justify-center'>
+          <ul className='grid grid-cols-[repeat(auto-fill,_minmax(16.75rem,_20rem))] gap-8 md:gap-14 max-md:justify-center'>
             {posts?.map((post) => (
               <li key={post.id} className='dark:border-foreground-50'>
                 <TagPostCard {...post} />
@@ -67,9 +76,33 @@ export default async function Page({ params }: { params: { name: string } }) {
             ))}
           </ul>
         ) : (
-          <p>No posts found for this tag.</p>
+          <TagNotFound />
         )}
       </section>
+    </div>
+  );
+}
+
+function TagNotFound() {
+  return (
+    <div className='grid place-content-center min-h-56'>
+      <div className='space-y-2 flex items-center flex-col'>
+        <Frown size={64} className='text-foreground-400' />
+        <p className='max-w-prose text-center lg:px-10'>
+          Sorry we couldn&apos;t find any articles on that topic. You can try
+          exploring our other topics{' '}
+          <Link
+            href='/home'
+            className='font-semibold underline underline-offset-2'
+          >
+            here
+          </Link>{' '}
+          or be the first to write on the topic you&apos;re looking for
+        </p>
+        <Button radius='sm' color='primary' href='/new' className='mt-8'>
+          Don&apos;t be shy
+        </Button>
+      </div>
     </div>
   );
 }
