@@ -11,13 +11,14 @@ import {
 import { MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-
+import { useRouter } from 'next/navigation';
 interface ContentCardProps {
   title: string;
   summary: string | null;
   coverImage: string | null;
   username: string | null;
   slug: string;
+  postId: string;
   requiresAction?: boolean;
 }
 const ContentCard = ({
@@ -26,10 +27,26 @@ const ContentCard = ({
   coverImage,
   username,
   slug,
+  postId,
   requiresAction,
 }: ContentCardProps) => {
-  const deleteSomething = () => {
-    toast.error('Delete functionality not implemented yet');
+  const router = useRouter()
+  const deletePost = async () => {
+    try {
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast.success('Post deleted successfully');
+        router.push(`/${username}`); 
+      } else {
+        toast.error('Failed to delete the post');
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      toast.error('An error occurred while deleting the post');
+    }
   };
 
   return (
@@ -67,7 +84,7 @@ const ContentCard = ({
                     key='delete'
                     className='text-danger'
                     color='danger'
-                    onPress={deleteSomething}
+                    onPress={deletePost}
                   >
                     Delete
                   </DropdownItem>

@@ -128,13 +128,14 @@ export default function PageContent({
               <div className="grid gap-4">
                 {posts.map((post) => (
                   <ContentCard
+                    postId={post.id}
                     key={post.id}
                     title={post.title}
                     summary={post.summary}
                     coverImage={post.coverImage}
                     username={username}
                     slug={post.slug}
-                    requiresAction
+                    requiresAction={isCurrentUser} 
                   />
                 ))}
               </div>
@@ -155,13 +156,13 @@ export default function PageContent({
                   {drafts.map((draft) => (
                     <div key={draft.id} className="py-4">
                       <DraftContentCard
-                      username={username}
-                      id={draft.id}
-                      key={draft.id}
-                      title={draft.title}
-                      summary={draft.summary}
-                      coverImage={draft.coverImage}
-                    />
+                        username={username}
+                        id={draft.id}
+                        key={draft.id}
+                        title={draft.title}
+                        summary={draft.summary}
+                        coverImage={draft.coverImage}
+                      />
                     </div>
                   ))}
                 </div>
@@ -182,12 +183,14 @@ export default function PageContent({
                 <div className="grid gap-4">
                   {bookmarks.map((bookmark) => (
                     <ContentCard
+                      postId={bookmark.post.id}
                       username={username}
                       slug={bookmark.post.slug}
                       key={bookmark.post.id}
                       title={bookmark.post.title}
                       summary={bookmark.post.summary}
                       coverImage={bookmark.post.coverImage}
+                      requiresAction={isCurrentUser} 
                     />
                   ))}
                 </div>
@@ -208,12 +211,14 @@ export default function PageContent({
               <div className="grid gap-4">
                 {likes.map((like) => (
                   <ContentCard
+                    postId={like.post.id}
                     username={username}
                     slug={like.post.slug}
                     key={like.post.id}
                     title={like.post.title}
                     summary={like.post.summary}
                     coverImage={like.post.coverImage}
+                    requiresAction={isCurrentUser} 
                   />
                 ))}
               </div>
