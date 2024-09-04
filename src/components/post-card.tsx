@@ -28,7 +28,7 @@ function PostCard({
       shadow='none'
       className='pt-6 rounded-none bg-transparent dark:border-foreground-50'
     >
-      <CardBody>
+      <CardBody className='max-md:px-0'>
         <div className='flex gap-4 lg:gap-6 items-center'>
           <Link
             href={`${author.username}/${slug}`}
@@ -65,8 +65,8 @@ function PostCard({
             </span>
 
             <Link href={`${author.username}/${slug}`}>
-              <h3 className='line-clamp-2 text-xl mb-2'>{title}</h3>
-              <p className='line-clamp-2 text-foreground-500'>{summary}</p>
+              <h3 className='line-clamp-2 text-xl mb-2 font-semibold'>{title}</h3>
+              <p className='line-clamp-2 text-foreground-600'>{summary}</p>
             </Link>
 
             <div className='flex gap-3 items-center'>

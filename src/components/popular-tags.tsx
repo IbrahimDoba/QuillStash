@@ -14,7 +14,7 @@ const PopularTags = async () => {
       <ul className='flex gap-2 flex-wrap'>
         {tags.map((tag) => (
           <li key={tag.id}>
-            <Link href={`/tags/${tag.name}`}>
+            <Link href={`/tag/${tag.name}`}>
               <Chip size='md' className='capitalize'>{tag.name}</Chip>
             </Link>
           </li>

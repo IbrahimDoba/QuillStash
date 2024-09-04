@@ -20,20 +20,22 @@ import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { AcmeLogo } from '../Icons';
 import Search from '../Search';
-import MobileSearch from '../MobileSearch';
 import { ThemeSwitch } from '../ThemeSwitch';
+import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const session = useSession();
+  const pathname = usePathname();
   const user = session.data?.user; // this is exposing all users data contrary to the type definition FIX!!!!
 
   return (
     <Navbar
-      shouldHideOnScroll
+      shouldHideOnScroll={pathname === '/' ? false : true}
+      position={pathname === '/' ? 'static' : undefined }
       onMenuOpenChange={setIsMenuOpen}
       classNames={{
-        wrapper: 'max-w-screen-2xl',
+        wrapper: 'max-w-screen-2xl px-4 md:px-6',
       }}
     >
       <NavbarContent>
@@ -42,22 +44,23 @@ export default function Navigation() {
           className='sm:hidden'
         />
         <NavbarBrand className='flex-grow-0'>
-          <Link href='/home' className='text-default-foreground'>
+          <Link href={user ? '/home' : '/'} className='text-default-foreground'>
             <AcmeLogo />
-            <p className='font-bold text-inherit'>ACME</p>
+            <p className='font-bold text-inherit'>STASH</p>
           </Link>
         </NavbarBrand>
         <Search />
-        <MobileSearch />
       </NavbarContent>
 
       {!user ? (
         <NavbarContent justify='end'>
-          <NavbarItem className='hidden lg:flex'>
-            <Link href='/sign-in'>Login</Link>
-          </NavbarItem>
           <NavbarItem>
-            <Button as={Link} color='primary' href='/sign-up' variant='flat'>
+            <Button as={Link} color='primary' radius='sm' href='/sign-in' variant='flat'>
+              Login
+            </Button>
+          </NavbarItem>
+          <NavbarItem className='hidden lg:flex'>
+            <Button as={Link} radius='sm' href='/sign-up' variant='flat'>
               Sign Up
             </Button>
           </NavbarItem>

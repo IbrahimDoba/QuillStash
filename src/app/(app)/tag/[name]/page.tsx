@@ -1,4 +1,3 @@
-import PostCard from '@/components/post-card';
 import TagPostCard from '@/components/tag-post-card';
 import { db } from '@/db';
 import { Button } from '@nextui-org/react';
@@ -15,9 +14,17 @@ export async function generateMetadata({
 
   return {
     title: name.charAt(0).toUpperCase() + name.slice(1),
-    description: `explore our collection of articles related to ${name}`,
+    description: `Explore our collection of articles related to ${name}`,
   };
 }
+
+export const generateStaticParams = async () => {
+  const tags = await db.query.tags.findMany();
+
+  return tags.map((tag) => ({
+    name: tag.name,
+  }));
+};
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { name } = params;

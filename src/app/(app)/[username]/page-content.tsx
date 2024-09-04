@@ -58,7 +58,7 @@ export default function PageContent({
   const session = useSession();
 
   return (
-    <section className="px-6 py-10 md:px-2 mx-auto max-w-screen-sm">
+    <section className="py-10 mx-auto max-w-screen-sm min-h-screen">
       {/* profile details */}
       <div className="flex flex-col justify-between gap-4 pb-4">
         <div className="flex justify-between gap-6">
@@ -66,8 +66,6 @@ export default function PageContent({
             <div>
               <p className="font-bold lg:text-xl">{name}</p>
               {isCurrentUser && <p className="text-sm">{email}</p>}
-
-              {/* maybe we shouldnt show the user email for everyone to see */}
               <p className="text-sm text-foreground-500">@{username}</p>
             </div>
             <div className="flex items-center gap-4">

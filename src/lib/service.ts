@@ -31,28 +31,3 @@ export function generateDisplayName() {
   const randomString = nanoid(4);
   return `User${randomString}`;
 }
-
-
-
-
-
-export async function searchPosts(query: string): Promise<Post[]> {
-  if (!query || query.trim() === '') {
-    return [];
-  }
-
-  try {
-    console.log("QUERY TEXT",query)
-    const response = await fetch(`/api/search?q=${encodeURIComponent(query.trim())}`);
-    console.log("searchres",response)
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Search request failed');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error searching posts:', error);
-    throw error; // Re-throw the error so it can be handled by the component
-  }
-}

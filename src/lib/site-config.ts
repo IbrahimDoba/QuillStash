@@ -1,7 +1,6 @@
 export const siteConfig = {
   title: 'Radar',
-  description:
-    'Explore the latest trends in technology, business, and design. Read insights and analysis from top industry experts.',
+  description: 'Write, share, discover.',
   url: 'https://silver-tech-pulse.vercel.app',
   ogImage: 'https://silver-tech-pulse.vercel.app/og.jpg',
   links: {
@@ -9,6 +8,7 @@ export const siteConfig = {
     github: 'https://github.com/@radar',
   },
   keywords: ['blog', 'articles', 'news'],
+  authors: [],
 };
 
 export type SiteConfig = typeof siteConfig;

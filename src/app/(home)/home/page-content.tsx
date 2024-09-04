@@ -98,9 +98,9 @@ function PageContent() {
 
   return (
     <>
-      <ul className='flex flex-col gap-6 divide-y-1'>
+      <ul className='flex flex-col md:gap-4 lg:gap-6 divide-y-1'>
         {allPosts?.map((post) => (
-          <li key={post.id} className='dark:border-foreground-50'>
+          <li key={post.id} className='dark:border-foreground-100'>
             <PostCard {...post} />
           </li>
         ))}
