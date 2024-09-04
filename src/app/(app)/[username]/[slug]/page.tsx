@@ -47,7 +47,7 @@ export async function generateMetadata({
     keywords: post?.tags,
     openGraph: {
       type: 'article',
-      url: `https://silver.vercel.app/${post?.author?.username}/${slug}`,
+      url: `${siteConfig.url}/${post?.author?.username}/${slug}`,
       title: post.title,
       siteName: siteConfig.title,
       publishedTime: new Date(post.createdAt).toISOString(),

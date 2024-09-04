@@ -3,65 +3,10 @@ import PageContent from './page-content';
 import { db } from '@/db';
 import getSession from '@/lib/getSession';
 import { Metadata } from 'next';
-export const dynamicParams = true;
-export const revalidate = 60;
+import { cache } from 'react';
+import { siteConfig } from '@/lib/site-config';
 
-const getProfileData = async (username: string) => {
-  const profileData = await db.query.users.findFirst({
-    where: (users, { eq }) => eq(users.username, username),
-    with: {
-      posts: true,
-      bookmarks: {
-        with: {
-          post: true,
-        },
-      },
-      likes: {
-        with: {
-          post: true,
-        },
-      },
-    },
-  });
-  return profileData;
-};
-
-export async function generateMetadata({
-  params,
-}: {
-  params: { username: string };
-}): Promise<Metadata> {
-  const { username } = params;
-  const profile = await getProfileData(username);
-  console.log(profile);
-  if (!profile) return {};
-
-  return {
-    title: profile?.name,
-    openGraph: {
-      url: `https://silver.vercel.app/${profile?.username}}`,
-      title: profile.name,
-      images: [
-        {
-          url: profile.image || '/user-1.jpg',
-        },
-      ],
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  const users = await db.query.users.findMany();
-  return users.map((user) => ({ params: { username: user.username } }));
-};
-
-export default async function Page({
-  params,
-}: {
-  params: { username: string };
-}) {
-  const { username } = params;
-
+const getProfileData = cache(async (username: string) => {
   const profileData = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.username, username),
     with: {
@@ -85,10 +30,47 @@ export default async function Page({
       },
     },
   });
-  console.log(profileData);
-  const session = await getSession().catch(() => null);
-    const user = session?.user;
+  return profileData;
+});
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  const { username } = params;
+  const profile = await getProfileData(username);
+
+  if (!profile) return {};
+
+  return {
+    title: profile?.name,
+    openGraph: {
+      url: `${siteConfig.url}/${profile?.username}}`,
+      title: profile.name,
+      images: [
+        {
+          url: profile.image ?? siteConfig.ogImage,
+        },
+      ],
+    },
+  };
+}
+
+// export async function generateStaticParams() {
+//   const users = await db.query.users.findMany();
+//   return users.map((user) => ({ params: { username: user.username } }));
+// }
+
+// export const revalidate = 3600 * 12;
+
+async function Page({ params }: { params: { username: string } }) {
+  const { username } = params;
+  const session = await getSession();
+  const user = session?.user;
+
+  const profileData = await getProfileData(username);
+  
   if (!profileData) {
     return notFound();
   }
@@ -101,3 +83,4 @@ export default async function Page({
   );
 }
 
+export default Page;
