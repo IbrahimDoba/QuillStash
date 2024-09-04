@@ -10,6 +10,7 @@ import {
 import { redirect } from 'next/navigation';
 import { Avatar, AvatarGroup, Link, Button } from '@nextui-org/react';
 import getSession from '@/lib/getSession';
+import { Discord } from '@/components/Icons';
 
 
 export default async function Home() {
@@ -45,6 +46,17 @@ export default async function Home() {
               >
                 <span>Explore stories</span>
                 <ArrowRight className='h-4 w-4' />
+              </Button>
+              <Button
+                size='md'
+                href={process.env.PERMANENT_DISCORD_LINK}
+                as={Link}
+                radius='sm'
+                color='secondary'
+                className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end ml-4'
+              >
+                <span>Join our Community</span>
+                <Discord className='h-4 w-4' />
               </Button>
             </div>
           </div>
@@ -160,10 +172,10 @@ export default async function Home() {
               Silver is built and powered by developers from africa.
               <br /> You can join the community on{' '}
               <a
-                href={'/'}
+                href={process.env.PERMANENT_DISCORD_LINK}
                 target='_blank'
                 rel='noreferrer'
-                className='underline underline-offset-4'
+                className='underline underline-offset-4 font-semibold'
               >
                 Discord
               </a>

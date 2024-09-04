@@ -20,6 +20,7 @@ interface CommentSectionProps {
       }
     | undefined;
 }
+
 function CommentSection({ id, user }: CommentSectionProps) {
 
   const getComments = async () => {
@@ -52,11 +53,23 @@ function CommentSection({ id, user }: CommentSectionProps) {
           <CommentSectionSkeleton />
         ) : (
           <ul className='flex flex-col gap-6 px-4'>
-            {comments?.map((comment) => (
-              <Fragment key={comment.id}>
-                <Comment {...comment} isCurrentUser={false} />
-              </Fragment>
-            ))}
+            {comments?.map((comment) => {
+              // Determine if the logged-in user is the owner of the comment
+              const isCurrentUser = user?.id === comment.user?.id;
+
+              // Determine if the user is logged in but not the owner of the comment
+              const isLoggedinUser = !!user && user?.id !== comment.user?.id;
+
+              return (
+                <Fragment key={comment.id}>
+                  <Comment
+                    {...comment}
+                    isCurrentUser={isCurrentUser}
+                    isLoggedinUser={isLoggedinUser}
+                  />
+                </Fragment>
+              );
+            })}
           </ul>
         )}
       </div>
