@@ -1,5 +1,5 @@
 import Footer from '@/components/shared/Footer';
-import AlternateNavigation from '../../components/AlternateNavigation';
+import Navigation from '@/components/shared/Navigation';
 
 export default function RootLayout({
   children,
@@ -8,7 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <div>
-      <AlternateNavigation />
+      <Navigation />
       <main className='min-h-screen'>{children}</main>
       <Footer />
     </div>

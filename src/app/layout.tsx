@@ -1,7 +1,7 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import Providers from './providers';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import { Analytics } from "@vercel/analytics/react"
 import { siteConfig } from '@/lib/site-config';
 
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: `${siteConfig.url}/og.jpg`,
+        url: siteConfig.ogImage,
         width: 1200,
         height: 630,
         alt: siteConfig.title,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    images:[`${siteConfig.url}/og.jpg`]
+    images:[`${siteConfig.ogImage}`],
   },
   icons: {
     icon: '/favicon.ico',

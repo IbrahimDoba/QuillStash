@@ -1,39 +1,79 @@
 import Container from '@/components/Container';
+import { Discord } from '@/components/Icons';
+import Search from '@/components/Search';
+import { Button } from '@nextui-org/react';
 import { ArrowRight } from 'lucide-react';
-import { Link, Button } from "@nextui-org/react";
+import Image from 'next/image';
+import Link from 'next/link';
 
-function NotFound() {
+export default function NotFound() {
   return (
-    <Container>
-      <section className='grid place-items-center pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32'>
-        <div>
-          <div className='relative mx-auto flex flex-col items-center text-center lg:items-start'>
-            <div className='mt-4 md:mt-6 lg:mt-8 xl:mt-10'>
-              <h1 className='relative text-balance text-3xl font-bold tracking-tight md:text-5xl lg:text-6xl xl:text-7xl'>
-                Oops Something went wrong
-              </h1>
+    <div className='flex flex-col min-h-screen bg-background'>
+      <main>
+        <Container className='flex-1'>
+          <section className='w-full py-12 md:py-24 lg:py-32 xl:py-48'>
+            <div className='container px-4 md:px-6'>
+              <div className='flex flex-col items-center space-y-4 text-center'>
+                <div className='space-y-2'>
+                  <h1 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none'>
+                    Oops! Page Not Found
+                  </h1>
+                  <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400'>
+                    The page you&apos;re looking for doesn&apos;t exist or has
+                    been moved.
+                  </p>
+                </div>
+                <div className='w-full max-w-sm space-y-2'>
+                  <Search />
+                </div>
+                <div className='w-full max-w-lg'>
+                  <Image
+                    alt='404 Illustration by popsy at popsy.co'
+                    src='/404.svg'
+                    height='500'
+                    width='800'
+                    className='aspect-square rounded-xl object-cover object-center'
+                  />
+                </div>
+                <div className='space-y-4 '>
+                  <p className='text-sm text-gray-500 dark:text-gray-400'>
+                    If you&apos;re experiencing issues or something seems wrong,
+                    let us know on our Discord server!
+                  </p>
+                  <Button radius='sm'>
+                    <Link
+                      target='_blank'
+                      href='#'
+                      className='flex items-center'
+                    >
+                      <Discord className='mr-2 h-4 w-4' />
+                      Join our Discord
+                    </Link>
+                  </Button>
+                </div>
+                <Button radius='sm'>
+                  <Link href='/' className='flex items-center gap-2'>
+                    Go back home <ArrowRight size={16} />
+                  </Link>
+                </Button>
+              </div>
             </div>
-            <p className='lg:text-lef mx-auto mt-8 max-w-prose text-foreground-500 text-balance text-center text-lg md:text-wrap lg:pr-10'>
-              We couln&apos;t find the page you are looking for. it may have been removed or does not exist.
-            </p>
-          </div>
-          <div className='mt-8 flex w-full items-center justify-center'>
-            <Button
-              size='md'
-              href='/home'
-              as={Link}
-              radius='sm'
-              color='primary'
-              className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
-            >
-              <ArrowRight className='h-4 w-4' />
-              <span>Back home</span>
-            </Button>
-          </div>
-        </div>
-      </section>
-    </Container>
+          </section>
+        </Container>
+      </main>
+      <footer className='flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t'>
+        <p className='text-xs text-gray-500 dark:text-gray-400'>
+          © 2024 stash. All rights reserved.
+        </p>
+        <nav className='sm:ml-auto flex gap-4 sm:gap-6'>
+          <Link className='text-xs hover:underline underline-offset-4' href='/terms'>
+            Terms of Service
+          </Link>
+          <Link className='text-xs hover:underline underline-offset-4' href='/privacy'>
+            Privacy
+          </Link>
+        </nav>
+      </footer>
+    </div>
   );
 }
-
-export default NotFound;

@@ -1,59 +1,221 @@
-import { Post, searchPosts } from "@/lib/service";
-import useDebounce from "@/lib/useDebounce";
-import { Input } from "@nextui-org/react";
-import { SearchIcon } from "lucide-react";
-import React, { useState, useEffect } from "react";
-import SearchResults from "./SearchResults";
+'use client';
+import { Post, Tag, User as UserType } from '@/db/schema';
+import useDebounce from '@/hooks/useDebounce';
+import {
+  Card,
+  CardBody,
+  Input,
+  Link as LinkComp,
+  User,
+  Chip,
+} from '@nextui-org/react';
+import { FileSearch, SearchIcon } from 'lucide-react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Button,
+  useDisclosure,
+  Kbd,
+  Skeleton,
+} from '@nextui-org/react';
 
+interface PostWithAuthor extends Post {
+  author: UserType;
+}
 
-function Search() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+interface SearchResponse {
+  posts: PostWithAuthor[] | [];
+  tags: Tag[] | [];
+  users: UserType[] | [];
+}
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+export default function App() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  useEffect(() => {
-    if (debouncedSearchTerm) {
-      setIsLoading(true);
-      searchPosts(debouncedSearchTerm)
-        .then((data) => {
-          setResults(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Search failed:", error);
-          setResults([]);
-          setIsLoading(false);
-          // Optionally, set an error state here to display to the user
-        });
-    } else {
-      setResults([]);
+  const searchSite = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/search?query=${debouncedSearchTerm}`
+    );
+    if (!res.ok) {
+      throw new Error('Network response was not ok');
     }
-  }, [debouncedSearchTerm]);
+    const data: SearchResponse = await res.json();
+    return data;
+  };
+
+  const { data, isLoading, isError, isSuccess } = useQuery({
+    queryKey: ['search', searchTerm],
+    queryFn: searchSite,
+    enabled: !!debouncedSearchTerm,
+    refetchOnWindowFocus: false,
+    staleTime: 60 * 3600,
+  });
+
+  const noResults =
+    !data?.posts.length && !data?.tags.length && !data?.users.length;
 
   return (
-    <div className="relative">
-      <Input
-        classNames={{
-          base: "max-w-full ml-4 md:w-[20rem] h-10 max-lg:hidden",
-          mainWrapper: "h-full",
-          input: "text-small",
-          inputWrapper:
-            "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-        }}
-        placeholder="Search silver..."
-        size="sm"
-        startContent={<SearchIcon size={18} />}
-        type="search"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      {isLoading && <p>Loading...</p>}
-      {!isLoading && results.length > 0 && <SearchResults results={results} />}
-    </div>
+    <>
+      <Button
+        onPress={onOpen}
+        radius='sm'
+        size='md'
+        disableRipple
+        disableAnimation
+        startContent={
+          <SearchIcon className='size-4 lg:size-5 text-foreground-600' />
+        }
+        className='text-foreground-600 max-lg:hidden min-w-80 justify-start'
+      >
+        Search radar...
+      </Button>
+      <Button
+        onPress={onOpen}
+        isIconOnly
+        size='sm'
+        radius='sm'
+        className='lg:hidden'
+      >
+        <SearchIcon size={18} className='text-foreground-500' />
+      </Button>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement='center'
+        radius='sm'
+        closeButton={<span className='sr-only pointer-events-none' />}
+        size='xl'
+        scrollBehavior='inside'
+      >
+        <ModalContent>
+          <>
+            <ModalHeader className='flex flex-col gap-1 border-b dark:border-foreground-100 px-0 py-2.5'>
+              <Input
+                autoFocus
+                isClearable
+                onValueChange={setSearchTerm}
+                startContent={
+                  <SearchIcon className='size-4 lg:size-6 text-foreground-500' />
+                }
+                // endContent={<Kbd className='text-sm'>ESC</Kbd>}
+                placeholder='Search website...'
+                radius='none'
+                variant='bordered'
+                classNames={{
+                  input: 'text-base',
+                  inputWrapper:
+                    'font-normal text-default-500 border-none shadow-none',
+                }}
+              />
+            </ModalHeader>
+            <ModalBody className='min-h-80 py-4 block'>
+              {!debouncedSearchTerm && (
+                <div className='h-full py-20 gap-3 grid place-items-center'>
+                  <FileSearch size={64} className='text-foreground-500' />
+                  What are you looking for?
+                </div>
+              )}
+
+              {isLoading && (
+                <div className='flex flex-col gap-4'>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <SearchSkeleton key={i} />
+                  ))}
+                </div>
+              )}
+
+              {isSuccess && <SearchResults {...data} />}
+
+              {debouncedSearchTerm && !isLoading && noResults && (
+                <div className='flex flex-col gap-1 items-center text-center'>
+                  <span>No results found for</span>
+                  <strong>&quot;{searchTerm}&quot;</strong>
+                </div>
+              )}
+            </ModalBody>
+          </>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
 
-export default Search;
+function SearchSkeleton() {
+  return <Skeleton className='w-full h-12 rounded-md' />;
+}
+
+function SearchResults({ posts, tags, users }: SearchResponse) {
+  return (
+    <div className='space-y-8'>
+      {posts.length ? (
+        <section>
+          <h3 className='font-bold text-center mb-4'>Posts</h3>
+          <ul className='flex flex-col gap-3'>
+            {posts.map((post) => (
+              <li key={post.id}>
+                <Card shadow='sm' radius='sm' className='bg-background'>
+                  <CardBody>
+                    <Link href={`/${post.author.username}/${post.slug}`}>
+                      <p className='font-semibold line-clamp-1 mb-1'>
+                        {post.title}
+                      </p>
+                      <p className='text-sm line-clamp-2'>{post.summary}</p>
+                    </Link>
+                  </CardBody>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {users.length ? (
+        <section>
+          <h3 className='font-semibold text-center mb-4'>Users</h3>
+          <ul className='flex flex-col gap-3'>
+            {users.map((user) => (
+              <li key={user.id}>
+                <User
+                  name={user.name}
+                  description={
+                    <Link href={`/${user.username}`}>
+                      {`@${user.username}`}
+                    </Link>
+                  }
+                  avatarProps={{
+                    src: user.image ?? '/user-1.png',
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {tags.length ? (
+        <section>
+          <h3 className='font-semibold text-center mb-4'>Topics</h3>
+          <ul className='flex flex-col gap-3'>
+            {tags.map((tag) => (
+              <li key={tag.id}>
+                <Link href={`/tag/${tag.name}`}>
+                  <Chip size='lg' color="primary" className='capitalize'>
+                    {tag.name}
+                  </Chip>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+    </div>
+  );
+}

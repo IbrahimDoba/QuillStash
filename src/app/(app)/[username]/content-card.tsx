@@ -30,7 +30,7 @@ const ContentCard = ({
   postId,
   requiresAction,
 }: ContentCardProps) => {
-  const router = useRouter()
+  const router = useRouter();
   const deletePost = async () => {
     try {
       const response = await fetch(`/api/posts/${postId}`, {
@@ -39,7 +39,7 @@ const ContentCard = ({
 
       if (response.ok) {
         toast.success('Post deleted successfully');
-        router.push(`/${username}`); 
+        router.push(`/${username}`);
       } else {
         toast.error('Failed to delete the post');
       }
@@ -51,7 +51,7 @@ const ContentCard = ({
 
   return (
     <Card shadow='none'>
-      <CardBody className='flex flex-row items-start gap-2'>
+      <CardBody className='flex flex-row items-center lg:items-start gap-2 max-md:px-0'>
         <div className='w-1/3'>
           <Link href={`/${username}/${slug}`}>
             <Image
@@ -59,16 +59,13 @@ const ContentCard = ({
               className='object-cover rounded-lg aspect-video'
               width='180'
               height='150'
-              src={
-                coverImage ||
-                'https://nextui.org/images/hero-card-complete.jpeg'
-              }
+              src={coverImage || '/placeholder.jpg'}
             />
           </Link>
         </div>
         <div className='w-2/3 flex flex-col'>
           <div className='flex justify-between items-start mb-2'>
-            <h4 className='font-bold text-large'>{title}</h4>
+            <h4 className='font-bold lg:text-lg'>{title}</h4>
             {requiresAction && (
               <Dropdown radius='sm'>
                 <DropdownTrigger>
@@ -92,7 +89,9 @@ const ContentCard = ({
               </Dropdown>
             )}
           </div>
-          <p className='text-small text-default-500 line-clamp-2'>{summary}</p>
+          <p className='text-xs md:text-sm text-default-500 line-clamp-2'>
+            {summary}
+          </p>
         </div>
       </CardBody>
     </Card>

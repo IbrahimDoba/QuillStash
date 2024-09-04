@@ -45,9 +45,11 @@ export async function generateMetadata({
 
   return {
     title: profile?.name,
+    description: profile?.bio ?? siteConfig.description,
     openGraph: {
-      url: `${siteConfig.url}/${profile?.username}}`,
       title: profile.name,
+      description: profile.bio ?? siteConfig.description,
+      url: `${siteConfig.url}/${profile?.username}}`,
       images: [
         {
           url: profile.image ?? siteConfig.ogImage,

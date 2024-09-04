@@ -20,11 +20,14 @@ export const userProfileSchema = object({
   bio: z.string().nullable(),
   location: z.string().nullable(),
   image: z.string().nullable(),
-  website: z.string().url({ message: "Please enter a valid URL" }).nullable(),
+  website: z.string().url({ message: 'Please enter a valid URL' }).nullable(),
   socials: z
     .array(
       z.object({
-        link: z.string().url({ message: "Please enter a valid URL" }).or(z.literal('')),
+        link: z
+          .string()
+          .url({ message: 'Please enter a valid URL' })
+          .or(z.literal('')),
       })
     )
     .max(5)
@@ -39,8 +42,11 @@ export const serverUserProfileSchema = object({
   image: z.string().nullable(),
   bio: z.string().nullable(),
   location: z.string().nullable(),
-  website: z.string().url({ message: "Please enter a valid URL" }).nullable(),
-  socials: z.array(z.string().url({ message: "Please enter a valid URL" })).max(5).nullable(),
+  website: z.string().url({ message: 'Please enter a valid URL' }).nullable(),
+  socials: z
+    .array(z.string().url({ message: 'Please enter a valid URL' }))
+    .max(5)
+    .nullable(),
   pronouns: z.string().nullable(),
   work: z.string().nullable(),
 });
@@ -99,4 +105,8 @@ export const replySchema = z.object({
 });
 export type ReplyValues = z.infer<typeof replySchema>;
 
-// dont think we need a reply schema since it will be the same as the comment schema
+export const confirmSchema = z.object({
+  username: z.string().min(1),
+  name: z.string().optional(),
+});
+export type ConfirmValues = z.infer<typeof confirmSchema>;

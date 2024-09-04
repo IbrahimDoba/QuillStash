@@ -52,16 +52,17 @@ export const users = pgTable('users', {
   username: text('username').unique().notNull(),
   name: text('name').notNull(),
   email: text('email').unique().notNull(),
-  emailVerified: timestamp('email_verified', { mode: 'date' }),
   password: text('password'),
   image: text('image'),
-  role: text('role').default('writer'),
   bio: text('bio'),
   location: text('location'),
-  pronouns: text('pronouns').default('Prefer not to say'),
   work: text('work'),
   website: text('website'),
+  role: text('role').default('writer'),
   socials: json('socials').$type<string[]>(),
+  pronouns: text('pronouns').default('Prefer not to say'),
+  emailVerified: timestamp('email_verified', { mode: 'date' }),
+  usernameConfirmed: timestamp('username_confirmed', { mode: 'date' }),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
 });
@@ -257,6 +258,7 @@ export const tags = pgTable('tags', {
   name: text('name').unique().notNull(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 });
+export type Tag = InferSelectModel<typeof tags>;
 
 // Relations for Tags
 export const tagsRelations = relations(tags, ({ many }) => ({
