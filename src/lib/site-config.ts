@@ -3,14 +3,12 @@ export const siteConfig = {
   description:
     'Explore the latest trends in technology, business, and design. Read insights and analysis from top industry experts.',
   url: 'https://silver-tech-pulse.vercel.app',
-  ogImage: '/og.jpg',
+  ogImage: 'https://silver-tech-pulse.vercel.app/og.jpg',
   links: {
     twitter: 'https://x.com/radar',
-    linkedin: 'https://linkedin.com/company/radar',
-    facebook: 'https://facebook.com/radar',
-    youtube: 'https://youtube.com/@radar',
+    github: 'https://github.com/@radar',
   },
-  keywords: ['blog', 'articles'],
+  keywords: ['blog', 'articles', 'news'],
 };
 
 export type SiteConfig = typeof siteConfig;
