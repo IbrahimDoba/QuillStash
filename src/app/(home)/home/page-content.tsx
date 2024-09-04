@@ -121,7 +121,7 @@ function PageContent() {
           <p>You somehow made it to the end yay!!!</p>
           <span>
             maybe checkout our{' '}
-            <Link href='/' className='underline underline-offset-2 font-medium'>
+            <Link href='https://discord.gg/vkYvY4D3RA' className='underline underline-offset-2 font-medium'>
               Discord?
             </Link>
           </span>

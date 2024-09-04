@@ -6,6 +6,7 @@ import { Chip, User } from '@nextui-org/react';
 import CommentSection from '@/components/comments/comment-section';
 import getSession from '@/lib/getSession';
 import Promotion from './promotion';
+import DiscordCardComponent from '@/components/DiscordCard';
 
 export interface PostContentProps extends Post {
   author: {
@@ -103,8 +104,9 @@ async function PostContent({ post }: { post: PostContentProps }) {
         </aside> */}
       </section>
 
-      <section className='my-6 lg:my-10 max-w-4xl mx-auto space-y-6'>
-        <Promotion />
+      <section className='my-6 lg:my-10 max-w-4xl mx-auto space-y-6 flex justify-center items-center'>
+        {/* <Promotion /> */}
+        <DiscordCardComponent/>
       </section>
     </div>
   );

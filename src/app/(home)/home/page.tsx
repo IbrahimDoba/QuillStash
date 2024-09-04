@@ -3,6 +3,7 @@ import React from 'react';
 import PageContent from './page-content';
 import PopularTags from '@/components/popular-tags';
 import { Metadata } from 'next';
+import DiscordCardComponent from '@/components/DiscordCard';
 
 export const metadata: Metadata = {
   title: 'Explore',
@@ -19,6 +20,7 @@ const HomePage = () => {
         <aside className='flex flex-col space-y-3 sticky top-16'>
           <PopularTags />
           <TopWriters />
+          <DiscordCardComponent/>
         </aside>
       </div>
     </div>

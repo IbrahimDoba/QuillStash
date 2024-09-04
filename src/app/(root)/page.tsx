@@ -15,6 +15,7 @@ import {
 import { redirect } from 'next/navigation';
 import { Avatar, AvatarGroup, Link, Button } from '@nextui-org/react';
 import getSession from '@/lib/getSession';
+import { Discord } from '@/components/Icons';
 
 export default async function Home() {
   const session = await getSession();
@@ -48,6 +49,17 @@ export default async function Home() {
               >
                 <span>Explore stories</span>
                 <ArrowRight className='h-4 w-4' />
+              </Button>
+              <Button
+                size='md'
+                href={process.env.PERMANENT_DISCORD_LINK}
+                as={Link}
+                radius='sm'
+                color='secondary'
+                className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end ml-4'
+              >
+                <span>Join our Community</span>
+                <Discord className='h-4 w-4' />
               </Button>
             </div>
           </div>
