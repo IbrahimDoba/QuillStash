@@ -15,7 +15,7 @@ const TopWriters = async () => {
         {writers.map((writer) => (
           <li key={writer.id}>
             <Link href={`/${writer.username}`} className='flex gap-2 items-center'>
-              <Avatar src={writer.image ?? '/user-1.jpg'} size='sm' />
+              <Avatar src={writer.image ?? '/user-1.png'} size='sm' />
               <span className='text-sm'>{writer.name}</span>
             </Link>
           </li>

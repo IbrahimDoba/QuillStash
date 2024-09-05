@@ -2,19 +2,20 @@
 
 import { formatFileSize } from '@edgestore/react/utils';
 import { UploadCloudIcon, X } from 'lucide-react';
-import * as React from 'react';
+import { useMemo, forwardRef, useRef } from 'react';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
 import { twMerge } from 'tailwind-merge';
+import ErrorMessage from './error-message';
+import { Button } from '@nextui-org/react';
 
 const variants = {
-  base: 'relative rounded-md flex justify-center items-center flex-col cursor-pointer min-h-[150px] min-w-[200px] border border-dashed dark:border-gray-300 transition-colors duration-200 ease-in-out',
-  image:
-    'border-0 p-0 min-h-0 min-w-0 relative shadow-md bg-slate-200 dark:bg-slate-900 rounded-md',
+  base: 'relative rounded-md flex justify-center items-center flex-col cursor-pointer min-h-[150px] min-w-[200px] border border-dashed dark:border-foreground-600 transition-colors duration-200 ease-in-out',
+  image: 'border-0 p-0 min-h-0 min-w-0 relative shadow-md rounded-md',
   active: 'border-2',
   disabled:
-    'bg-gray-200 border-gray-300 cursor-default pointer-events-none bg-opacity-30 dark:bg-gray-700',
-  accept: 'border border-blue-500 bg-blue-500 bg-opacity-10',
-  reject: 'border border-red-700 bg-red-700 bg-opacity-10',
+    'bg-foreground-200 border-foreground-200 cursor-default pointer-events-none bg-opacity-30 dark:bg-gray-700',
+  accept: 'border border-success bg-blue-500 bg-opacity-10',
+  reject: 'border border-danger bg-danger-300 bg-opacity-10',
 };
 
 type InputProps = {
@@ -43,12 +44,12 @@ const ERROR_MESSAGES = {
   },
 };
 
-const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
+const SingleImageDropzone = forwardRef<HTMLInputElement, InputProps>(
   (
     { dropzoneOptions, width, height, value, className, disabled, onChange },
     ref
   ) => {
-    const imageUrl = React.useMemo(() => {
+    const imageUrl = useMemo(() => {
       if (!value) {
         return;
       } else if (value) {
@@ -80,7 +81,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
     });
 
     // styling
-    const dropZoneClassName = React.useMemo(
+    const dropZoneClassName = useMemo(
       () =>
         twMerge(
           variants.base,
@@ -103,7 +104,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
     );
 
     // error validation messages
-    const errorMessage = React.useMemo(() => {
+    const errorMessage = useMemo(() => {
       if (fileRejections[0]) {
         const { errors } = fileRejections[0];
         if (errors[0]?.code === 'file-too-large') {
@@ -119,6 +120,13 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
       return undefined;
     }, [fileRejections, dropzoneOptions]);
 
+    // trying to test he click with the input
+    const inputRef = useRef<HTMLInputElement>(null);
+    const handleSelectClick = (event: React.MouseEvent) => {
+      event.stopPropagation();
+      inputRef.current?.click();
+    };
+
     return (
       <div>
         <div
@@ -131,11 +139,11 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
           })}
         >
           {/* Main File Input */}
-          <input ref={ref} {...getInputProps()} />
+          <input ref={inputRef} {...getInputProps()} />
 
           {imageUrl ? (
             // Image Preview
-            // eslint-disable-nex-line
+            // eslint-disable-next-line
             <img
               className='h-full w-full rounded-md object-cover'
               src={imageUrl}
@@ -143,11 +151,17 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
             />
           ) : (
             // Upload Icon
-            <div className='flex flex-col items-center justify-center text-xs text-gray-400'>
+            <div className='flex flex-col items-center justify-center text-sm text-foreground-600'>
               <UploadCloudIcon className='mb-2 h-7 w-7' />
-              <div className=''>drag & drop to upload</div>
-              <div className='mt-3 '>
-                <Button type='button' className='' disabled={disabled}>
+              <div>drag & drop to upload</div>
+              <div className='mt-3'>
+                <Button
+                  radius='sm'
+                  size='sm'
+                  type='button'
+                  onClick={handleSelectClick}
+                  disabled={disabled}
+                >
                   select
                 </Button>
               </div>
@@ -164,40 +178,18 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
               }}
             >
               <div className='flex h-5 w-5 items-center justify-center rounded-md border border-solid border-gray-500 bg-white transition-all duration-300 hover:h-6 hover:w-6 dark:border-gray-400 dark:bg-black'>
-                <X className='' width={16} height={16} />
+                <X width={16} height={16} />
               </div>
             </div>
           )}
         </div>
 
         {/* Error Text */}
-        <div className='mt-1 text-xs text-red-500'>{errorMessage}</div>
+        <ErrorMessage message={errorMessage} className='mt-1' />
       </div>
     );
   }
 );
 SingleImageDropzone.displayName = 'SingleImageDropzone';
-
-const Button = React.forwardRef<
-  HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ className, ...props }, ref) => {
-  return (
-    <button
-      className={twMerge(
-        // base
-        'focus-visible:ring-ring inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50',
-        // color
-        'border border-gray-400 text-gray-400 shadow hover:bg-gray-100 hover:text-gray-500 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-700',
-        // size
-        'h-6 rounded-md px-2 text-xs',
-        className
-      )}
-      ref={ref}
-      {...props}
-    />
-  );
-});
-Button.displayName = 'Button';
 
 export { SingleImageDropzone };

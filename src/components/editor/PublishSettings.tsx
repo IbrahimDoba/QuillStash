@@ -12,7 +12,7 @@ import {
 } from '@nextui-org/react';
 import { SingleImageDropzone } from '@/components/ui/image-dropzone';
 import { useEdgeStore } from '@/lib/edgestore';
-import TagInput from '@/components/TagInput';
+import TagInput from '@/components/editor/TagInput';
 import {
   useController,
   Control,
@@ -23,6 +23,7 @@ import {
 import { PostValues } from '@/lib/zod';
 import Container from '@/components/Container';
 import { toast } from 'sonner';
+import ErrorMessage from '../ui/error-message';
 
 interface ConfirmModalProps {
   control: Control<PostValues>;
@@ -33,7 +34,7 @@ interface ConfirmModalProps {
   isSubmitting: boolean;
 }
 
-export default function ConfirmModal({
+export default function PublishSettings({
   control,
   register,
   setValue,
@@ -64,6 +65,7 @@ export default function ConfirmModal({
       })
       .catch((err) => {
         console.error(err);
+        toast.error('Failed to upload image, please try again', { position: 'top-right' });
       });
   };
 
@@ -77,9 +79,10 @@ export default function ConfirmModal({
   const triggerSubmit = () => {
     console.log('triggerSubmit');
     if (formRef.current) {
-      formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      formRef.current.dispatchEvent(
+        new Event('submit', { cancelable: true, bubbles: true })
+      );
     }
-    // onClose();
   };
 
   return (
@@ -96,15 +99,12 @@ export default function ConfirmModal({
       <Modal size='full' isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
-            <Container className='py-10 h-full max-w-screen-lg'>
-              <ModalHeader className='flex flex-col gap-1 text-2xl mb-4'>
-                Social preview
+            <Container className='py-6 h-full max-w-screen-lg'>
+              <ModalHeader className='flex flex-col gap-1 text-2xl mb-4 text-center border-b dark:border-b-foreground-100'>
+                Publish settings
               </ModalHeader>
-              <ModalBody className='grid grid-cols-2 items-center '>
-                <div className='pr-20'>
-                  <p className='mb-2 text-sm'>
-                    Upload a cover image for your post
-                  </p>
+              <ModalBody className='grid lg:grid-cols-2 items-center pt-4'>
+                <div className='lg:pr-20'>
                   <div className='flex flex-col gap-4'>
                     <SingleImageDropzone
                       value={file}
@@ -123,6 +123,13 @@ export default function ConfirmModal({
                       className={`opacity-0 ${progress ? 'opacity-100' : ''}`}
                     />
                   </div>
+                  <p className='text-sm '>
+                    Upload a cover image for your article this will be shown in
+                    the preview of your article throughout the site and whenever
+                    your post is shared on social media. (this is optional but
+                    highly recommended.)
+                  </p>
+                  {/* TODO give users option to show or hide cover image in the article page */}
                 </div>
                 <div>
                   <p className='mb-2 text-sm'>
@@ -134,28 +141,32 @@ export default function ConfirmModal({
 
                   <div className='flex flex-col mb-4'>
                     <p className='mb-2 text-sm'>
-                      A short summary for your post (this will be shown in
+                      A short description for your post (this will be shown in
                       the preview)
                     </p>
                     <Textarea
-                      type='summary'
                       id='summary'
                       label='Summary'
-                      variant='faded'
                       radius='sm'
                       description='A short introdution to your post (optional).'
                       {...register('summary')}
                     />
                     {errors.summary && (
-                      <p className='px-1 text-xs text-red-600'>
-                        {errors?.summary.message}
-                      </p>
+                      <ErrorMessage
+                        message={errors.summary.message}
+                        className='px-1'
+                      />
                     )}
                   </div>
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color='primary' onPress={triggerSubmit} radius='sm' isLoading={isSubmitting}>
+                <Button
+                  color='primary'
+                  onPress={triggerSubmit}
+                  radius='sm'
+                  isLoading={isSubmitting}
+                >
                   {isSubmitting ? 'Publishing...' : 'Proceed to publish'}
                 </Button>
               </ModalFooter>

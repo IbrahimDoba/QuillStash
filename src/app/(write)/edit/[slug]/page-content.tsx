@@ -10,8 +10,9 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import ConfirmModal from '@/components/editor/confirm-modal';
+import PublishSettings from '@/components/editor/PublishSettings';
 import { Post } from '@/db/schema';
+import ErrorMessage from '@/components/ui/error-message';
 
 function PageContent({ previousPostData }: { previousPostData: Post }) {
   const formRef = useRef<HTMLFormElement>(null);
@@ -79,7 +80,7 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
           <span>Back</span>
         </Button>
 
-        <ConfirmModal
+        <PublishSettings
           control={control}
           formRef={formRef}
           register={register}
@@ -105,18 +106,14 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
                 className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none px-4'
               />
               {errors.title && (
-                <p className='px-1 text-xs text-red-600'>
-                  {errors.title.message}
-                </p>
+                <ErrorMessage message={errors.title.message} className='px-1' />
               )}
             </div>
 
             <div className='flex flex-col gap-3'>
               <TextEditor value={watch('body')} onChange={handleEditorChange} />
               {errors.body && (
-                <p className='px-1 text-xs text-red-600'>
-                  {errors.body.message}
-                </p>
+                <ErrorMessage message={errors.body.message} className='px-1' />
               )}
             </div>
           </form>

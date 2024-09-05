@@ -256,6 +256,8 @@ export const tags = pgTable('tags', {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name').unique().notNull(),
+  slug: text('slug').unique().notNull(), 
+  description: text('description'), 
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 });
 export type Tag = InferSelectModel<typeof tags>;

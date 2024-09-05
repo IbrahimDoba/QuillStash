@@ -3,11 +3,8 @@ import {
   ArrowRight,
   ArrowUpRight,
   BarChart,
-  Bot,
   Compass,
   Layout,
-  LockKeyhole,
-  Palette,
   PenLine,
   Share2,
   Sparkles,
@@ -55,6 +52,7 @@ export default async function Home() {
                 href={process.env.PERMANENT_DISCORD_LINK}
                 as={Link}
                 radius='sm'
+                target='_blank'
                 color='secondary'
                 className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end ml-4'
               >
@@ -99,8 +97,8 @@ export default async function Home() {
                 <div className='space-y-2'>
                   <h3 className='font-bold'>Share</h3>
                   <p className='text-sm text-foreground-500'>
-                    Reach and connect with readers who
-                    appreciate your unique perspective.
+                    Reach and connect with readers who appreciate your unique
+                    perspective.
                   </p>
                 </div>
               </div>
@@ -188,6 +186,7 @@ export default async function Home() {
               href={process.env.PERMANENT_DISCORD_LINK}
               size='md'
               radius='sm'
+              target='_blank'
               color='primary'
             >
               Join community
