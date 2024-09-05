@@ -10,6 +10,8 @@ interface PostProps extends Post {
     image: string;
     username: string ;
   };
+  likesCount: number;
+  commentCount: number;
 }
 
 function PostCard({
@@ -20,6 +22,8 @@ function PostCard({
   createdAt,
   author,
   slug,
+  likesCount,
+  commentCount,
 }: PostProps) {
   const [liked, setLiked] = useState(false);
 
@@ -84,16 +88,16 @@ function PostCard({
                     size={16}
                   />
                 </Button>
-                <span className='text-default-900/60 text-xs'>9</span>
+                <span className='text-default-900/60 text-xs'>{likesCount}</span>
               </div>
-              <span className='flex gap-1'>
+              {/* <span className='flex gap-1'>
                 <MessageSquare
                   className='text-default-900/60 stroke-transparent'
                   fill='currentColor'
                   size={16}
                 />
-                <span className='text-default-900/60 text-xs'>12</span>
-              </span>
+                <span className='text-default-900/60 text-xs'>{commentCount}</span>
+              </span> */}
             </div>
           </div>
         </div>

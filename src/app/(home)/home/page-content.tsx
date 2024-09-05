@@ -1,14 +1,18 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
-import PostSkeleton from './PostSkeleton';
-import { Post } from '@/db/schema';
-import PostCard from '@/components/post-card';
-import { Button } from '@nextui-org/react';
-import { Unplug } from 'lucide-react';
-import Link from 'next/link';
+"use client";
+import React, { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
+import PostSkeleton from "./PostSkeleton";
+import { Post } from "@/db/schema";
+import PostCard from "@/components/post-card";
+import { Button } from "@nextui-org/react";
+import { Unplug } from "lucide-react";
+import Link from "next/link";
 
+interface PostWithDetails extends PostWithAuthor {
+  likesCount: number;
+  commentCount: number;
+}
 interface PostWithAuthor extends Post {
   author: {
     name: string;
@@ -18,7 +22,7 @@ interface PostWithAuthor extends Post {
 }
 
 interface PostsApiResponse {
-  posts: PostWithAuthor[];
+  posts: PostWithDetails[];
   nextPage: number | null;
   totalPages: number;
   hasNextPage: boolean;
@@ -27,6 +31,21 @@ interface PostsApiResponse {
 function PageContent() {
   const [limit] = useState(3);
   const { ref, inView } = useInView();
+
+  // Fetch likes and comments count for each post in the backend (example query)
+  const getPostDetails = async (postId: string) => {
+    const likesResponse = await fetch(`/api/like?postId=${postId}`);
+    const commentsResponse = await fetch(`/api/comments?postId=${postId}`);
+
+    const likesCount = likesResponse.ok
+      ? (await likesResponse.json()).likesCount
+      : 0;
+    const commentCount = commentsResponse.ok
+      ? (await commentsResponse.json()).commentCount
+      : 0;
+
+    return { likesCount, commentCount };
+  };
 
   const getPosts = async ({
     pageParam,
@@ -37,11 +56,21 @@ function PageContent() {
       `${process.env.NEXT_PUBLIC_API_URL}/posts?page=${pageParam}&limit=${limit}`
     );
     if (!res.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
     const data: PostsApiResponse = await res.json();
-    console.log(data);
-    return data;
+    // Fetch likes and comments count for each post
+    const postsWithDetails = await Promise.all(
+      data.posts.map(async (post) => {
+        const { likesCount, commentCount } = await getPostDetails(post.id);
+        return { ...post, likesCount, commentCount };
+      })
+    );
+
+    return {
+      ...data,
+      posts: postsWithDetails,
+    };
   };
 
   const {
@@ -53,7 +82,7 @@ function PageContent() {
     isLoading,
     refetch,
   } = useInfiniteQuery({
-    queryKey: ['posts'],
+    queryKey: ["posts"],
     queryFn: getPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
@@ -71,7 +100,7 @@ function PageContent() {
 
   if (isLoading) {
     return (
-      <ul className='flex flex-col gap-6 divide-y-1'>
+      <ul className="flex flex-col gap-6 divide-y-1">
         {Array.from({ length: limit }).map((_, i) => (
           <PostSkeleton key={i} />
         ))}
@@ -79,15 +108,15 @@ function PageContent() {
     );
   }
 
-  if (status === 'error') {
+  if (status === "error") {
     return (
-      <div className='grid place-items-center gap-4 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32'>
-        <Unplug size={64} className='text-foreground-400' />
-        <p className='max-w-prose text-center'>
+      <div className="grid place-items-center gap-4 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+        <Unplug size={64} className="text-foreground-400" />
+        <p className="max-w-prose text-center">
           An error occurred while connecting to our servers. Please check your
           connection and try again.
         </p>
-        <Button onClick={() => refetch()} radius='sm'>
+        <Button onClick={() => refetch()} radius="sm">
           Retry
         </Button>
       </div>
@@ -98,15 +127,15 @@ function PageContent() {
 
   return (
     <>
-      <ul className='flex flex-col md:gap-4 lg:gap-6 divide-y-1'>
+      <ul className="flex flex-col md:gap-4 lg:gap-6 divide-y-1">
         {allPosts?.map((post) => (
-          <li key={post.id} className='dark:border-foreground-100'>
-            <PostCard {...post} />
+          <li key={post.id} className="dark:border-foreground-100">
+            <PostCard {...post} likesCount={post.likesCount} commentCount={post.commentCount}/>
           </li>
         ))}
       </ul>
 
-      <ul ref={ref} className='flex flex-col my-4 gap-6 divide-y-1'>
+      <ul ref={ref} className="flex flex-col my-4 gap-6 divide-y-1">
         {isFetchingNextPage && (
           <>
             {Array.from({ length: limit }).map((_, i) => (
@@ -117,11 +146,14 @@ function PageContent() {
       </ul>
 
       {inView && !hasNextPage && (
-        <div className='text-foreground-500 text-center text-sm'>
+        <div className="text-foreground-500 text-center text-sm">
           <p>You somehow made it to the end yay!!!</p>
           <span>
-            maybe checkout our{' '}
-            <Link href='https://discord.gg/vkYvY4D3RA' className='underline underline-offset-2 font-medium'>
+            maybe checkout our{" "}
+            <Link
+              href="https://discord.gg/vkYvY4D3RA"
+              className="underline underline-offset-2 font-medium"
+            >
               Discord?
             </Link>
           </span>

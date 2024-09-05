@@ -1,9 +1,9 @@
-import { db } from '@/db';
-import { comments, replies } from '@/db/schema'; // Adjust the import path as necessary
-import { commentSchema } from '@/lib/zod';
-import { validateRequest } from '@/utils/validateRequest';
-import { eq, inArray } from 'drizzle-orm';
-import { NextResponse } from 'next/server';
+import { db } from "@/db";
+import { comments, replies } from "@/db/schema"; // Adjust the import path as necessary
+import { commentSchema } from "@/lib/zod";
+import { validateRequest } from "@/utils/validateRequest";
+import { eq, inArray } from "drizzle-orm";
+import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
@@ -44,18 +44,22 @@ export async function GET(
       },
     });
 
+    // Count comments and replies
+    const commentCount = postComments.length;
+    const replyCount = commentReplies.length;
+
     // Merge replies into comments
     const commentsWithReplies = postComments.map((comment) => ({
       ...comment,
       replies: commentReplies.filter((reply) => reply.commentId === comment.id),
     }));
 
-    console.log('Comments response: ', commentsWithReplies);
+    console.log("Comments response: ", commentsWithReplies);
 
     return Response.json(commentsWithReplies, { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify('Something went wrong'), {
+    return new Response(JSON.stringify("Something went wrong"), {
       status: 500,
     });
   }
@@ -74,10 +78,10 @@ export async function DELETE(
       .delete(comments)
       .where(eq(comments.id, id))
       .returning();
-    return Response.json(`deleted: ${deletedComment.id}`, { status: 200 });
+    return Response.json(`dele  ted: ${deletedComment.id}`, { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify('Something went wrong'), {
+    return new Response(JSON.stringify("Something went wrong"), {
       status: 500,
     });
   }
@@ -104,7 +108,7 @@ export async function PATCH(
     return NextResponse.json(`updated: ${updatedComment.id}`, { status: 201 });
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify('Something went wrong'), {
+    return new Response(JSON.stringify("Something went wrong"), {
       status: 500,
     });
   }
