@@ -58,7 +58,7 @@ const stripHtmlTags = (html: string) => {
   return html.replace(/<[^>]*>/g, '').trim();
 };
 
-const requiredEditorString = z.string().refine(
+const requiredEditorString = z.string({required_error: "You forgot to write your awesome story..."}).refine(
   (val) => {
     const strippedText = stripHtmlTags(val);
     return strippedText.length > 0;
@@ -67,7 +67,7 @@ const requiredEditorString = z.string().refine(
 );
 
 export const postSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title is too long'),
+  title: z.string().min(1, 'Title cannot be empty').max(100, 'Title is too long'),
   coverImage: z.string().nullable(),
   summary: z.string().nullable(),
   body: requiredEditorString,

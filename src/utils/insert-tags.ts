@@ -1,5 +1,6 @@
 import { db } from '@/db';
 import { tags, postToTags } from '@/db/schema';
+import { generateTagSlug } from '@/lib/service';
 import { eq, and } from 'drizzle-orm';
 
 export async function insertTags(postId: string, tagNames: string[]) {
@@ -17,7 +18,7 @@ export async function insertTags(postId: string, tagNames: string[]) {
         // If the tag doesn't exist, create it
         const [newTag] = await db
           .insert(tags)
-          .values({ name: tagName })
+          .values({ name: tagName, slug: generateTagSlug(tagName) })
           .returning({ id: tags.id });
         tagId = newTag.id;
       } else {

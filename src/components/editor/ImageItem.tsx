@@ -88,10 +88,10 @@ function ImageItem({ editor }: { editor: Editor }) {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color='danger' variant='light' onPress={onClose}>
+                <Button color='danger' radius='sm' variant='light' onPress={onClose}>
                   Close
                 </Button>
-                <Button color='primary' onClick={startUpload}>
+                <Button color='primary' radius='sm' onClick={startUpload}>
                   Upload
                 </Button>
               </ModalFooter>

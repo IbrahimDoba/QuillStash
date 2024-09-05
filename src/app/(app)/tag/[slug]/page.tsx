@@ -5,16 +5,25 @@ import { Frown } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+const getTag = async (slug: string) => {
+  const tag = await db.query.tags.findFirst({
+    where: (tags, { eq }) => eq(tags.slug, slug),
+  });
+  return tag;
+};
+
 export async function generateMetadata({
   params,
 }: {
-  params: { name: string };
+  params: { slug: string };
 }): Promise<Metadata> {
-  const { name } = params;
+  const { slug } = params;
+  const tag = await getTag(slug);
+  if (!tag) return {}
 
   return {
-    title: name.charAt(0).toUpperCase() + name.slice(1),
-    description: `Explore our collection of articles related to ${name}`,
+    title: tag.name,
+    description: `Explore our collection of articles related to ${slug}`,
   };
 }
 
@@ -22,17 +31,15 @@ export const generateStaticParams = async () => {
   const tags = await db.query.tags.findMany();
 
   return tags.map((tag) => ({
-    name: tag.name,
+    slug: tag.slug,
   }));
 };
 
-export default async function Page({ params }: { params: { name: string } }) {
-  const { name } = params;
+export default async function Page({ params }: { params: { slug: string } }) {
+  const { slug } = params;
 
-  // Find the tag ID associated with the tag name
-  const tag = await db.query.tags.findFirst({
-    where: (tags, { eq }) => eq(tags.name, name),
-  });
+  // Find the tag ID associated with the tag slug
+  const tag = await getTag(slug);
 
   if (!tag) {
     return (
@@ -68,9 +75,9 @@ export default async function Page({ params }: { params: { name: string } }) {
       <section className='py-10 grid place-content-center'>
         <div className='max-w-prose text-center mt-10 space-y-3'>
           <h1 className='max-w-prose relative text-center text-balance text-2xl font-bold leading-10 tracking-tight md:text-3xl lg:text-4xl xl:text-5xl'>
-            Showing results for articles tagged <span>&quot;{name}&quot;</span>
+            Showing results for articles tagged <span>&quot;{tag.name}&quot;</span>
           </h1>
-          <p>A curated collection of articles about {name}</p>
+          <p>A curated collection of articles about {tag.name}</p>
         </div>
       </section>
       <section className='py-6'>
