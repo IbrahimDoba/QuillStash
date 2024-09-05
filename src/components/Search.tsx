@@ -149,7 +149,7 @@ export default function App() {
 }
 
 function SearchSkeleton() {
-  return <Skeleton className='w-full h-12 rounded-md' />;
+  return <Skeleton className='w-full h-14 rounded-md' />;
 }
 
 function SearchResults({ posts, tags, users }: SearchResponse) {
@@ -180,7 +180,7 @@ function SearchResults({ posts, tags, users }: SearchResponse) {
       {users.length ? (
         <section>
           <h3 className='font-semibold text-center mb-4'>Users</h3>
-          <ul className='flex flex-col gap-3'>
+          <ul className='flex flex-wrap gap-3'>
             {users.map((user) => (
               <li key={user.id}>
                 <User
@@ -203,11 +203,11 @@ function SearchResults({ posts, tags, users }: SearchResponse) {
       {tags.length ? (
         <section>
           <h3 className='font-semibold text-center mb-4'>Topics</h3>
-          <ul className='flex flex-col gap-3'>
+          <ul className='flex flex-wrap items-center gap-3'>
             {tags.map((tag) => (
               <li key={tag.id}>
-                <Link href={`/tag/${tag.name}`}>
-                  <Chip size='lg' color="primary" className='capitalize'>
+                <Link href={`/tag/${tag.slug}`}>
+                  <Chip size='lg' color='primary' className='capitalize'>
                     {tag.name}
                   </Chip>
                 </Link>

@@ -9,6 +9,7 @@ import { Button, Input } from '@nextui-org/react';
 import { Discord, Google } from '@/components/Icons';
 import { useState } from 'react';
 import { AuthFormData, signInSchema } from '@/lib/zod';
+import ErrorMessage from './ui/error-message';
 
 export function AuthForm() {
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
@@ -16,7 +17,6 @@ export function AuthForm() {
   const [isDiscordLoading, setIsDiscordLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
-
 
   const {
     register,
@@ -76,9 +76,7 @@ export function AuthForm() {
               }
             />
             {errors?.email && (
-              <p className='px-1 text-xs text-red-600'>
-                {errors.email.message}
-              </p>
+              <ErrorMessage message={errors.email.message} className='px-1' />
             )}
           </div>
           <div className='grid gap-1'>
@@ -118,9 +116,10 @@ export function AuthForm() {
               }
             />
             {errors?.password && (
-              <p className='px-1 text-xs text-red-600'>
-                {errors.password.message}
-              </p>
+              <ErrorMessage
+                message={errors.password.message}
+                className='px-1'
+              />
             )}
           </div>
           <Button

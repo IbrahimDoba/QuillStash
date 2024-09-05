@@ -155,6 +155,13 @@
       "when": 1725479871925,
       "tag": "0021_natural_nick_fury",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1725570553784,
+      "tag": "0022_chunky_shadowcat",
+      "breakpoints": true
     }
   ]
 }

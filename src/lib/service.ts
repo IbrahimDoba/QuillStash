@@ -17,6 +17,16 @@ export function generateSlug(title: string) {
   const randomString = nanoid(5);
   return `${slug}-${randomString}`;
 }
+export function generateTagSlug(title: string) {
+  const slug = title
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-_]/g, '')
+    .replace(/-+/g, '-');
+
+  return slug;
+}
 
 export function generateUsername(email: string) {
   const username = email

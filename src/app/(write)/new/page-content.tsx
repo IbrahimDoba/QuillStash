@@ -10,7 +10,8 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import ConfirmModal from '@/components/editor/confirm-modal';
+import PublishSettings from '@/components/editor/PublishSettings';
+import ErrorMessage from '@/components/ui/error-message';
 
 function PageContent() {
   const [saving, setSaving] = useState(false);
@@ -91,12 +92,12 @@ function PageContent() {
   return (
     <>
       <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
-        <Button variant='light' href='/home' radius="sm" as={Link}>
+        <Button variant='light' href='/home' radius='sm' as={Link}>
           <ArrowLeft size={16} />
           <span>Back</span>
         </Button>
         <div className='flex gap-6'>
-          <ConfirmModal
+          <PublishSettings
             control={control}
             formRef={formRef}
             register={register}
@@ -115,7 +116,7 @@ function PageContent() {
           >
             {saving ? 'Saving...' : 'Save to drafts'}
           </Button>
-          <Tooltip content='Editor tips'>
+          <Tooltip content='Editor tips' closeDelay={100}>
             <Button
               variant={'ghost'}
               type='button'
@@ -145,18 +146,20 @@ function PageContent() {
                 className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none px-4'
               />
               {errors.title && (
-                <p className='px-1 text-xs text-red-600'>
-                  {errors.title.message}
-                </p>
+                <ErrorMessage
+                  message={errors.title.message}
+                  className='mt-1 pl-4'
+                />
               )}
             </div>
 
             <div className='flex flex-col gap-3'>
               <TextEditor value={watch('body')} onChange={handleEditorChange} />
               {errors.body && (
-                <p className='px-1 text-xs text-red-600'>
-                  {errors.body.message}
-                </p>
+                <ErrorMessage
+                  message={errors.body.message}
+                  className='mt-1 pl-4 mb-4'
+                />
               )}
             </div>
           </form>

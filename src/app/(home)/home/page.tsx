@@ -17,7 +17,7 @@ const HomePage = () => {
         <PageContent />
       </div>
       <div className='relative  dark:border-foreground-100'>
-        <aside className='flex flex-col space-y-3 sticky top-16'>
+        <aside className='lg:flex flex-col space-y-3 md:sticky top-16 hidden'>
           <PopularTags />
           <TopWriters />
           <DiscordCardComponent/>

@@ -174,8 +174,8 @@ useEffect(() => {
   // https://api.whatsapp.com/send/?text=${pageurl}&type=custom_url&app_absent=0
 
   return (
-    <div className="w-full py-2 flex justify-between border-y dark:border-y-foreground-50">
-      <ul className="flex gap-6 ">
+    <div className='w-full py-2 flex justify-between border-y dark:border-y-foreground-100'>
+      <ul className='flex gap-6 '>
         {isLoading ? (
           <li className="flex gap-0.5 items-center">
             <Skeleton className="w-24 h-6" />

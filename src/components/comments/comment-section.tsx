@@ -52,7 +52,7 @@ function CommentSection({ id, user }: CommentSectionProps) {
         {isLoading ? (
           <CommentSectionSkeleton />
         ) : (
-          <ul className='flex flex-col gap-6 px-4'>
+          <ul className='flex flex-col gap-4 px-4'>
             {comments?.map((comment) => {
               // Determine if the logged-in user is the owner of the comment
               const isCurrentUser = user?.id === comment.user?.id;

@@ -1,7 +1,6 @@
 import { CommentReply } from '@/types';
-import { Button, Card, CardBody, Chip } from '@nextui-org/react';
+import { Avatar, Button, Card, CardBody, Chip } from '@nextui-org/react';
 import { PenLine, ReplyIcon } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -27,23 +26,27 @@ function Reply({
     <li className='grid gap-6'>
       <Card
         shadow='none'
-        className='grid gap-4 p-6 border dark:border-foreground-50 rounded-md'
+        className='grid gap-2 p-4 border dark:border-foreground-50 rounded-md'
       >
         <div className='flex flex-col justify-between gap-2 sm:flex-row'>
-          <div className='flex flex-row items-center gap-3'>
-            <Image
-              width={30}
-              height={30}
+          <div className='flex items-center gap-2'>
+            <Avatar
               src={user.image ?? '/user-1.png'}
-              alt={`${user.name}'s profile picture`}
-              className='rounded-full'
+              name={`${user.name}`}
+              size='sm'
             />
             {isCurrentUser ? (
-              <Chip variant={'faded'} className='w-fit'>
+              <Chip variant={'faded'} size='sm' className='w-fit'>
                 You
               </Chip>
             ) : (
-              <Link href={`/${user.username}`}>{user.name}</Link>
+              <Link
+                href={`/${user.username}`}
+                target='_blank'
+                className='text-sm hover:underline underline-offset-2'
+              >
+                {user.name}
+              </Link>
             )}
             <time className='text-sm text-muted-foreground'>
               {/* {dayjs(createdAt).fromNow()} */}
@@ -60,24 +63,24 @@ function Reply({
                 size={'sm'}
                 className='flex items-center gap-2 text-sm'
                 onClick={() => setIsEditing(!isEditing)}
+                isIconOnly
               >
                 <PenLine size={16} />
-                Edit
               </Button>
             </div>
           ) : (
             <Button
               size={'sm'}
               className='flex items-center gap-2 text-sm'
+              isIconOnly
               onClick={() => setIsReplying(!isReplying)}
             >
               <ReplyIcon size={16} />
-              Reply
             </Button>
           )}
         </div>
         {!isEditing ? (
-          <CardBody>{body}</CardBody>
+          <CardBody className='pl-11 py-0'>{body}</CardBody>
         ) : (
           //   <EditReplyForm setIsOpen={setIsEditing} id={id} content={body} />
           <div>This should be an edit form</div>
