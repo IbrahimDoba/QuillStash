@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: siteConfig.ogImage,
+        url: `${siteConfig.url}/og.jpg`,
         width: 1200,
         height: 630,
         alt: siteConfig.title,
