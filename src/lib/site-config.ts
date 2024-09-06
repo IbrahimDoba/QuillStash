@@ -1,5 +1,5 @@
 export const siteConfig = {
-  title: 'QuillStash - Write, Share, and Discover Engaging Content',
+  title: 'QuillStash',
   description: 'Join QuillStash to write, share, and explore insightful posts while connecting with a passionate community of writers and readers.',
   url: 'https://quillstash.com',
   ogImage: 'https://quillstash.com/og.jpg',
@@ -12,7 +12,7 @@ export const siteConfig = {
   authors: ['QuillStash Team'],  
   sitemap: [
     {
-      loc: 'https://quillstash.com/',
+      loc: 'https://quillstash.com/home',
       changefreq: 'daily',
       priority: 1.0
     },
