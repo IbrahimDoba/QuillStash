@@ -98,6 +98,7 @@ export async function POST(req: Request) {
 
     // Ping the discord server
     notifyServer({
+      username: user?.username!,
       author: user?.name!,
       title: newPost.title,
       slug: newPost.slug,
