@@ -1,14 +1,27 @@
 export const siteConfig = {
-  title: 'Radar',
-  description: 'Write, share, discover.',
-  url: 'https://silver-tech-pulse.vercel.app',
-  ogImage: 'https://silver-tech-pulse.vercel.app/og.jpg',
+  title: 'QuillStash - Write, Share, and Discover Engaging Content',
+  description: 'Join QuillStash to write, share, and explore insightful posts while connecting with a passionate community of writers and readers.',
+  url: 'https://quillstash.com',
+  ogImage: 'https://quillstash.com/og.jpg',
   links: {
-    twitter: 'https://x.com/radar',
-    github: 'https://github.com/@radar',
+    // twitter: 'https://x.com/quillstash',
+    // github: 'https://github.com/quillstash',
+    discord: 'https://discord.gg/vkYvY4D3RA',
   },
-  keywords: ['blog', 'articles', 'news'],
-  authors: [],
+  keywords: ['write', 'blog', 'community', 'share articles', 'discover writing', 'discussion', 'knowledge sharing', 'writers platform', 'quillstash', 'posting site'],
+  authors: ['QuillStash Team'],  
+  sitemap: [
+    {
+      loc: 'https://quillstash.com/',
+      changefreq: 'daily',
+      priority: 1.0
+    },
+    // {
+    //   loc: 'https://quillstash.com/tags',
+    //   changefreq: 'weekly',
+    //   priority: 0.8
+    // },
+    // {
+    
+  ]
 };
-
-export type SiteConfig = typeof siteConfig;
