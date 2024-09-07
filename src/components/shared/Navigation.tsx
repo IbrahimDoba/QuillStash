@@ -28,6 +28,7 @@ export default function Navigation() {
   const session = useSession();
   const pathname = usePathname();
   const user = session.data?.user; // this is exposing all users data contrary to the type definition FIX!!!!
+  console.log("USER IMAGE", user?.image)
 
   return (
     <Navbar

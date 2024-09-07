@@ -214,7 +214,8 @@ export default function Comment({
               {...reply}
               setIsReplying={setIsReplying}
               isReplying={isReplying}
-              isCurrentUser={false}
+              isCurrentUser={isCurrentUser}
+              isLoggedinUser={isLoggedinUser}
             />
           </Fragment>
         ))}

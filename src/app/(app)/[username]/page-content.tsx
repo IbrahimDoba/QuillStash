@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 import ContentCard from "./content-card";
 import LinksModal from "./links-modal";
 import DraftContentCard from "@/app/(write)/draft/draft-card-content";
+import LikeContentCard from "./like-content-card";
+import BookMarkContentCard from "./book-content-card";
 
 interface PageContentProps extends ProfileData {
   isCurrentUser: boolean;
@@ -180,7 +182,7 @@ export default function PageContent({
               {bookmarks && bookmarks.length > 0 ? (
                 <div className="grid gap-4">
                   {bookmarks.map((bookmark) => (
-                    <ContentCard
+                    <BookMarkContentCard
                       postId={bookmark.post.id}
                       username={username}
                       slug={bookmark.post.slug}
@@ -208,7 +210,7 @@ export default function PageContent({
             {likes && likes.length > 0 ? (
               <div className="grid gap-4">
                 {likes.map((like) => (
-                  <ContentCard
+                  <LikeContentCard
                     postId={like.post.id}
                     username={username}
                     slug={like.post.slug}
