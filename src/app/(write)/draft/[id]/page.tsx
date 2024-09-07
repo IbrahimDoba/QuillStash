@@ -4,7 +4,7 @@ import PageContent from './page-content';
 import { db } from '@/db';
 
 export const metadata: Metadata = {
-  title: 'Edit Post',
+  title: 'Edit draft',
 };
 
 async function Page({ params }: { params: { id: string } }) {

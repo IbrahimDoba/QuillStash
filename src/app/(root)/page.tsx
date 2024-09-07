@@ -36,6 +36,7 @@ export default async function Home() {
               </p>
             </div>
             <div className='mt-8 flex w-full items-center justify-center'>
+              <div className='grid gap-4 md:grid-cols-2'>
               <Button
                 size='md'
                 href='/home'
@@ -56,9 +57,10 @@ export default async function Home() {
                 color='secondary'
                 className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end ml-4'
               >
-                <span>Join our Community</span>
+                <span>Join the community</span>
                 <Discord className='h-4 w-4' />
               </Button>
+              </div>
             </div>
           </div>
         </section>

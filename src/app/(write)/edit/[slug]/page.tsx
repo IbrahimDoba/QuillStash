@@ -4,7 +4,7 @@ import PageContent from './page-content';
 import { db } from '@/db';
 
 export const metadata: Metadata = {
-  title: 'Edit Post',
+  title: 'Edit post',
 };
 
 async function Page({ params }: { params: { slug: string } }) {

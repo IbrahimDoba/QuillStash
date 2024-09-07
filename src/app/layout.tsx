@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: siteConfig.ogImage,
+        url: `${siteConfig.url}/og.jpg`,
         width: 1200,
         height: 630,
         alt: siteConfig.title,
@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    images:[`${siteConfig.ogImage}`],
+    images:[`${siteConfig.url}/og.jpg`],
   },
   icons: {
     icon: '/favicon.ico',
-    // shortcut: '/favicon-16x16.png',
-    // apple: '/apple-touch-icon.png',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
   },
 };
 
