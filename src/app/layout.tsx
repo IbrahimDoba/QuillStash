@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   description: siteConfig.description,
   keywords: siteConfig.keywords,
+  authors: siteConfig.authors,
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: `${siteConfig.url}/og.jpg`,
+        url: `${siteConfig.url}/og-image.png`,
         width: 1200,
         height: 630,
         alt: siteConfig.title,
