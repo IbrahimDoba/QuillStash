@@ -44,6 +44,8 @@ function ProfileForm({
   });
 
   const [file, setFile] = useState<File | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+
 
   const {
     register,
@@ -61,15 +63,26 @@ function ProfileForm({
     control,
   });
 
+  
   async function onSubmit(data: UserProfileFormData) {
     const transformedData = {
       ...data,
-      socials: data.socials ? data.socials.map((item) => item.link) : null,
+      socials: data.socials
+        ? data.socials
+            .map((item) => item.link)
+            .filter((link): link is string => link !== null)
+        : null,
+        image: uploadedImageUrl || data.image,
     };
-    console.log(data);
-    console.log(transformedData);
+
 
     try {
+      if (uploadedImageUrl) {
+        // console.log("IMGS",uploadedImageUrl)
+        data.image = uploadedImageUrl;
+
+      }
+
       await axios
         .put(`${process.env.NEXT_PUBLIC_API_URL}/user`, transformedData)
         .then(() => {
@@ -92,10 +105,12 @@ function ProfileForm({
     await edgestore.myPublicImages
       .upload({
         file,
-        input: { type: 'bodyImage' },
+        input: { type: 'profile' },
       })
       .then((res) => {
-        setValue('image', res.url);
+        setUploadedImageUrl(res.url)
+        console.log(res.url)
+        // setValue('image', res.url);
         toast.success('Avatar uploaded successfully', {
           position: 'top-right',
           id: 'avatar',
@@ -124,7 +139,7 @@ function ProfileForm({
     >
       <div className='relative group overflow-hidden w-fit rounded-full border z-10 mb-2 mx-auto'>
         <Avatar
-          src={defaultProfileValues.image ?? '/user-1.png'}
+          src={defaultProfileValues.image || '/user-1.png'}
           className='w-28 h-28 text-large'
         />
         <label
@@ -138,7 +153,7 @@ function ProfileForm({
           id='avatar'
           name='avatar'
           type='file'
-          accept='/img*'
+         accept='image/*'
           onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
           className='sr-only'
         />
