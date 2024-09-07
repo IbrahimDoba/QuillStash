@@ -46,7 +46,7 @@ export default function Navigation() {
         <NavbarBrand className='flex-grow-0'>
           <Link href={user ? '/home' : '/'} className='text-default-foreground'>
             <AcmeLogo />
-            <p className='font-bold text-inherit'>STASH</p>
+            <p className='font-bold text-inherit'>QUILLSTASH</p>
           </Link>
         </NavbarBrand>
         <Search />
