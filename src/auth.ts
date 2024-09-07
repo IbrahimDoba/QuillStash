@@ -1,15 +1,15 @@
-import NextAuth, { User } from 'next-auth';
-import { DrizzleAdapter } from '@auth/drizzle-adapter';
-import { db } from '@/db';
-import { accounts, sessions, users } from '@/db/schema';
-import Google from 'next-auth/providers/google';
-import Discord from "next-auth/providers/discord"
-import Credentials from 'next-auth/providers/credentials';
-import { comparePassword, saltAndHashPassword } from '@/utils/password';
-import { eq } from 'drizzle-orm';
-import { signInSchema } from './lib/zod';
-import { ZodError } from 'zod';
-import { generateDisplayName, generateUsername } from './lib/service';
+import NextAuth, { User } from "next-auth";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { db } from "@/db";
+import { accounts, sessions, users } from "@/db/schema";
+import Google from "next-auth/providers/google";
+import Discord from "next-auth/providers/discord";
+import Credentials from "next-auth/providers/credentials";
+import { comparePassword, saltAndHashPassword } from "@/utils/password";
+import { eq } from "drizzle-orm";
+import { signInSchema } from "./lib/zod";
+import { ZodError } from "zod";
+import { generateDisplayName, generateUsername } from "./lib/service";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db, {
@@ -18,7 +18,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     sessionsTable: sessions,
   }),
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   providers: [
     Google({
@@ -31,27 +31,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: displayName,
           email: profile.email,
           image: profile.picture,
-          username, 
-          emailVerified: null,
-          usernameConfirmed: null,
-          password: null,
-          role: null,
-          bio: null,
-          location: null,
-          pronouns: null,
-          work: null,
-          github: null,
-          followers: null,
-          following: null,
-          createdAt: new Date(),  
-          updatedAt: new Date(),
-          website: null,
-          socials: null,
-        };
+          username,
+        } as User;
       },
     }),
     Discord({
-  
       async profile(profile) {
         const username = generateUsername(profile.email);
         const displayName = generateDisplayName();
@@ -60,23 +44,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: profile.id,
           name: displayName,
           email: profile.email,
-          image: profile.avatar,
-          username, 
-          emailVerified: null,
-          usernameConfirmed: null,
-          password: null,
-          role: null,
-          bio: null,
-          location: null,
-          pronouns: null,
-          work: null,
-          followers: null,
-          following: null,
-          createdAt: new Date(),  
-          updatedAt: new Date(),
-          website: null,
-          socials: null,
-        };
+          image: profile.avatar ? `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png` : null,
+          username,
+        } as User;
       },
     }),
     Credentials({
@@ -86,8 +56,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       authorize: async (credentials): Promise<User | null> => {
         try {
-          const { email, password } = await signInSchema.parseAsync(credentials);
-    
+          const { email, password } = await signInSchema.parseAsync(
+            credentials
+          );
+
           // Check if the user exists
           const user = await db.query.users.findFirst({
             where: eq(users.email, email),
@@ -96,13 +68,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             // User doesn't exist, return an error
             return null;
           }
-    
+
           // Verify the password
-          const isPasswordValid = await comparePassword(password, user.password!);
+          const isPasswordValid = await comparePassword(
+            password,
+            user.password!
+          );
           if (!isPasswordValid) {
             return null; // Return null if password is incorrect
           }
-          console.log("userhere", user)
+          console.log("userhere", user);
           return user; // Return the user if login is successful
         } catch (error) {
           if (error instanceof ZodError) {
@@ -113,27 +88,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
       },
-    })
+    }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    
+    async jwt({ token, user, account, profile }) {
       if (user) {
-        console.log(user)
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+        token.picture = user.image;
         token.username = user.username;
       }
       return token;
     },
     async session({ session, token, user }) {
-      if (user) {
-        // console.log("Session callback - session:", session);
-        // console.log("Session callback - token:", token);
-        // console.log("Session callback - user:", user);
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            username: user.username
-          }
+      if (token) {
+        console.log(session)
+        session.user.id = token.id as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string;
+        session.user.image = token.picture as string;
+        session.user.username = token.username as string;
+
+        // Fetch the latest user data from the database
+        const dbUser = await db.query.users.findFirst({
+          where: eq(users.id, token.id as string),
+        });
+        if (dbUser) {
+          session.user.name = dbUser.name;
+          session.user.image = dbUser.image;
+          session.user.username = dbUser.username;
         }
       }
       return session;

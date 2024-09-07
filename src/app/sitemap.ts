@@ -23,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
   const tagPages: MetadataRoute.Sitemap = tags.map((tag) => ({
     url: `${siteConfig.url}/${tag.name}`,
-    lastModified: `${Date.now()}`,
+    lastModified: new Date(),
   }));
   const userProfiles: MetadataRoute.Sitemap = users.map((user) => ({
     url: `${siteConfig.url}/${user.username}/`,
@@ -44,13 +44,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${siteConfig.url}/terms`,
+      url: `${siteConfig.url}/sign-in`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.8,
     },
     {
-      url: `${siteConfig.url}/privacy`,
+      url: `${siteConfig.url}/sign-up`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.8,

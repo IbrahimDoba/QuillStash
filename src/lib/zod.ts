@@ -27,7 +27,8 @@ export const userProfileSchema = object({
         link: z
           .string()
           .url({ message: 'Please enter a valid URL' })
-          .or(z.literal('')),
+          .or(z.literal(''))
+          .transform((val) => (val === '' ? null : val)),
       })
     )
     .max(5)

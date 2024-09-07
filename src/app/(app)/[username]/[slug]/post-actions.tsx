@@ -22,7 +22,7 @@ import {
 import { siteConfig } from "@/lib/site-config";
 import { X, Facebook } from "@/components/Icons";
 import { useQuery } from "@tanstack/react-query";
-
+import {useRouter} from "next/navigation"
 function PostActions({
   postId,
   userId,
@@ -38,7 +38,7 @@ function PostActions({
   const [viewsCount, setViewsCount] = useState(0)
   const baseUrl = siteConfig.url;
   const pathname = usePathname();
-
+const router = useRouter()
   // async function fetchLikesCount() {
   //   const response = await fetch(`/api/like?postId=${postId}`);
   //   if (response.ok) {
@@ -57,6 +57,7 @@ async function fetchLikesCount() {
   const response = await fetch(`/api/like?postId=${postId}`);
   if (response.ok) {
     const data = await response.json();
+    router.refresh();
     return data.likesCount;
   }
 }

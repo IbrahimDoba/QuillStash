@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { likes } from '@/db/schema';
 import { db } from '@/db';
 import { NextResponse } from 'next/server';
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import { validateRequest } from '@/utils/validateRequest';
 
 export async function POST(req: Request, res: NextApiResponse) {
@@ -16,7 +16,7 @@ export async function POST(req: Request, res: NextApiResponse) {
       postId,
       userId,
     });
-    console.log('liked', likes);
+    // console.log('liked', likes);
 
     return NextResponse.json({ message: 'Like added successfully' });
   } catch (error) {
@@ -47,6 +47,39 @@ export async function GET(req: Request) {
     console.error('Error fetching likes count:', error);
     return NextResponse.json(
       { message: 'Error fetching likes count' },
+      { status: 500 }
+    );
+  }
+}
+
+
+export async function DELETE(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const postId = searchParams.get('postId');
+  const userId = searchParams.get('userId');
+
+  if (!postId || !userId) {
+    return NextResponse.json(
+      { message: 'Post ID and User ID are required' },
+      { status: 400 }
+    );
+  }
+
+  await validateRequest();
+
+  try {
+    await db.delete(likes).where(
+      and(
+        eq(likes.postId, postId),
+        eq(likes.userId, userId)
+      )
+    );
+
+    return NextResponse.json({ message: 'Like removed successfully' });
+  } catch (error) {
+    console.error('Error removing like:', error);
+    return NextResponse.json(
+      { message: 'Error removing like' },
       { status: 500 }
     );
   }
