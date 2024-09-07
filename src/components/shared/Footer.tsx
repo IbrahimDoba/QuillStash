@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Container from "../Container";
-import { AcmeLogo } from "../Icons";
+import { SiteLogo } from "../Icons";
 
 function Footer() {
   return (
@@ -8,16 +8,15 @@ function Footer() {
       <Container className="border-t dark:border-t-foreground-100">
         <div className="flex flex-col justify-between gap-10 pb-16 lg:pb-24 pt-10 lg:flex-row">
           <div className="sm:col-span-3">
-          <Link href="/" className='text-default-foreground mb- flex w-fit items-center gap-2'>
-            <AcmeLogo />
-            <p className='font-bold text-inherit'>QUILLSTASH</p>
+          <Link href="/" className='text-default-foreground mb-3 flex w-fit items-center gap-2'>
+            <SiteLogo className="mr-1" />
+            <p className='font-bold text-inherit uppercase'>quillstash</p>
           </Link>
-            <p className="mb-1 text-sm text-foreground-600 capitalize">
-              write, share, discover
+            <p className="mb-1 text-sm text-foreground-500">
+              Write, share, discover
             </p>
-            <p className="max-w-prose text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} Quillstash all rights
-              reserved
+            <p className="max-w-prose text-sm text-foreground-500">Quillstash
+              &copy; {new Date().getFullYear()}
             </p>
             <ul className="mt-4 flex gap-2 text-sm text-muted-foreground">
               <li>
@@ -60,7 +59,7 @@ function Footer() {
                 Email
               </Link>
               <Link
-                href="/"
+                href="https://discord.gg/vkYvY4D3RA"
                 className="text-muted-foreground underline-offset-2 hover:underline"
               >
                 Discord

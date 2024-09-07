@@ -18,7 +18,7 @@ import {
 import { Avatar, Button, Link, User } from '@nextui-org/react';
 import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { AcmeLogo } from '../Icons';
+import { SiteLogo } from '../Icons';
 import Search from '../Search';
 import { ThemeSwitch } from '../ThemeSwitch';
 import { usePathname } from 'next/navigation';
@@ -39,21 +39,17 @@ export default function Navigation() {
       }}
     >
       <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className='sm:hidden'
-        />
         <NavbarBrand className='flex-grow-0'>
           <Link href={user ? '/home' : '/'} className='text-default-foreground'>
-            <AcmeLogo />
-            <p className='font-bold text-inherit'>QUILLSTASH</p>
+            <SiteLogo className='mr-1'/>
+            <p className='font-bold text-inherit uppercase'>quillstash</p>
           </Link>
         </NavbarBrand>
         <Search />
       </NavbarContent>
 
       {!user ? (
-        <NavbarContent justify='end'>
+        <NavbarContent justify='end' className='max-sm:hidden'>
           <NavbarItem>
             <Button as={Link} color='primary' radius='sm' href='/sign-in' variant='flat'>
               Login
@@ -129,10 +125,17 @@ export default function Navigation() {
         </NavbarContent>
       )}
 
+
       {/* theme */}
       <NavbarItem>
         <ThemeSwitch />
       </NavbarItem>
+
+      {/* mobile toggle */}
+      <NavbarMenuToggle
+        aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+        className='sm:hidden'
+      />
 
       {/* mobile menu */}
       <NavbarMenu>

@@ -1,14 +1,18 @@
-import Container from '@/components/Container';
-import React from 'react';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import { getMdxContent } from '@/utils/get-content';
+import { Metadata } from 'next';
 
-function Page() {
+export const metadata: Metadata = {
+  title: 'Terms of Service',
+  description: 'Terms of Service for Quillstash',
+};
+
+export default async function Page() {
+  const { content } = await getMdxContent('terms');
+
   return (
-    <Container>
-      <div className='w-full h-full grid place-content-center'>
-        <h1 className='text-4xl text-center'>Our Terms or Use</h1>
-      </div>
-    </Container>
+    <article className='prose mx-auto py-6 lg:py-12 xl:prose-lg dark:prose-invert'>
+      <MDXRemote source={content} />
+    </article>
   );
 }
-
-export default Page;

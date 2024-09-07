@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <>
       <Container>
-        <section className='grid place-items-center pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32'>
+        <section className='grid place-items-center py-12 md:py-16 lg:py-32'>
           <div>
             <div className='relative mx-auto flex flex-col items-center text-center lg:items-start'>
               <div className='mt-4 md:mt-6 lg:mt-8 xl:mt-10'>
@@ -29,7 +29,7 @@ export default async function Home() {
                   Write, Share, Discover
                 </h1>
               </div>
-              <p className='lg:text-lef mx-auto mt-8 max-w-prose text-foreground-500 text-balance text-center text-lg md:text-wrap lg:pr-10'>
+              <p className='lg:text-lef mx-auto mt-8 max-w-prose text-foreground-500 text-balance text-center text-lg md:text-wrap'>
                 Join our vibrant community of writers and readers. Express your
                 ideas, connect with like-minded individuals, and explore a world
                 of diverse content.
@@ -43,7 +43,7 @@ export default async function Home() {
                 as={Link}
                 radius='sm'
                 color='primary'
-                className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end'
+                className='flex items-center gap-2 px-3 py-2 text-sm'
               >
                 <span>Explore stories</span>
                 <ArrowRight className='h-4 w-4' />
@@ -55,7 +55,7 @@ export default async function Home() {
                 radius='sm'
                 target='_blank'
                 color='secondary'
-                className='flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end ml-4'
+                className='flex items-center gap-2 px-3 py-2 text-sm'
               >
                 <span>Join the community</span>
                 <Discord className='h-4 w-4' />

@@ -6,6 +6,14 @@ export const menuItems = [
     href: '/home',
   },
   {
+    name: 'Login',
+    href: '/sign-in',
+  },
+  {
+    name: 'Sign up',
+    href: '/sign-up',
+  },
+  {
     name: 'Profile',
     href: '/profile',
   },

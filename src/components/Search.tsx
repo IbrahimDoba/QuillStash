@@ -5,7 +5,6 @@ import {
   Card,
   CardBody,
   Input,
-  Link as LinkComp,
   User,
   Chip,
 } from '@nextui-org/react';
@@ -21,7 +20,6 @@ import {
   ModalBody,
   Button,
   useDisclosure,
-  Kbd,
   Skeleton,
 } from '@nextui-org/react';
 
@@ -75,7 +73,7 @@ export default function App() {
         }
         className='text-foreground-600 max-lg:hidden min-w-80 justify-start'
       >
-        Search radar...
+        Search...
       </Button>
       <Button
         onPress={onOpen}
@@ -105,8 +103,7 @@ export default function App() {
                 startContent={
                   <SearchIcon className='size-4 lg:size-6 text-foreground-500' />
                 }
-                // endContent={<Kbd className='text-sm'>ESC</Kbd>}
-                placeholder='Search website...'
+                placeholder='Search quillstash...'
                 radius='none'
                 variant='bordered'
                 classNames={{
