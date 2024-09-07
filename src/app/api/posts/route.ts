@@ -8,6 +8,7 @@ import { insertTags } from '@/utils/insert-tags';
 import { validateRequest } from '@/utils/validateRequest';
 import { sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
+import { generateDescription } from '@/utils/generate-description';
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
@@ -72,9 +73,17 @@ export async function POST(req: Request) {
     const requestBody = await req.json();
     const validatedData = postSchema.parse(requestBody);
 
-    const postSummary = validatedData.summary
-      ? validatedData.summary
-      : "this should now be GPT's response";
+    let postSummary = validatedData.summary;
+
+    if (!postSummary) {
+      try {
+        // Generate description using Gemini if not provided
+        postSummary = await generateDescription(validatedData.body);
+      } catch (error) {
+        console.error('Error generating description:', error);
+        postSummary = null; 
+      }
+    }
 
     const [newPost] = await db
       .insert(posts)
