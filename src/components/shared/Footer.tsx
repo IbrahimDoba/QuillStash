@@ -1,36 +1,103 @@
-import Link from 'next/link';
-import Container from '../Container';
+import Link from "next/link";
+import Container from "../Container";
+import { AcmeLogo } from "../Icons";
 
 function Footer() {
   return (
-    <footer className='min-h-20 relative border-t dark:border-foreground-50 py-10'>
-      <Container>
-        <div className='h-full flex flex-col md:flex-row md:justify-between justify-center items-center'>
-          <div className='text-center md:text-left pb-2 md:pb-0'>
-            <p className='text-sm text-foreground'>
-              &copy; {new Date().getFullYear()} All rights reserved
+    <footer className="relative h-20 bg-background">
+      <Container className="border-t dark:border-t-foreground-100">
+        <div className="flex flex-col justify-between gap-10 pb-16 lg:pb-24 pt-10 lg:flex-row">
+          <div className="sm:col-span-3">
+          <Link href="/" className='text-default-foreground mb- flex w-fit items-center gap-2'>
+            <AcmeLogo />
+            <p className='font-bold text-inherit'>QUILLSTASH</p>
+          </Link>
+            <p className="mb-1 text-sm text-foreground-600 capitalize">
+              write, share, discover
             </p>
+            <p className="max-w-prose text-sm text-muted-foreground">
+              &copy; {new Date().getFullYear()} Quillstash all rights
+              reserved
+            </p>
+            <ul className="mt-4 flex gap-2 text-sm text-muted-foreground">
+              <li>
+                <Link
+                  href="https://x.com/ibrahimdoba"
+                  target="_blank"
+                  className="underline-offset-2 hover:underline"
+                >
+                  Twitter
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://github.com/ibrahimdoba/quillstash"
+                  target="_blank"
+                  className="underline-offset-2 hover:underline"
+                >
+                  Github
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://discord.gg/vkYvY4D3RA"
+                  target="_blank"
+                  className="underline-offset-2 hover:underline"
+                >
+                  Discord
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          <div className='flex items-center justify-center'>
-            <div className='flex space-x-8'>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-20">
+            <div className="flex flex-col gap-2 text-sm">
+              <p className="font-medium">Contact Us</p>
               <Link
-                href='/about'
-                className='text-sm text-foreground hover:underline'
+                href="mailto:info@quillstash.com"
+                className="text-muted-foreground underline-offset-2 hover:underline"
               >
-                About
+                Email
               </Link>
               <Link
-                href='terms'
-                className='text-sm text-foreground hover:underline'
+                href="/"
+                className="text-muted-foreground underline-offset-2 hover:underline"
+              >
+                Discord
+              </Link>
+            </div>
+
+            <div className="flex flex-col gap-2 text-sm">
+              <p className="font-medium">Legal</p>
+              <Link
+                href="/terms"
+                className="text-muted-foreground underline-offset-2 hover:underline"
               >
                 Terms
               </Link>
               <Link
-                href='/privacy'
-                className='text-sm text-foreground hover:underline'
+                href="/privacy"
+                className="text-muted-foreground underline-offset-2 hover:underline"
               >
-                Privacy Policy
+                Privacy
+              </Link>
+            </div>
+
+            <div className="flex flex-col gap-2 text-sm">
+              <p className="font-medium">Website</p>
+              <Link
+                href="/sitemap.xml"
+                target="_blank"
+                className="text-muted-foreground underline-offset-2 hover:underline"
+              >
+                Sitemap
+              </Link>
+              <Link
+                href="/rss.xml"
+                target="_blank"
+                className="text-muted-foreground underline-offset-2 hover:underline"
+              >
+                RSS Feed
               </Link>
             </div>
           </div>

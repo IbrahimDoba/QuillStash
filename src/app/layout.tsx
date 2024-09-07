@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    images:[`${siteConfig.ogImage}`],
+    images:[`${siteConfig.url}/og.jpg`],
   },
   icons: {
     icon: '/favicon.ico',
-    // shortcut: '/favicon-16x16.png',
-    // apple: '/apple-touch-icon.png',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
   },
 };
 
