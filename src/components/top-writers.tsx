@@ -33,7 +33,7 @@ const TopWriters = async () => {
               <Avatar src={writer.image ?? '/user-1.png'} size='sm' />
               <span className='text-sm'>{writer.name}</span>
               <span className='text-xs text-gray-500'>
-                ({writer.totalViews ?? 0} views)
+                {/* ({writer.totalViews ?? 0} views) */}
               </span>
             </Link>
           </li>
