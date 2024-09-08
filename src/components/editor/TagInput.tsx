@@ -4,6 +4,7 @@ import { useController, Control } from 'react-hook-form';
 import { PostValues } from '@/lib/zod';
 import ErrorMessage from '../ui/error-message';
 import { topics } from '@/utils/constants';
+import { ChevronsUpDown } from 'lucide-react';
 
 interface TagInputProps {
   control: Control<PostValues>;
@@ -22,17 +23,24 @@ function TagInput({ control }: TagInputProps) {
   });
 
   const addTag = (newTag: string) => {
-    const trimmedValue = newTag.trim().toLowerCase();
+    const trimmedValue = newTag.trim();
     if (trimmedValue && !value.includes(trimmedValue) && value.length < 4) {
       onChange([...value, trimmedValue]);
       setInputValue('');
     }
+    console.log(value)
   };
 
   const handleSelectionChange = (key: React.Key | null) => {
     if (key !== null) {
-      addTag(key.toString());
+      const selectedTopic = topics.find(topic => topic.slug === key);
+      if (selectedTopic) {
+        addTag(selectedTopic.name);
+      }
     }
+    // Clear the input after selection because autocomplete comonent keeps the selected item
+    setInputValue('');
+    // still doesn't work
   };
   
   const handleInputChange = (newValue: string) => {
@@ -60,7 +68,6 @@ function TagInput({ control }: TagInputProps) {
     <div className='flex flex-col gap-2'>
       <Autocomplete
         radius='sm'
-        selectorIcon={null}
         // allowsCustomValue
         aria-label='Tags'
         defaultItems={topics}
@@ -69,6 +76,10 @@ function TagInput({ control }: TagInputProps) {
         onInputChange={handleInputChange}
         onKeyDown={handleKeyDown}
         inputValue={inputValue}
+        menuTrigger='input'
+        onClose={() => setInputValue("")}
+        disableSelectorIconRotation
+        selectorIcon={<ChevronsUpDown size={14} className='text-default-400'/>}
         description='Press Enter or comma to add a tag.'
         placeholder={value.length < 4 ? 'Add a tag' : 'Max tags reached'}
         listboxProps={{
@@ -77,7 +88,11 @@ function TagInput({ control }: TagInputProps) {
         }}
       >
         {(topic) => (
-          <AutocompleteItem key={topic.value}>{topic.label}</AutocompleteItem>
+          <AutocompleteItem 
+            key={topic.slug}
+          >
+            {topic.name}
+          </AutocompleteItem>
         )}
       </Autocomplete>
       <div className='flex flex-wrap gap-2'>

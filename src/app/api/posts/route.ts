@@ -35,6 +35,7 @@ export const GET = async (req: NextRequest) => {
       limit: limit,
       offset: skip,
       orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+      where: (posts, { eq }) => eq(posts.published, true),
       with: {
         author: {
           columns: {

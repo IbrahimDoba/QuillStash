@@ -5,3 +5,54 @@
 :root {
   --muted-foreground: #6b7280;
 }
+
+.feedcard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas: 
+    "user user"
+    "img desc"
+    "img info";
+  ;
+}
+
+
+.user {
+  grid-area: user;
+  grid-row: 1;
+}
+
+.img {
+  grid-area: img;
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.desc {
+  grid-area: desc;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.info {
+  grid-area: info;
+  grid-column: 2;
+  grid-row: 3;
+}
+
+@media screen and (min-width: 768px) {
+  .feedcard {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+      "img user"
+      "img desc"
+      "img info";
+  }
+  .img {
+    grid-area: img;
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+}

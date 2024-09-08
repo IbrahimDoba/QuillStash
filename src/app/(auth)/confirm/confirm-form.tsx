@@ -7,6 +7,7 @@ import { Button, Input } from '@nextui-org/react';
 import { confirmSchema, ConfirmValues } from '@/lib/zod';
 import { redirect } from 'next/navigation';
 import { db } from '@/db';
+import { confirmUsername } from './actions';
 
 export function ConfirmForm({
   username,
@@ -29,20 +30,7 @@ export function ConfirmForm({
 
   async function onSubmit(data: ConfirmValues) {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/confirm`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) {
-        toast.error('Failed to confirm user');
-      } else {
-        const data: { username: string } = await res.json();
-        toast.loading('Success!, Redirecting...');
-        redirect(`/${data.username}`);
-      }
+      await confirmUsername(data);
     } catch (error) {
       console.error('Error confirming user:', error);
       toast.error('An error occurred while saving your details');

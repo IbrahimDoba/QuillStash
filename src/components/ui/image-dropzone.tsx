@@ -2,11 +2,10 @@
 
 import { formatFileSize } from '@edgestore/react/utils';
 import { UploadCloudIcon, X } from 'lucide-react';
-import { useMemo, forwardRef, useRef } from 'react';
+import { useMemo, forwardRef } from 'react';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
 import { twMerge } from 'tailwind-merge';
 import ErrorMessage from './error-message';
-import { Button } from '@nextui-org/react';
 
 const variants = {
   base: 'relative rounded-md flex justify-center items-center flex-col cursor-pointer min-h-[150px] min-w-[200px] border border-dashed dark:border-foreground-600 transition-colors duration-200 ease-in-out',
@@ -120,13 +119,6 @@ const SingleImageDropzone = forwardRef<HTMLInputElement, InputProps>(
       return undefined;
     }, [fileRejections, dropzoneOptions]);
 
-    // trying to test he click with the input
-    const inputRef = useRef<HTMLInputElement>(null);
-    const handleSelectClick = (event: React.MouseEvent) => {
-      event.stopPropagation();
-      inputRef.current?.click();
-    };
-
     return (
       <div>
         <div
@@ -139,7 +131,7 @@ const SingleImageDropzone = forwardRef<HTMLInputElement, InputProps>(
           })}
         >
           {/* Main File Input */}
-          <input ref={inputRef} {...getInputProps()} />
+          <input ref={ref} {...getInputProps()} />
 
           {imageUrl ? (
             // Image Preview
@@ -155,15 +147,13 @@ const SingleImageDropzone = forwardRef<HTMLInputElement, InputProps>(
               <UploadCloudIcon className='mb-2 h-7 w-7' />
               <div>drag & drop to upload</div>
               <div className='mt-3'>
-                <Button
-                  radius='sm'
-                  size='sm'
+                <button
                   type='button'
-                  onClick={handleSelectClick}
                   disabled={disabled}
+                  className='px-4 py-1.5 bg-default hover:opacity-80 text-foreground rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed'
                 >
-                  select
-                </Button>
+                  Select
+                </button>
               </div>
             </div>
           )}
