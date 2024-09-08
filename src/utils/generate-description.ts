@@ -6,9 +6,8 @@ const model = genAI.getGenerativeModel({
    systemInstruction: "You are an SEO expert tasked with creating concise, engaging, and informative article descriptions. Your descriptions should be between 150-160 characters long to optimize for search engine snippets and social media sharing."
 });
 
-export async function generateDescription(articleContent: string) {
-  const prompt = `Generate a concise and engaging description for the following article content. The description should be SEO-friendly and between 150-160 characters long:\n\n${articleContent}`;
-
+export async function generateDescription(articleTitle: string) {
+  const prompt = `Generate a concise, SEO-friendly summary of an article based only on the title '${articleTitle}'. The summary should be between 150-160 characters.`;
   try {
     const result = await model.generateContent(prompt);
     const description = result.response.text().trim();

@@ -104,13 +104,13 @@ export default function Navigation() {
                   }}
                 />
               </DropdownItem>
-              <DropdownItem key='settings' href='/profile'>
-                Settings
+              <DropdownItem key='settings' href={`/${user?.username}`}>
+                Profile
               </DropdownItem>
-              <DropdownItem key='analytics' href='/analytics'>
+              {/* <DropdownItem key='analytics' href='/analytics'>
                 Analytics
-              </DropdownItem>
-              <DropdownItem key='help_and_feedback' href='/help'>
+              </DropdownItem> */}
+              <DropdownItem key='help_and_feedback'  href={"https://discord.gg/vkYvY4D3RA"}>
                 Help & Feedback
               </DropdownItem>
               <DropdownItem
