@@ -12,6 +12,7 @@ import Link from "next/link";
 interface PostWithDetails extends PostWithAuthor {
   likesCount: number;
   commentCount: number;
+  body:string;
 }
 interface PostWithAuthor extends Post {
   author: {
@@ -130,7 +131,7 @@ function PageContent() {
       <ul className="flex flex-col md:gap-4 lg:gap-6 divide-y-1">
         {allPosts?.map((post) => (
           <li key={post.id} className="dark:border-foreground-100">
-            <PostCard {...post} likesCount={post.likesCount} commentCount={post.commentCount}/>
+            <PostCard {...post}  body={post.body}  likesCount={post.likesCount} commentCount={post.commentCount}/>
           </li>
         ))}
       </ul>
