@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Container from "../Container";
-import { SiteLogo } from "../Icons";
+import { Discord, SiteLogo, X } from "../Icons";
 
 function Footer() {
   return (
@@ -18,32 +18,24 @@ function Footer() {
             <p className="max-w-prose text-sm text-foreground-500">Quillstash
               &copy; {new Date().getFullYear()}
             </p>
-            <ul className="mt-4 flex gap-2 text-sm text-muted-foreground">
+            <ul className="mt-4 flex gap-3 items-center text-sm text-foreground-600">
               <li>
                 <Link
-                  href="https://x.com/ibrahimdoba"
+                  href="https://x.com/DobaIbrahim"
                   target="_blank"
-                  className="underline-offset-2 hover:underline"
+                  className="underline-offset-2 hover:underline flex items-center gap-2"
                 >
-                  Twitter
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://github.com/ibrahimdoba/quillstash"
-                  target="_blank"
-                  className="underline-offset-2 hover:underline"
-                >
-                  Github
+                  <X className="size-4" /> 
+                  <span>Twitter</span>
                 </Link>
               </li>
               <li>
                 <Link
                   href="https://discord.gg/vkYvY4D3RA"
                   target="_blank"
-                  className="underline-offset-2 hover:underline"
+                  className="underline-offset-2 hover:underline flex items-center gap-2"
                 >
-                  Discord
+                 <Discord className="size-5" /> Discord
                 </Link>
               </li>
             </ul>
@@ -54,13 +46,13 @@ function Footer() {
               <p className="font-medium">Contact Us</p>
               <Link
                 href="mailto:info@quillstash.com"
-                className="text-muted-foreground underline-offset-2 hover:underline"
+                className="text-foreground-600 underline-offset-2 hover:underline"
               >
                 Email
               </Link>
               <Link
                 href="https://discord.gg/vkYvY4D3RA"
-                className="text-muted-foreground underline-offset-2 hover:underline"
+                className="text-foreground-600 underline-offset-2 hover:underline"
               >
                 Discord
               </Link>
@@ -70,13 +62,13 @@ function Footer() {
               <p className="font-medium">Legal</p>
               <Link
                 href="/terms"
-                className="text-muted-foreground underline-offset-2 hover:underline"
+                className="text-foreground-600 underline-offset-2 hover:underline"
               >
                 Terms
               </Link>
               <Link
                 href="/privacy"
-                className="text-muted-foreground underline-offset-2 hover:underline"
+                className="text-foreground-600 underline-offset-2 hover:underline"
               >
                 Privacy
               </Link>
@@ -87,14 +79,14 @@ function Footer() {
               <Link
                 href="/sitemap.xml"
                 target="_blank"
-                className="text-muted-foreground underline-offset-2 hover:underline"
+                className="text-foreground-600 underline-offset-2 hover:underline"
               >
                 Sitemap
               </Link>
               <Link
-                href="/rss.xml"
+                href="/feed.xml"
                 target="_blank"
-                className="text-muted-foreground underline-offset-2 hover:underline"
+                className="text-foreground-600 underline-offset-2 hover:underline"
               >
                 RSS Feed
               </Link>

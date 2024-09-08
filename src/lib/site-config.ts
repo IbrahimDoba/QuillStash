@@ -17,4 +17,5 @@ export const siteConfig = {
         url: "https://github.com/taqh",
       },
     ], 
+    email: ""
 };

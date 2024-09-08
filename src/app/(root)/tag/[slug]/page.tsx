@@ -1,3 +1,4 @@
+import Container from '@/components/Container';
 import TagPostCard from '@/components/tag-post-card';
 import { db } from '@/db';
 import { Button } from '@nextui-org/react';
@@ -71,7 +72,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   });
 
   return (
-    <div>
+    <Container>
       <section className='py-10 grid place-content-center'>
         <div className='max-w-prose text-center mt-10 space-y-3'>
           <h1 className='max-w-prose relative text-center text-balance text-2xl font-bold leading-10 tracking-tight md:text-3xl lg:text-4xl xl:text-5xl'>
@@ -93,7 +94,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <TagNotFound />
         )}
       </section>
-    </div>
+    </Container>
   );
 }
 
