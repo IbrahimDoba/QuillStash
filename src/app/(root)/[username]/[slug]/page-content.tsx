@@ -7,6 +7,7 @@ import CommentSection from '@/components/comments/comment-section';
 import getSession from '@/lib/getSession';
 import Promotion from './promotion';
 import DiscordCardComponent from '@/components/DiscordCard';
+import Container from "@/components/Container"
 
 export interface PostContentProps extends Post {
   author: {
@@ -26,12 +27,12 @@ async function PostContent({ post }: { post: PostContentProps }) {
   const user = session?.user;
 
   return (
-    <div>
+    <Container>
       <section className='relative grid-rows-1 justify-center gap-x-8 lg:flex lg:grid-cols-[auto_1fr_auto]'>
         {/* main content */}
         <div className='max-w-4xl space-y-8 w-full '>
           <article className='flex flex-col gap-5 py-6 lg:py-10'>
-            <section className='space-y-3 px-4'>
+            <section className='space-y-3'>
               <div className='space-y-0.5'>
                 <time
                   className='text-foreground-500 text-sm tracking-tight'
@@ -108,7 +109,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
         {/* <Promotion /> */}
         <DiscordCardComponent/>
       </section>
-    </div>
+    </Container>
   );
 }
 
