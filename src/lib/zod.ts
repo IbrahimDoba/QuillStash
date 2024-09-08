@@ -1,5 +1,7 @@
 import { nullable, object, string, z } from 'zod';
 
+
+
 export const signInSchema = object({
   email: z
     .string({ required_error: 'Email is required' })
@@ -55,6 +57,20 @@ export const serverUserProfileSchema = object({
 export type ServerUserProfileFormData = z.infer<typeof serverUserProfileSchema>;
 export type UserProfileFormData = z.infer<typeof userProfileSchema>;
 
+export const userAccountSchema = object({
+  name: z.string(),
+  location: z.string().nullable(),
+  website: z.string().url({ message: 'Please enter a valid URL' }).nullable(),
+  socials: z
+    .array(z.string().url({ message: 'Please enter a valid URL' }))
+    .max(5)
+    .nullable(),
+  pronouns: z.string().nullable(),
+  work: z.string().nullable(),
+  email: z.string({ required_error: 'Email is required' }).min(1, 'Email is required').email('Invalid email'),
+});
+export type UserAccountValues = z.infer<typeof userAccountSchema>;
+
 const stripHtmlTags = (html: string) => {
   return html.replace(/<[^>]*>/g, '').trim();
 };
@@ -107,7 +123,13 @@ export const replySchema = z.object({
 export type ReplyValues = z.infer<typeof replySchema>;
 
 export const confirmSchema = z.object({
-  username: z.string().min(1),
+  username: z
+  .string()
+  .min(3, { message: "Username must be at least 3 characters long" })
+  .max(20, { message: "Username must be at most 20 characters long" })
+  .regex(/^[a-zA-Z0-9_-]+$/, {
+    message: "Username can only contain letters, numbers, hyphens, and underscores. No spaces allowed.",
+  }),
   name: z.string().optional(),
 });
 export type ConfirmValues = z.infer<typeof confirmSchema>;

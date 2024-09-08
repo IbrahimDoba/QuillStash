@@ -34,6 +34,14 @@ export const accounts = pgTable(
     }),
   })
 );
+export type Account = InferSelectModel<typeof accounts>;
+
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  user: one(users, {
+    fields: [accounts.userId],
+    references: [users.id],
+  }),
+}));
 
 // Sessions table
 export const sessions = pgTable('session', {
@@ -71,9 +79,10 @@ export type User = InferSelectModel<typeof users>; // export a type for the post
 // user relations
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
-  drafts: many(drafts),
-  bookmarks: many(bookmarks),
   likes: many(likes),
+  drafts: many(drafts),
+  accounts: many(accounts),
+  bookmarks: many(bookmarks),
 }));
 
 // Posts table

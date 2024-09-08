@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { AuthForm } from '@/components/auth-form';
 import { Button } from '@nextui-org/react';
-import { AcmeLogo } from '@/components/Icons';
+import { SiteLogo } from '@/components/Icons';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata = {
@@ -44,7 +44,10 @@ export default async function LoginPage() {
         </div>
       </div>
       <div className='hidden h-full bg-slate-100 dark:bg-slate-900 lg:grid place-content-center'>
-        <AcmeLogo />
+        <div className='flex items-center gap-3'>
+          <SiteLogo className="size-12" />
+          <p className='font-bold text-inherit text-4xl uppercase'>quillstash</p>
+        </div>
       </div>
     </div>
   );
