@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import PublishSettings from '@/components/editor/PublishSettings';
 import ErrorMessage from '@/components/ui/error-message';
+import { sanitizeHtml } from '@/utils/sanitize-html';
 
 function PageContent() {
   const [saving, setSaving] = useState(false);
@@ -86,7 +87,7 @@ function PageContent() {
     if (html.length > 0) {
       clearErrors('body');
     }
-    setValue('body', html);
+    setValue('body', sanitizeHtml(html));
   };
 
   return (
@@ -131,7 +132,7 @@ function PageContent() {
       </nav>
 
       {/* editor */}
-      <Container className='grid pt-4 pb-20 max-w-screen-lg'>
+      <div className='grid pt-4 pb-20 max-w-screen-lg mx-auto'>
         <div className='p-4 flex flex-col col-span-3'>
           <form
             ref={formRef}
@@ -164,7 +165,7 @@ function PageContent() {
             </div>
           </form>
         </div>
-      </Container>
+      </div>
     </>
   );
 }

@@ -14,7 +14,6 @@ import {
   Quote,
   Strikethrough,
 } from 'lucide-react';
-import { Divider } from '@nextui-org/divider';
 import LinkItem from './LinkItem';
 
 export default function FloatingMenuBar({ editor }: { editor: Editor }) {

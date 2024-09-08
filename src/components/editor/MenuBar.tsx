@@ -15,6 +15,8 @@ import {
   SeparatorHorizontal,
   Strikethrough,
   Undo,
+  CodeSquare,
+  Code,
 } from 'lucide-react';
 import { Divider } from '@nextui-org/divider';
 import ImageItem from './ImageItem';
@@ -99,6 +101,15 @@ export default function MenuBar({ editor }: { editor: Editor }) {
       icon: Redo,
       title: 'Redo',
       action: () => editor.chain().focus().redo().run(),
+    },
+    {
+      type: 'divider',
+    },
+    {
+      icon: CodeSquare,
+      title: 'Code block',
+      action: () => editor.chain().focus().toggleCodeBlock().run(),
+      isActive: () => editor.isActive('codeBlock'),
     },
   ];
 
