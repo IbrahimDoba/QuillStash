@@ -78,7 +78,7 @@ export async function POST(req: Request) {
     if (!postSummary ||postSummary.trim() === "" || postSummary === null) {
       try {
         // Generate description using Gemini if not provided
-        postSummary = await generateDescription(validatedData.body);
+        postSummary = await generateDescription(validatedData.title);
       } catch (error) {
         console.error('Error generating description:', error);
         postSummary = null; 

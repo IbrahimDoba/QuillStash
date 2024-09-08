@@ -69,7 +69,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
                 />
               </div>
             </section>
-            {post.coverImage && (
+            {/* {post.coverImage && (
               <Image
                 src={post.coverImage}
                 alt={post.title}
@@ -77,7 +77,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
                 height={400}
                 className='w-auto h-auto aspect-video rounded-lg'
               />
-            )}
+            )} */}
             <div
               className='prose max-w-none text-foreground xl:prose-lg dark:prose-invert w-full'
               dangerouslySetInnerHTML={{
