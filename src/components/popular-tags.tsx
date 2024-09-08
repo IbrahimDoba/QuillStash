@@ -3,7 +3,9 @@ import { db } from '@/db';
 import Link from 'next/link';
 
 const PopularTags = async () => {
-  const tags = await db.query.tags.findMany({});
+  const tags = await db.query.tags.findMany({
+    limit: 8,
+  });
 
   if (!tags) return null;
 

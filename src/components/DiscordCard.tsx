@@ -27,29 +27,36 @@
 
 // export default DiscordCardComponent;
 
-import { Card, CardBody, Button } from '@nextui-org/react';
+import { Card, CardBody, Button, CardHeader, CardFooter, Link } from '@nextui-org/react';
+import { ArrowUpRight } from 'lucide-react';
 
 const DiscordCardComponent = ({  }) => {
   return (
-    <Card className="max-w-md rounded-lg shadow-lg mt-5">
+    <Card radius='sm' shadow='sm' className="max-w-md">
+      <CardHeader>
+        <h4 className="text-2xl font-bold text-primary">
+          Join the community
+        </h4>
+      </CardHeader>
       <CardBody>
-        <h3 className="text-2xl font-bold text-blue-600 mb-4">
-          Join Our Community
-        </h3>
-        <p className="text-base text-gray-600 mb-6">
-          Be a part of our growing community! Connect, share, and explore
-          discussions with other like-minded individuals. We would love to have
+        <p className="text-base text-foreground-500">
+          Be a part of our growing community. Connect, share, and discuss with like-minded individuals. We would love to have
           you with us!
         </p>
-        <a href={process.env.PERMANENT_DISCORD_LINK} className="w-full">
-          <Button
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg"
-            size="lg"
-          >
-            Join Our Community
-          </Button>
-        </a>
       </CardBody>
+      <CardFooter>
+        <Button
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg"
+          href={process.env.PERMANENT_DISCORD_LINK}
+          size="lg"
+          as={Link}
+        >
+          <span>
+            Join us today
+          </span>
+          <ArrowUpRight size={16}/>
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

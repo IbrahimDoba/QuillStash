@@ -162,6 +162,13 @@
       "when": 1725570553784,
       "tag": "0022_chunky_shadowcat",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1725759928512,
+      "tag": "0023_clammy_ted_forrester",
+      "breakpoints": true
     }
   ]
 }
