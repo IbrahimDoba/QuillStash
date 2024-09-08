@@ -89,6 +89,7 @@ export const posts = pgTable('posts', {
   featured: boolean('featured').default(false).notNull(),
   views: integer('views').default(0).notNull(),
   tags: json('tags').$type<string[]>().notNull(), // Tags are stored as a JSON array
+  published: boolean('published').default(true),
   userId: text('user_id')
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(),

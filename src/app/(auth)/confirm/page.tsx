@@ -6,6 +6,7 @@ import { db } from '@/db';
 import { eq } from 'drizzle-orm';
 import { users } from '@/db/schema';
 import getSession from '@/lib/getSession';
+import { SiteLogo } from '@/components/Icons';
 
 export const metadata: Metadata = {
   title: 'Create account',
@@ -25,7 +26,7 @@ export default async function Confirm() {
       <div className='flex min-w-[300px] flex-col gap-8 rounded-md p-6 lg:w-[384px] lg:px-8 lg:py-10'>
         <div className='flex flex-col items-center gap-4 leading-3'>
           <div>
-            <PenLine size={40} />
+            <SiteLogo size={40} />
           </div>
 
           <div className='flex flex-col items-center'>
@@ -41,24 +42,6 @@ export default async function Confirm() {
           name={user.name}
           username={user.username}
         />
-
-        <p className='px-8 text-center text-sm text-muted-foreground'>
-          By clicking continue, you agree to our{' '}
-          <Link
-            href='/terms'
-            className='hover:text-primary underline underline-offset-4'
-          >
-            Terms of Service
-          </Link>{' '}
-          and{' '}
-          <Link
-            href='/privacy'
-            className='hover:text-primary underline underline-offset-4'
-          >
-            Privacy Policy
-          </Link>
-          .
-        </p>
       </div>
     </div>
   );
