@@ -68,3 +68,10 @@ export const topics = [
   { name: "Mindfulness", slug: "mindfulness", description: "Practices and techniques for being present and fully engaged in the moment" },
 ];
 
+export const stickyRoutes = [
+  "/account",
+  "/profile",
+  "/profile/edit",
+  "/terms",
+  "/privacy"
+]

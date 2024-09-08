@@ -16,18 +16,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const users = await db.query.users.findMany();
   const tags = await db.query.tags.findMany();
 
-  //   return a sitemap object for each blog post
-  const postPages: MetadataRoute.Sitemap = posts.map((post) => ({
+   // Return a sitemap object for each blog post
+   const postPages: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${siteConfig.url}/${post.author?.username}/${post.slug}`,
     lastModified: post.updatedAt,
+    changeFrequency: 'weekly',
+    priority: 0.6,
   }));
+
+  // Return a sitemap object for each tag 
   const tagPages: MetadataRoute.Sitemap = tags.map((tag) => ({
-    url: `${siteConfig.url}/${tag.name}`,
+    url: `${siteConfig.url}/tag/${tag.slug}`,
     lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.5,
   }));
+
+  // Return a sitemap object for each user
   const userProfiles: MetadataRoute.Sitemap = users.map((user) => ({
-    url: `${siteConfig.url}/${user.username}/`,
+    url: `${siteConfig.url}/${user.username}`,
     lastModified: user.updatedAt,
+    changeFrequency: 'yearly',
+    priority: 0.4,
   }));
 
   return [
