@@ -6,6 +6,7 @@ import { db } from '@/db';
 import { siteConfig } from '@/lib/site-config';
 import { posts } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import { highlightCodeBlocks } from '@/utils/highlight-codeblocks';
 
 const getPost = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
@@ -21,6 +22,9 @@ const getPost = cache(async (slug: string) => {
     },
   });
   if (!post) return null;
+
+  post.body = await highlightCodeBlocks(post.body);
+
   // Increment the views count
   await db.update(posts)
     .set({
@@ -58,7 +62,7 @@ export async function generateMetadata({
           url: post.coverImage || '/login.jpg',
           width: '1200',
           height: '630',
-          // alt: ''
+          alt: post.title,
         },
       ],
     },
@@ -83,7 +87,7 @@ export const generateStaticParams = async () => {
   }));
 };
 
-export const revalidate = 3600 * 12;
+export const revalidate = 3600;
 
 async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;

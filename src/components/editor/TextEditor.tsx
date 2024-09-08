@@ -1,15 +1,23 @@
-'use client';
-import { useEditor, EditorContent } from '@tiptap/react';
-import Underline from '@tiptap/extension-underline';
-import StarterKit from '@tiptap/starter-kit';
-import Placeholder from '@tiptap/extension-placeholder';
-import Image from '@tiptap/extension-image';
-import Highlight from '@tiptap/extension-highlight';
-import Link from '@tiptap/extension-link';
-import Code from '@tiptap/extension-code';
-import Dropcursor from '@tiptap/extension-dropcursor';
-import MenuBar from './MenuBar';
-import FloatingMenubar from './FloatingMenuBar';
+"use client";
+import { useEditor, EditorContent } from "@tiptap/react";
+import Underline from "@tiptap/extension-underline";
+import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
+import Highlight from "@tiptap/extension-highlight";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import Link from "@tiptap/extension-link";
+import Code from "@tiptap/extension-code";
+import CodeBlock from '@tiptap/extension-code-block'
+import Dropcursor from "@tiptap/extension-dropcursor";
+import MenuBar from "./MenuBar";
+import FloatingMenubar from "./FloatingMenuBar";
+
+// load all languages with "all" or common languages with "common"
+import { all, createLowlight } from "lowlight";
+
+// create a lowlight instance with all languages loaded
+const lowlight = createLowlight(all);
 
 interface EditorProps {
   value: string;
@@ -25,24 +33,31 @@ function TextEditor({ value, onChange }: EditorProps) {
         },
       }),
       Placeholder.configure({
-        placeholder: 'Your story ...',
+        placeholder: "Your story ...",
       }),
       Link.configure({
         openOnClick: false,
         autolink: true,
-        HTMLAttributes: { class: 'underline text-foreground' },
+        HTMLAttributes: { class: "underline text-foreground" },
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'rounded-md',
+          class: "rounded-md",
+        },
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
+        HTMLAttributes: {
+          class: 'code-block',
         },
       }),
       Dropcursor.configure({
-        color: 'blue',
+        color: "blue",
       }),
       Underline,
       Highlight,
       Code,
+      CodeBlock
     ],
     immediatelyRender: false,
     content: value,
@@ -53,7 +68,7 @@ function TextEditor({ value, onChange }: EditorProps) {
     editorProps: {
       attributes: {
         class:
-          'prose dark:prose-invert text-foreground min-h-96 w-full min-w-full p-4 outline-none focus-visible:ring-0',
+          "prose dark:prose-invert text-foreground min-h-96 w-full min-w-full p-4 outline-none focus-visible:ring-0",
       },
     },
   });
@@ -63,7 +78,8 @@ function TextEditor({ value, onChange }: EditorProps) {
   }
 
   return (
-    <div className='flex flex-col justify-stretch gap-2'>
+    <div className="flex flex-col justify-stretch gap-2">
+      
       <MenuBar editor={editor} />
       <FloatingMenubar editor={editor} />
       <EditorContent editor={editor} />

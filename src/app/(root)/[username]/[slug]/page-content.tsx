@@ -6,8 +6,11 @@ import { Chip, User } from '@nextui-org/react';
 import CommentSection from '@/components/comments/comment-section';
 import getSession from '@/lib/getSession';
 import Promotion from './promotion';
+import React, { useEffect } from 'react';
+
 import DiscordCardComponent from '@/components/DiscordCard';
 import Container from "@/components/Container"
+import RenderHtml from './render-html';
 
 export interface PostContentProps extends Post {
   author: {
@@ -25,6 +28,8 @@ async function PostContent({ post }: { post: PostContentProps }) {
   }).format(new Date(post.createdAt));
   const session = await getSession();
   const user = session?.user;
+
+  
 
   return (
     <Container>
@@ -79,12 +84,8 @@ async function PostContent({ post }: { post: PostContentProps }) {
                 className='w-auto h-auto aspect-video rounded-lg'
               />
             )} */}
-            <div
-              className='prose max-w-none text-foreground xl:prose-lg dark:prose-invert w-full'
-              dangerouslySetInnerHTML={{
-                __html: post.body,
-              }}
-            />
+            
+            <RenderHtml html={post.body} />
           </article>
           <CommentSection id={post.id} user={user} />
         </div>
