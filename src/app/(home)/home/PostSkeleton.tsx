@@ -16,15 +16,15 @@ function PostSkeleton() {
           </span>
 
           <div>
-            <div className='flex flex-col gap-2 mb-4'>
-              <Skeleton className='w-4/5 h-4 rounded-md' />
-              <Skeleton className='w-3/4 h-4 rounded-md' />
+            <div className='flex flex-col gap-2 mb-2'>
+              <Skeleton className='w-full lg:w-4/5 h-4 rounded-md' />
+              <Skeleton className='w-full lg:w-3/4 h-4 rounded-md' />
             </div>
 
             <div className='flex flex-col gap-2'>
-              <Skeleton className='w-4/5 h-4 rounded-md' />
-              <Skeleton className='w-3/4 max-sm:hidden h-4 rounded-md' />
-              <Skeleton className='h-6 w-12 rounded-md' />
+              <Skeleton className='w-full lg:w-4/5 h-4 rounded-md' />
+              <Skeleton className='w-full lg:w-3/4 max-sm:hidden h-4 rounded-md' />
+              <Skeleton className='h-6 w-16 rounded-md' />
             </div>
           </div>
         </div>

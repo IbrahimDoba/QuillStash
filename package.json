@@ -41,6 +41,7 @@
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.33.0",
     "drizzle-zod": "^0.5.1",
+    "feed": "^4.2.2",
     "framer-motion": "^11.3.23",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.417.0",

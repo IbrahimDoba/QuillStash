@@ -1,10 +1,11 @@
-import { notFound } from 'next/navigation';
-import PageContent from './page-content';
-import { db } from '@/db';
-import getSession from '@/lib/getSession';
-import { Metadata } from 'next';
-import { cache } from 'react';
-import { siteConfig } from '@/lib/site-config';
+import { notFound } from "next/navigation";
+import PageContent from "./page-content";
+import { db } from "@/db";
+import getSession from "@/lib/getSession";
+import { Metadata } from "next";
+import { cache } from "react";
+import { siteConfig } from "@/lib/site-config";
+import Container from "@/components/Container";
 
 const getProfileData = cache(async (username: string) => {
   const profileData = await db.query.users.findFirst({
@@ -72,16 +73,18 @@ async function Page({ params }: { params: { username: string } }) {
   const user = session?.user;
 
   const profileData = await getProfileData(username);
-  
+
   if (!profileData) {
     return notFound();
   }
 
   return (
-    <PageContent
-      {...profileData}
-      isCurrentUser={user?.username === profileData.username}
-    />
+    <Container>
+      <PageContent
+        {...profileData}
+        isCurrentUser={user?.username === profileData.username}
+      />
+    </Container>
   );
 }
 
