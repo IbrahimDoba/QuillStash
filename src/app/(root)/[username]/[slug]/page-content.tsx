@@ -1,51 +1,51 @@
-import { ExternalLink } from 'lucide-react';
-import Image from 'next/image';
-import { Post } from '@/db/schema';
-import PostActions from './post-actions';
-import { Chip, User } from '@nextui-org/react';
-import CommentSection from '@/components/comments/comment-section';
-import getSession from '@/lib/getSession';
-import Promotion from './promotion';
-import React, { useEffect } from 'react';
+import { ExternalLink } from "lucide-react";
+import Image from "next/image";
+import { Post } from "@/db/schema";
+import PostActions from "./post-actions";
+import { Chip, User } from "@nextui-org/react";
+import CommentSection from "@/components/comments/comment-section";
+import getSession from "@/lib/getSession";
+import Promotion from "./promotion";
+import React, { useEffect } from "react";
 
-import DiscordCardComponent from '@/components/DiscordCard';
-import Container from "@/components/Container"
-import RenderHtml from './render-html';
+import DiscordCardComponent from "@/components/DiscordCard";
+import Container from "@/components/Container";
+import RenderHtml from "./render-html";
+import Link from "next/link";
 
 export interface PostContentProps extends Post {
   author: {
     username: string | null;
     image: string | null;
     name: string;
+    work:string | null;
   } | null;
 }
 
 async function PostContent({ post }: { post: PostContentProps }) {
-  const formattedDate = new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   }).format(new Date(post.createdAt));
   const session = await getSession();
   const user = session?.user;
 
-  
-
   return (
     <Container>
-      <section className='relative grid-rows-1 justify-center gap-x-8 lg:flex lg:grid-cols-[auto_1fr_auto]'>
+      <section className="relative grid-rows-1 justify-center gap-x-8 lg:flex lg:grid-cols-[auto_1fr_auto]">
         {/* main content */}
-        <div className='max-w-4xl space-y-8 w-full '>
-          <article className='flex flex-col gap-5 py-6 lg:py-10'>
-            <section className='space-y-3'>
-              <div className='space-y-0.5'>
+        <div className="w-full max-w-4xl space-y-8">
+          <article className="flex flex-col gap-5 py-6 lg:py-10">
+            <section className="space-y-3">
+              <div className="space-y-0.5">
                 <time
-                  className='text-foreground-500 text-sm tracking-tight'
+                  className="text-sm tracking-tight text-foreground-500"
                   dateTime={new Date(post.createdAt).toISOString()}
                 >
                   Published on {formattedDate}
                 </time>
-                <h1 className='font-bold text-2xl md:text-3xl lg:text-5xl leading-8 tracking-wide'>
+                <h1 className="text-2xl font-bold leading-8 tracking-wide md:text-3xl lg:text-5xl">
                   {post.title}
                 </h1>
               </div>
@@ -56,20 +56,24 @@ async function PostContent({ post }: { post: PostContentProps }) {
                   </Chip>
                 ))}
               </ul> */}
-              <User
-                name={post.author?.name ?? 'site user'}
-                description='Product Designer'
-                avatarProps={{
-                  src:
-                    post.author?.image ??
-                    'https://i.pravatar.cc/150?u=a042581f4e29026704d',
-                  size: 'sm',
-                }}
-              />
+              <Link href={`/${post.author?.username}`}>
+                <User
+                  className="cursor-pointer my-2"
+                  name={post.author?.name ?? "site user"}
+                  description={post.author?.work}
+                  avatarProps={{
+                    src:
+                      post.author?.image ??
+                      "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+                    size: "sm",
+                  }}
+                />
+              </Link>
+
               <div>
                 <PostActions
                   title={post.title}
-                  userId={user?.id || ''}
+                  userId={user?.id || ""}
                   postId={post.id}
                   views={post.views}
                 />
@@ -84,7 +88,7 @@ async function PostContent({ post }: { post: PostContentProps }) {
                 className='w-auto h-auto aspect-video rounded-lg'
               />
             )} */}
-            
+
             <RenderHtml html={post.body} />
           </article>
           <CommentSection id={post.id} user={user} />
@@ -106,9 +110,9 @@ async function PostContent({ post }: { post: PostContentProps }) {
         </aside> */}
       </section>
 
-      <section className='my-6 lg:my-10 max-w-4xl mx-auto space-y-6 flex justify-center items-center'>
+      <section className="mx-auto my-6 flex max-w-4xl items-center justify-center space-y-6 lg:my-10">
         {/* <Promotion /> */}
-        <DiscordCardComponent/>
+        <DiscordCardComponent />
       </section>
     </Container>
   );

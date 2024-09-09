@@ -55,15 +55,19 @@ function PostCard({
               className="pointer-events-none aspect-video object-cover max-sm:h-[60px] max-sm:w-[80px] lg:min-h-[150px] lg:rounded-md"
             />
           </Link>
-          {/* <div className=' flex-col gap-2 lg:gap-4 justify-between'> */}
-          <span className="user flex items-center gap-2 text-xs lg:mt-1">
-            <Avatar
-              src={author.image ?? "/user-1.jpg"}
-              className="pointer-events-none h-6 w-6 text-tiny"
-              showFallback
-              name={author.name}
-            />
-            <span>{author.name}</span>
+          <span className="user flex items-center gap-2 text-xs lg:mt-1 font-semibold">
+            <Link href={`/${author.username}`}>
+              {/* <div className=' flex-col gap-2 lg:gap-4 justify-between'> */}
+              <Avatar
+                src={author.image ?? "/user-1.jpg"}
+                className="pointer-events-none h-6 w-6 text-tiny"
+                showFallback
+                name={author.name}
+              />
+            </Link>
+            <Link href={`/${author.username}`}>
+              <span>{author.name}</span>
+            </Link>
             on
             <time>
               {new Date(createdAt).toLocaleDateString("en-US", {
@@ -96,7 +100,7 @@ function PostCard({
               />
               <span className="text-xs text-default-900/60">{likesCount}</span>
             </button>
-            <div className="text-xs text-foreground-600 font-semibold">
+            <div className="text-xs font-semibold text-foreground-600">
               {readingTime} min read
             </div>
           </div>

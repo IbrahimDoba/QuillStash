@@ -17,6 +17,7 @@ const getPost = cache(async (slug: string) => {
           name: true,
           image: true,
           username: true,
+          work: true
         },
       },
     },
@@ -59,7 +60,7 @@ export async function generateMetadata({
     keywords: post?.tags,
     openGraph: {
       type: 'article',
-      description: `${post.summary || siteConfig.description} ` ,
+      description: post.summary || siteConfig.description  ,
       url: `${siteConfig.url}/${post?.author?.username}/${slug}`,
       title: post.title,
       siteName: siteConfig.title,

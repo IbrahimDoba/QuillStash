@@ -1,10 +1,10 @@
-import Container from '@/components/Container';
-import TagPostCard from '@/components/tag-post-card';
-import { db } from '@/db';
-import { Button } from '@nextui-org/react';
-import { Frown } from 'lucide-react';
-import { Metadata } from 'next';
-import Link from 'next/link';
+import Container from "@/components/Container";
+import TagPostCard from "@/components/tag-post-card";
+import { db } from "@/db";
+import { Button } from "@nextui-org/react";
+import { Frown } from "lucide-react";
+import { Metadata } from "next";
+import Link from "next/link";
 
 const getTag = async (slug: string) => {
   const tag = await db.query.tags.findFirst({
@@ -20,11 +20,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = params;
   const tag = await getTag(slug);
-  if (!tag) return {}
+  if (!tag) return {};
 
   return {
     title: tag.name,
-    description: `Explore our collection of articles related to ${slug}`,
+    openGraph: {
+      description: `Explore our collection of articles related to ${slug}`,
+    },
   };
 }
 
@@ -44,7 +46,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   if (!tag) {
     return (
-      <div className='py-40 grid place-content-center'>
+      <div className="grid place-content-center py-40">
         <TagNotFound />
       </div>
     );
@@ -73,19 +75,20 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <Container>
-      <section className='py-10 grid place-content-center'>
-        <div className='max-w-prose text-center mt-10 space-y-3'>
-          <h1 className='max-w-prose relative text-center text-balance text-2xl font-bold leading-10 tracking-tight md:text-3xl lg:text-4xl xl:text-5xl'>
-            Showing results for articles tagged <span>&quot;{tag.name}&quot;</span>
+      <section className="grid place-content-center py-10">
+        <div className="mt-10 max-w-prose space-y-3 text-center">
+          <h1 className="relative max-w-prose text-balance text-center text-2xl font-bold leading-10 tracking-tight md:text-3xl lg:text-4xl xl:text-5xl">
+            Showing results for articles tagged{" "}
+            <span>&quot;{tag.name}&quot;</span>
           </h1>
           <p>A curated collection of articles about {tag.name}</p>
         </div>
       </section>
-      <section className='py-6'>
+      <section className="py-6">
         {posts.length ? (
-          <ul className='grid grid-cols-[repeat(auto-fill,_minmax(16.75rem,_20rem))] gap-8 md:gap-14 max-md:justify-center'>
+          <ul className="grid grid-cols-[repeat(auto-fill,_minmax(16.75rem,_20rem))] gap-8 max-md:justify-center md:gap-14">
             {posts?.map((post) => (
-              <li key={post.id} className='dark:border-foreground-50'>
+              <li key={post.id} className="dark:border-foreground-50">
                 <TagPostCard {...post} />
               </li>
             ))}
@@ -100,21 +103,21 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
 function TagNotFound() {
   return (
-    <div className='grid place-content-center min-h-56'>
-      <div className='space-y-2 flex items-center flex-col'>
-        <Frown size={64} className='text-foreground-400' />
-        <p className='max-w-prose text-center lg:px-10'>
+    <div className="grid min-h-56 place-content-center">
+      <div className="flex flex-col items-center space-y-2">
+        <Frown size={64} className="text-foreground-400" />
+        <p className="max-w-prose text-center lg:px-10">
           Sorry we couldn&apos;t find any articles on that topic. You can try
-          exploring our other topics{' '}
+          exploring our other topics{" "}
           <Link
-            href='/home'
-            className='font-semibold underline underline-offset-2'
+            href="/home"
+            className="font-semibold underline underline-offset-2"
           >
             here
-          </Link>{' '}
+          </Link>{" "}
           or be the first to write on the topic you&apos;re looking for
         </p>
-        <Button radius='sm' color='primary' href='/new' className='mt-8'>
+        <Button radius="sm" color="primary" href="/new" className="mt-8">
           Don&apos;t be shy
         </Button>
       </div>
