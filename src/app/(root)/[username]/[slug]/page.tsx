@@ -25,9 +25,9 @@ const getPost = cache(async (slug: string) => {
   if (!post) return null;
 
   try {
-    console.log('Original post body:', post.body);
+    // console.log('Original post body:', post.body);
     post.body = await highlightHtmlCodeBlocks(post.body);
-    console.log('Highlighted post body:', post.body);
+    // console.log('Highlighted post body:', post.body);
   } catch (error) {
     console.error('Error highlighting code blocks:', error);
     post.body = post.body;
@@ -73,7 +73,7 @@ export async function generateMetadata({
   const post = await getPostFix(slug);
 
   if (!post) return {};
-
+ 
   return {
     metadataBase: new URL(siteConfig.url),
     title: post?.title,
