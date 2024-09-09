@@ -6,7 +6,7 @@ import { db } from '@/db';
 import { siteConfig } from '@/lib/site-config';
 import { posts } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { highlightCodeBlocks } from '@/utils/highlight-codeblocks';
+import { highlightHtmlCodeBlocks } from '@/utils/highlight-code';
 
 const getPost = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
@@ -23,7 +23,15 @@ const getPost = cache(async (slug: string) => {
   });
   if (!post) return null;
 
-  post.body = await highlightCodeBlocks(post.body);
+  try {
+    console.log('Original post body:', post.body);
+    post.body = await highlightHtmlCodeBlocks(post.body);
+    console.log('Highlighted post body:', post.body);
+  } catch (error) {
+    console.error('Error highlighting code blocks:', error);
+    post.body = post.body;
+  }
+  
 
   // Increment the views count
   await db.update(posts)
