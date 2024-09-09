@@ -44,13 +44,33 @@ const getPost = cache(async (slug: string) => {
   return post;
 });
 
+const getPostFix = cache(async (slug: string) => {
+  const post = await db.query.posts.findFirst({
+    where: (posts, { eq }) => eq(posts.slug, slug),
+    with: { 
+      author: {
+        columns: {
+          name: true,
+          image: true,
+          username: true,
+          work: true
+        },
+      },
+    },
+  });
+
+
+  return post;
+});
+
+
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
   const { slug } = params;
-  const post = await getPost(slug);
+  const post = await getPostFix(slug);
 
   if (!post) return {};
 
