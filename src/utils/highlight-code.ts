@@ -8,7 +8,7 @@ export async function highlightHtmlCodeBlocks(html: string): Promise<string> {
   try {
     const file = await unified()
       .use(rehypeParse, { fragment: true })
-      .use(rehypeHighlight, { detect: true, ignoreMissing: true })
+      .use(rehypeHighlight, { detect: true })
       .use(rehypeStringify)
       .process(html);
 
