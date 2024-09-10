@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const HomePage = () => {
   return (
     <div className='grid lg:grid-cols-4 my-16 gap-x-8'>
-      <div className='lg:col-span-3'>
+      <div className='lg:col-span-3 xl:pr-16'>
         <PageContent />
       </div>
       <div className='relative  dark:border-foreground-100'>

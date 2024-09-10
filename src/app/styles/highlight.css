@@ -10,7 +10,6 @@
   font-family: "JetBrains Mono", monospace;
 }
 
-/* Adjust specific syntax highlighting colors if needed */
 .hljs-keyword {
   color: #c678dd;
 }
