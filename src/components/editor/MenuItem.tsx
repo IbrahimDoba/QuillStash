@@ -18,7 +18,7 @@ export default function MenuItem({
   return (
     <Button
       type='button'
-      onClick={action}
+      onPress={action}
       title={title}
       isIconOnly
       radius='sm'

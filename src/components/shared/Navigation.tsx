@@ -90,7 +90,7 @@ export default function Navigation() {
             Write
           </Button>
           <Dropdown placement="bottom-end">
-            <DropdownTrigger>
+            <DropdownTrigger >
               <Avatar
                 as="button"
                 className="transition-transform"

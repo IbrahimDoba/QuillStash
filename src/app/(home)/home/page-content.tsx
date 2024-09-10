@@ -9,11 +9,6 @@ import { Button } from "@nextui-org/react";
 import { Unplug } from "lucide-react";
 import Link from "next/link";
 
-interface PostWithDetails extends PostWithAuthor {
-  likesCount: number;
-  commentCount: number;
-  body:string;
-}
 interface PostWithAuthor extends Post {
   author: {
     name: string;
@@ -23,7 +18,7 @@ interface PostWithAuthor extends Post {
 }
 
 interface PostsApiResponse {
-  posts: PostWithDetails[];
+  posts: PostWithAuthor[];
   nextPage: number | null;
   totalPages: number;
   hasNextPage: boolean;
@@ -32,46 +27,19 @@ interface PostsApiResponse {
 function PageContent() {
   const [limit] = useState(3);
   const { ref, inView } = useInView();
-
-  // Fetch likes and comments count for each post in the backend (example query)
-  const getPostDetails = async (postId: string) => {
-    const likesResponse = await fetch(`/api/like?postId=${postId}`);
-    const commentsResponse = await fetch(`/api/comments?postId=${postId}`);
-
-    const likesCount = likesResponse.ok
-      ? (await likesResponse.json()).likesCount
-      : 0;
-    const commentCount = commentsResponse.ok
-      ? (await commentsResponse.json()).commentCount
-      : 0;
-
-    return { likesCount, commentCount };
-  };
+  const url = process.env.NEXT_PUBLIC_API_URL;
 
   const getPosts = async ({
     pageParam,
   }: {
     pageParam: number;
   }): Promise<PostsApiResponse> => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/posts?page=${pageParam}&limit=${limit}`
-    );
+    const res = await fetch(`${url}/posts?page=${pageParam}&limit=${limit}`);
     if (!res.ok) {
       throw new Error("Network response was not ok");
     }
     const data: PostsApiResponse = await res.json();
-    // Fetch likes and comments count for each post
-    const postsWithDetails = await Promise.all(
-      data.posts.map(async (post) => {
-        const { likesCount, commentCount } = await getPostDetails(post.id);
-        return { ...post, likesCount, commentCount };
-      })
-    );
-
-    return {
-      ...data,
-      posts: postsWithDetails,
-    };
+    return data;
   };
 
   const {
@@ -87,6 +55,8 @@ function PageContent() {
     queryFn: getPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
+    staleTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -94,10 +64,6 @@ function PageContent() {
       fetchNextPage();
     }
   }, [inView, fetchNextPage, hasNextPage]);
-
-  // useEffect(() => {
-  //   console.log('Element is in view: ', inView);
-  // }, [inView]);
 
   if (isLoading) {
     return (
@@ -128,15 +94,15 @@ function PageContent() {
 
   return (
     <>
-      <ul className="flex flex-col md:gap-4 lg:gap-6 divide-y-1">
+      <ul className="flex flex-col divide-y-1 md:gap-4 lg:gap-6">
         {allPosts?.map((post) => (
           <li key={post.id} className="dark:border-foreground-100">
-            <PostCard {...post}  body={post.body}  likesCount={post.likesCount} commentCount={post.commentCount}/>
+            <PostCard {...post} />
           </li>
         ))}
       </ul>
 
-      <ul ref={ref} className="flex flex-col my-4 gap-6 divide-y-1">
+      <ul ref={ref} className="my-4 flex flex-col gap-6 divide-y-1">
         {isFetchingNextPage && (
           <>
             {Array.from({ length: limit }).map((_, i) => (
@@ -147,13 +113,13 @@ function PageContent() {
       </ul>
 
       {inView && !hasNextPage && (
-        <div className="text-foreground-500 text-center text-sm">
+        <div className="text-center text-sm text-foreground-500">
           <p>You somehow made it to the end yay!!!</p>
           <span>
             maybe checkout our{" "}
             <Link
               href="https://discord.gg/vkYvY4D3RA"
-              className="underline underline-offset-2 font-medium"
+              className="font-medium underline underline-offset-2"
             >
               Discord?
             </Link>

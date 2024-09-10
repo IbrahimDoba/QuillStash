@@ -87,6 +87,7 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
           setValue={setValue}
           errors={errors}
           isSubmitting={isSubmitting}
+          defaultCoverImage={previousValues.coverImage}
         />
       </nav>
 

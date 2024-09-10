@@ -1,7 +1,7 @@
 'use client';
 
 import { formatFileSize } from '@edgestore/react/utils';
-import { UploadCloudIcon, X } from 'lucide-react';
+import { UploadCloudIcon, Trash } from 'lucide-react';
 import { useMemo, forwardRef } from 'react';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
 import { twMerge } from 'tailwind-merge';
@@ -21,8 +21,7 @@ type InputProps = {
   width?: number;
   height?: number;
   className?: string;
-  // value?: File | string;
-  value: File | null;
+  value: File | string | null;
   onChange?: (file?: File) => void | Promise<void>;
   disabled?: boolean;
   dropzoneOptions?: Omit<DropzoneOptions, 'disabled'>;
@@ -49,9 +48,9 @@ const SingleImageDropzone = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const imageUrl = useMemo(() => {
-      if (!value) {
-        return;
-      } else if (value) {
+      if (typeof value === 'string') {
+        return value;
+      } else if (value instanceof File) {
         return URL.createObjectURL(value);
       }
       return null;
@@ -139,7 +138,7 @@ const SingleImageDropzone = forwardRef<HTMLInputElement, InputProps>(
             <img
               className='h-full w-full rounded-md object-cover'
               src={imageUrl}
-              alt={acceptedFiles[0]?.name}
+              alt={value instanceof File ? value.name : 'Cover image'}
             />
           ) : (
             // Upload Icon
@@ -167,8 +166,8 @@ const SingleImageDropzone = forwardRef<HTMLInputElement, InputProps>(
                 void onChange?.(undefined);
               }}
             >
-              <div className='flex h-5 w-5 items-center justify-center rounded-md border border-solid border-gray-500 bg-white transition-all duration-300 hover:h-6 hover:w-6 dark:border-gray-400 dark:bg-black'>
-                <X width={16} height={16} />
+              <div className='bg-danger rounded-full p-1 group-hover:bg-danger/90 text-danger-foreground'>
+                <Trash size={16} />
               </div>
             </div>
           )}

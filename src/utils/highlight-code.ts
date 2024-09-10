@@ -4,12 +4,17 @@ import rehypeStringify from 'rehype-stringify';
 import rehypeHighlight from 'rehype-highlight';
 
 export async function highlightHtmlCodeBlocks(html: string): Promise<string> {
-  // Process the HTML with rehype, adding syntax highlighting
-  const file = await unified()
-    .use(rehypeParse, { fragment: true }) // Parses the HTML as a fragment
-    .use(rehypeHighlight) // Add syntax highlighting
-    .use(rehypeStringify) // Convert back to HTML
-    .process(html);
+  
+  try {
+    const file = await unified()
+      .use(rehypeParse, { fragment: true })
+      .use(rehypeHighlight, { detect: true, ignoreMissing: true })
+      .use(rehypeStringify)
+      .process(html);
 
-  return String(file);
+    return String(file);
+  } catch (error) {
+    console.error('Error in applying syntax highlighting:', error);
+    return html;
+  }
 }
