@@ -55,7 +55,7 @@ function ImageItem({ editor }: { editor: Editor }) {
         variant={editor.isActive('image') ? 'flat' : 'ghost'}
         type='button'
         title='image'
-        onClick={onOpen}
+        onPress={onOpen}
       >
         <ImageIcon size={18} />
       </Button>
@@ -88,10 +88,10 @@ function ImageItem({ editor }: { editor: Editor }) {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color='danger' radius='sm' variant='light' onPress={onClose}>
+                <Button color='danger' radius='sm' size='sm' variant='light' onPress={onClose}>
                   Close
                 </Button>
-                <Button color='primary' radius='sm' onClick={startUpload}>
+                <Button color='primary' radius='sm' size='sm' onPress={startUpload}>
                   Upload
                 </Button>
               </ModalFooter>

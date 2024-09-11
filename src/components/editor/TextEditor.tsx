@@ -31,6 +31,8 @@ function TextEditor({ value, onChange }: EditorProps) {
         heading: {
           levels: [2, 3, 4],
         },
+        dropcursor: false,
+        codeBlock: false,
       }),
       Placeholder.configure({
         placeholder: "Your story ...",
@@ -51,13 +53,8 @@ function TextEditor({ value, onChange }: EditorProps) {
           class: 'code-block',
         },
       }),
-      Dropcursor.configure({
-        color: "blue",
-      }),
       Underline,
       Highlight,
-      Code,
-      CodeBlock
     ],
     immediatelyRender: false,
     content: value,
@@ -79,7 +76,6 @@ function TextEditor({ value, onChange }: EditorProps) {
 
   return (
     <div className="flex flex-col justify-stretch gap-2">
-      
       <MenuBar editor={editor} />
       <FloatingMenubar editor={editor} />
       <EditorContent editor={editor} />

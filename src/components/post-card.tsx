@@ -1,10 +1,18 @@
 "use client";
 import { Post } from "@/db/schema";
-import { Card, CardBody, Image, Avatar, Button } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  Image,
+  Avatar,
+  Button,
+  Skeleton,
+} from "@nextui-org/react";
 import { Heart, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { calculateReadTime } from "@/utils/caluclate-readtime";
+import { useQuery } from "@tanstack/react-query";
 
 interface PostProps extends Post {
   author: {
@@ -12,30 +20,40 @@ interface PostProps extends Post {
     image: string;
     username: string;
   };
+}
+
+interface DetailsResponse {
   likesCount: number;
   commentCount: number;
 }
 
 function PostCard({
   title,
-  tags,
   coverImage,
   summary,
   createdAt,
   author,
   slug,
-  likesCount,
   body,
-  commentCount,
+  id,
 }: PostProps) {
   const [liked, setLiked] = useState(false);
-  const [readingTime, setReadingTime] = useState<number>(0); // State to store reading time
 
-  useEffect(() => {
-    // Calculate the reading time when the component mounts
-    const timeToRead = calculateReadTime(body); // Use the text body
-    setReadingTime(timeToRead);
-  }, [body]);
+  const getLikes = async (postId: string): Promise<number> => {
+    const res = await fetch(`/api/like?postId=${postId}`);
+    if (!res.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await res.json();
+    return data.likesCount;
+  };
+
+  const { data: likesCount, isLoading } = useQuery({
+    queryKey: ["likeCount", id],
+    queryFn: () => getLikes(id),
+    staleTime: 30000, // 30 seconds
+  });
+
   return (
     <Card
       shadow="none"
@@ -55,7 +73,7 @@ function PostCard({
               className="pointer-events-none aspect-video object-cover max-sm:h-[60px] max-sm:w-[80px] lg:min-h-[150px] lg:rounded-md"
             />
           </Link>
-          <span className="user flex items-center gap-2 text-xs lg:mt-1 font-semibold">
+          <span className="user flex items-center gap-2 text-xs font-semibold lg:mt-1">
             <Link href={`/${author.username}`}>
               {/* <div className=' flex-col gap-2 lg:gap-4 justify-between'> */}
               <Avatar
@@ -87,22 +105,28 @@ function PostCard({
             </p>
           </Link>
 
-          <div className="info items- flex gap-0.5 space-x-9">
-            <button
-              className="flex items-center gap-2 rounded-full text-default-900/60 data-[hover]:bg-foreground/10"
-              onClick={() => setLiked((v) => !v)}
-              title="Likes"
-            >
-              <Heart
-                className={liked ? "[&>path]:stroke-transparent" : ""}
-                fill={liked ? "currentColor" : "none"}
-                size={16}
-              />
-              <span className="text-xs text-default-900/60">{likesCount}</span>
-            </button>
-            <div className="text-xs font-semibold text-foreground-600">
-              {readingTime} min read
-            </div>
+          <div className="info items-center flex gap-6 ">
+            {isLoading ? (
+              <Skeleton className="h-6 w-14 rounded-md" />
+            ) : (
+              <button
+                className="flex items-center gap-1 rounded-full text-default-900/60 data-[hover]:bg-foreground/10"
+                onClick={() => setLiked((v) => !v)}
+                title="Likes"
+              >
+                <Heart
+                  className={liked ? "[&>path]:stroke-transparent" : ""}
+                  fill={liked ? "currentColor" : "none"}
+                  size={16}
+                />
+                <span className="text-xs text-default-900/60">
+                  {likesCount}
+                </span>
+              </button>
+            )}
+            <p className="text-xs text-foreground-600">
+              {calculateReadTime(body)} min read
+            </p>
           </div>
           {/* </div> */}
         </div>

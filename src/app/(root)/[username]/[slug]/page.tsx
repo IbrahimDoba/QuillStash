@@ -25,11 +25,8 @@ const getPost = cache(async (slug: string) => {
   if (!post) return null;
 
   try {
-    // console.log('Original post body:', post.body);
     post.body = await highlightHtmlCodeBlocks(post.body);
-    // console.log('Highlighted post body:', post.body);
   } catch (error) {
-    console.error('Error highlighting code blocks:', error);
     post.body = post.body;
   }
   
@@ -44,22 +41,18 @@ const getPost = cache(async (slug: string) => {
   return post;
 });
 
-const getPostFix = cache(async (slug: string) => {
+const getPostMetadata = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
     where: (posts, { eq }) => eq(posts.slug, slug),
     with: { 
       author: {
         columns: {
           name: true,
-          image: true,
           username: true,
-          work: true
         },
       },
     },
   });
-
-
   return post;
 });
 
@@ -70,7 +63,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const { slug } = params;
-  const post = await getPostFix(slug);
+  const post = await getPostMetadata(slug);
 
   if (!post) return {};
  
@@ -85,10 +78,10 @@ export async function generateMetadata({
       title: post.title,
       siteName: siteConfig.title,
       publishedTime: new Date(post.createdAt).toISOString(),
-      authors: [post?.author?.name || 'writer'],
+      authors: [post?.author?.name || siteConfig.title],
       images: [
         {
-          url: post.coverImage || '/login.jpg',
+          url: post.coverImage || siteConfig.ogImage,
           width: '1200',
           height: '630',
           alt: post.title,
@@ -97,8 +90,6 @@ export async function generateMetadata({
     },
   };
 }
-
-// generate all possible articles at compilation (SSG)
 
 export const generateStaticParams = async () => {
   const posts = await db.query.posts.findMany({
