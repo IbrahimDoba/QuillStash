@@ -49,8 +49,8 @@ export function SignupAuthForm() {
         return toast.error(response.data.error);
       }
 
-      toast.success("Welcome");
-      //   router.push('/home')
+      toast.success("Registed successfully");
+      router.push('/login')
       return;
     } catch (err) {
       console.error("Signup error:", err);

@@ -36,14 +36,20 @@ export function AuthForm() {
       password: data.password,
       redirect: false,
     });
-
+    console.log("SIGN IN RESULT",signInResult)
     setIsCredentialsLoading(false);
 
     if (!signInResult?.ok) {
       return toast.error("Sign in failed. Please try again.");
     }
 
-    toast.success("Welcome");
+    if(signInResult.error === "CredentialsSignin"){
+      console.log("errors")
+      return toast.error("Sign in failed. Please try again.");
+
+    }
+
+    toast.success("Welcome"); 
    
       router.push("/home");
    
