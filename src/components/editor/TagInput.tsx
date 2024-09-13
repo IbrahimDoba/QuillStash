@@ -77,6 +77,7 @@ function TagInput({ control }: TagInputProps) {
         onKeyDown={handleKeyDown}
         inputValue={inputValue}
         menuTrigger='input'
+        variant='faded'
         onClose={() => setInputValue("")}
         disableSelectorIconRotation
         selectorIcon={<ChevronsUpDown size={14} className='text-default-400'/>}
@@ -102,7 +103,7 @@ function TagInput({ control }: TagInputProps) {
           </Chip>
         ))}
       </div>
-      {error && <ErrorMessage message={error.message} />}
+      {error && <ErrorMessage message={error.message} className='-mt-2'/>}
     </div>
   );
 }

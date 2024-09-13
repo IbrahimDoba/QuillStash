@@ -114,16 +114,7 @@ function PageContent() {
 
       {inView && !hasNextPage && (
         <div className="text-center text-sm text-foreground-500">
-          <p>You somehow made it to the end yay!!!</p>
-          <span>
-            maybe checkout our{" "}
-            <Link
-              href="https://discord.gg/vkYvY4D3RA"
-              className="font-medium underline underline-offset-2"
-            >
-              Discord?
-            </Link>
-          </span>
+          <p>Nothing more to show</p>
         </div>
       )}
     </>

@@ -11,6 +11,7 @@ import { useState } from "react";
 import { AuthFormData, signInSchema } from "@/lib/zod";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { welcomeUser } from "@/utils/welcome-user";
 
 export function SignupAuthForm() {
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
@@ -50,7 +51,7 @@ export function SignupAuthForm() {
       }
 
       toast.success("Registed successfully");
-      router.push('/login')
+      router.push("/login");
       return;
     } catch (err) {
       console.error("Signup error:", err);
@@ -61,14 +62,12 @@ export function SignupAuthForm() {
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
-    await signIn("google", { redirect: true, redirectTo: "/" });
-    // setIsGoogleLoading(false);
+    await signIn("google", { redirect: true, redirectTo: "/" })
   };
 
   const handleDiscordSignIn = async () => {
     setIsDiscordLoading(true);
     await signIn("discord", { redirect: true, redirectTo: "/" });
-    // setIsDiscordLoading(false);
   };
 
   return (
@@ -117,12 +116,12 @@ export function SignupAuthForm() {
                   {isVisible ? (
                     <EyeOff
                       size={16}
-                      className=" text-default-400 pointer-events-none"
+                      className="pointer-events-none text-default-400"
                     />
                   ) : (
                     <Eye
                       size={16}
-                      className="text-default-400 pointer-events-none"
+                      className="pointer-events-none text-default-400"
                     />
                   )}
                 </button>

@@ -38,6 +38,7 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
     getValues,
     clearErrors,
     control,
+    trigger,
     formState: { isSubmitting, errors },
   } = form;
 
@@ -88,6 +89,7 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
           errors={errors}
           isSubmitting={isSubmitting}
           defaultCoverImage={previousValues.coverImage}
+          trigger={trigger}
         />
       </nav>
 

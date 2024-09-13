@@ -21,6 +21,7 @@ function PageContent() {
 
   const form = useForm<PostValues>({
     resolver: zodResolver(postSchema),
+    defaultValues: { coverImage: null, summary: null }
   });
   const {
     register,
@@ -29,6 +30,7 @@ function PageContent() {
     setValue,
     getValues,
     clearErrors,
+    trigger,
     control,
     formState: { isSubmitting, errors },
   } = form;
@@ -90,6 +92,13 @@ function PageContent() {
     setValue('body', sanitizeHtml(html));
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+    // TODO: focus the editor when user hits enter
+  };
+
   return (
     <>
       <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
@@ -105,6 +114,7 @@ function PageContent() {
             setValue={setValue}
             errors={errors}
             isSubmitting={isSubmitting}
+            trigger={trigger}
           />
           <Button
             onClick={handleSaveDraft}
@@ -133,17 +143,19 @@ function PageContent() {
 
       {/* editor */}
       <div className='grid pt-4 pb-20 max-w-screen-lg mx-auto'>
-        <div className='p-4 flex flex-col col-span-3'>
+        <div className='flex flex-col'>
           <form
             ref={formRef}
             onSubmit={handleSubmit(onSubmit)}
             className='space-y-8 border dark:border-foreground-50 rounded-md pt-10 px-4'
+            
           >
             <div className='flex flex-col'>
               <label htmlFor='title' className='sr-only' />
               <input
                 placeholder='Title'
                 {...register('title')}
+                onKeyDown={handleKeyDown}
                 className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none px-4'
               />
               {errors.title && (
