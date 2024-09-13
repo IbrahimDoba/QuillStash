@@ -27,15 +27,14 @@ function ScrollToTop() {
       type='button'
       tabIndex={!isVisible ? -1 : undefined}
       isIconOnly
-      title='Scroll to top'
+      radius='full'
+      title='Scroll to top of the page'
       className={`${
         isVisible ? 'translate-y-0' : 'translate-y-28'
       } z-50 flex items-center justify-center fixed bottom-10 right-10 transition duration-500`}
       onClick={() => scrollTo(0, 0)}
     >
-      <span className='flex flex-col items-center justify-center text-main'>
-        <ChevronsUp />
-      </span>
+      <ChevronsUp />
     </Button>
   );
 }

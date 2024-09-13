@@ -39,6 +39,7 @@ function PageContent({ draftData }: { draftData: Draft }) {
     setValue,
     getValues,
     control,
+    trigger,
     formState: { isSubmitting, errors },
   } = form;
 
@@ -119,6 +120,7 @@ function PageContent({ draftData }: { draftData: Draft }) {
             setValue={setValue}
             errors={errors}
             isSubmitting={isSubmitting}
+            trigger={trigger}
           />
           <Button
             onClick={handleSaveDraft}

@@ -3,7 +3,7 @@ import React from 'react';
 import PageContent from './page-content';
 import PopularTags from '@/components/popular-tags';
 import { Metadata } from 'next';
-import DiscordCardComponent from '@/components/DiscordCard';
+import DiscordCard from '@/components/DiscordCard';
 
 export const metadata: Metadata = {
   title: 'Explore',
@@ -16,11 +16,11 @@ const HomePage = () => {
       <div className='lg:col-span-3 xl:pr-16'>
         <PageContent />
       </div>
-      <div className='relative  dark:border-foreground-100'>
+      <div className='relative dark:border-foreground-100'>
         <aside className='lg:flex flex-col space-y-3 md:sticky top-16 hidden'>
           <PopularTags />
           <TopWriters />
-          <DiscordCardComponent/>
+          <DiscordCard/>
         </aside>
       </div>
     </div>
