@@ -149,12 +149,10 @@ export function SignupAuthForm() {
                     <EyeOff
                       size={16}
                       className="pointer-events-none text-default-400"
-                      className="pointer-events-none text-default-400"
                     />
                   ) : (
                     <Eye
                       size={16}
-                      className="pointer-events-none text-default-400"
                       className="pointer-events-none text-default-400"
                     />
                   )}
