@@ -99,6 +99,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.name = user.name;
         token.picture = user.image;
         token.username = user.username;
+        token.isConfirmed = user.usernameConfirmed;
       }
       return token;
     },
@@ -110,7 +111,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.name = token.name as string;
         session.user.image = token.picture as string;
         session.user.username = token.username as string;
-
+        session.user.usernameConfirmed  = token.usernameConfirmed  as Date | null;
         // Fetch the latest user data from the database
         const dbUser = await db.query.users.findFirst({
           where: eq(users.id, token.id as string),

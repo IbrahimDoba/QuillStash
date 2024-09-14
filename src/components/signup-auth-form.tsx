@@ -50,7 +50,20 @@ export function SignupAuthForm() {
       }
 
       toast.success("Registed successfully");
-      router.push('/login')
+      // Sign in the user
+      const result = await signIn("credentials", {
+        email: data.email.toLowerCase(),
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        return toast.error("Failed to sign in after registration");
+      }
+
+      // Redirect to the confirm page
+      router.push("/confirm");
+
       return;
     } catch (err) {
       console.error("Signup error:", err);
@@ -62,13 +75,30 @@ export function SignupAuthForm() {
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     await signIn("google", { redirect: true, redirectTo: "/" });
-    // setIsGoogleLoading(false);
+
+    // const result = await signIn("google", { redirect: false });
+
+    // if (result?.ok) {
+    //   // Check the session to see if the user is new
+    //   router.push('/confirm');
+
+    // } else {
+    //   toast.error("Google signed-in failed.");
+    // }
   };
 
   const handleDiscordSignIn = async () => {
     setIsDiscordLoading(true);
     await signIn("discord", { redirect: true, redirectTo: "/" });
-    // setIsDiscordLoading(false);
+    // const result = await signIn("discord", { redirect: false });
+    // console.log(result)
+    // if (result?.ok) {
+    // Check the session to see if the user is new
+    //   router.push('/confirm');
+
+    // } else {
+    //   toast.error("Discord signed-in failed.");
+    // }
   };
 
   return (
@@ -117,12 +147,12 @@ export function SignupAuthForm() {
                   {isVisible ? (
                     <EyeOff
                       size={16}
-                      className=" text-default-400 pointer-events-none"
+                      className="pointer-events-none text-default-400"
                     />
                   ) : (
                     <Eye
                       size={16}
-                      className="text-default-400 pointer-events-none"
+                      className="pointer-events-none text-default-400"
                     />
                   )}
                 </button>

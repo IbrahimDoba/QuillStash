@@ -8,8 +8,10 @@ import { eq } from 'drizzle-orm';
 import { validateRequest } from '@/utils/validateRequest';
 import getSession from '@/lib/getSession';
 import { redirect } from 'next/navigation';
+import { NextRequest, NextResponse } from "next/server";
 
 export const confirmUsername = async (data: ConfirmValues) => {
+    console.log("Received data:", data);
    await validateRequest();
    const session = await getSession();
    const user = session?.user;
@@ -18,14 +20,21 @@ export const confirmUsername = async (data: ConfirmValues) => {
      throw new Error("User not authenticated");
    }
 
-   const values = confirmSchema.parse(data);
-
-   // Find the user by ID
+   try {
+    const values = confirmSchema.parse(data);
+    console.log(values);
+//  Find the user by ID
    const userToUpdate = await db.query.users.findFirst({
      where: eq(users.id, user.id)
    });
-
+   console.log(userToUpdate)
    if (!userToUpdate) {
+     throw new Error("User not found");
+   }
+
+   const plainUserToUpdate = { ...userToUpdate }; // Ensure this is a plain object
+
+   if (!plainUserToUpdate) {
      throw new Error("User not found");
    }
 
@@ -34,6 +43,13 @@ export const confirmUsername = async (data: ConfirmValues) => {
      ...values,
      usernameConfirmed: new Date()
    }).where(eq(users.id, user.id));
+   
+   return { success: true, username: values.username };
 
-   return redirect(`/${values.username}`);
+  } 
+   catch (err) {
+    console.error("Validation failed", err);
+    // throw new Error("Invalid input data");
+  }
+   //
 }
