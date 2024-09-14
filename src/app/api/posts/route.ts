@@ -84,6 +84,7 @@ export async function POST(req: Request) {
         console.error('Error generating description:', error);
         postSummary = null; 
       }
+      // console.log(postSummary)
     }
 
     const [newPost] = await db
