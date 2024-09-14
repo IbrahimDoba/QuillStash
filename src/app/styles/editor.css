@@ -4,6 +4,15 @@
     margin-top: 0;
   }
 
+  /* placeholder styles */
+  p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+    @apply text-foreground-400;
+  }
+
   pre {
     background: var(--black);
     border-radius: 0.5rem;

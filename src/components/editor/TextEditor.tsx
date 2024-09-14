@@ -8,7 +8,7 @@ import Highlight from "@tiptap/extension-highlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Link from "@tiptap/extension-link";
 import Code from "@tiptap/extension-code";
-import CodeBlock from '@tiptap/extension-code-block'
+import CodeBlock from "@tiptap/extension-code-block";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import MenuBar from "./MenuBar";
 import FloatingMenubar from "./FloatingMenuBar";
@@ -35,7 +35,7 @@ function TextEditor({ value, onChange }: EditorProps) {
         codeBlock: false,
       }),
       Placeholder.configure({
-        placeholder: "Your story ...",
+        placeholder: "Your story...",
       }),
       Link.configure({
         openOnClick: false,
@@ -50,7 +50,7 @@ function TextEditor({ value, onChange }: EditorProps) {
       CodeBlockLowlight.configure({
         lowlight,
         HTMLAttributes: {
-          class: 'code-block',
+          class: "code-block",
         },
       }),
       Underline,
@@ -65,7 +65,7 @@ function TextEditor({ value, onChange }: EditorProps) {
     editorProps: {
       attributes: {
         class:
-          "prose dark:prose-invert text-foreground min-h-96 w-full min-w-full p-4 outline-none focus-visible:ring-0",
+          "prose dark:prose-invert text-foreground min-h-[30rem] w-full min-w-full p-4 outline-none focus-visible:ring-0",
       },
     },
   });

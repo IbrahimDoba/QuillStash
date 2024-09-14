@@ -5,6 +5,7 @@ import { SiteLogo } from "@/components/Icons";
 import { ArrowLeft } from "lucide-react";
 import { SignupAuthForm } from "@/components/signup-auth-form";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata = {
   title: "Create account",
@@ -18,7 +19,6 @@ export default function RegisterPage() {
     <div className="grid h-screen w-screen flex-col items-center justify-center px-6 lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Button
         radius="sm"
-        variant="ghost"
         className="absolute right-4 top-4 flex items-center gap-2 md:right-8 md:top-8 lg:hidden"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -26,10 +26,19 @@ export default function RegisterPage() {
       </Button>
       <div className="hidden h-full place-content-center bg-slate-100 dark:bg-slate-900 lg:grid">
         <div className="flex items-center gap-3">
-          <SiteLogo className="size-12" />
+          {/* <SiteLogo className="size-12" />
           <p className="text-4xl font-bold uppercase text-inherit">
             quillstash
-          </p>
+          </p> */}
+          <div className="w-full max-w-lg">
+            <Image
+              alt="App launch Illustration by popsy at popsy.co"
+              src="/product-launch.svg"
+              height="300"
+              width="500"
+              className="aspect-square rounded-xl object-cover object-center"
+            />
+          </div>
         </div>
       </div>
       <div className="lg:p-8">

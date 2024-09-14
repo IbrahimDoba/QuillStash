@@ -85,10 +85,10 @@ const requiredEditorString = z.string({required_error: "You forgot to write your
 
 export const postSchema = z.object({
   title: z.string().min(1, 'Title cannot be empty').max(100, 'Title is too long'),
-  coverImage: z.string().nullable(),
-  summary: z.string().nullable(),
+  coverImage: z.string().url().nullable().optional(),
+  summary: z.string().nullable().optional(),
   body: requiredEditorString,
-  tags: z.array(z.string().min(1)),
+  tags: z.array(z.string().min(1)).min(1, 'At least one tag is required'),
 });
 
 export type PostValues = z.infer<typeof postSchema>;

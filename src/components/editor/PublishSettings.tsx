@@ -14,11 +14,11 @@ import { SingleImageDropzone } from "@/components/ui/image-dropzone";
 import { useEdgeStore } from "@/lib/edgestore";
 import TagInput from "@/components/editor/TagInput";
 import {
-  useController,
   Control,
   UseFormRegister,
   UseFormSetValue,
   FieldErrors,
+  UseFormTrigger,
 } from "react-hook-form";
 import { PostValues } from "@/lib/zod";
 import Container from "@/components/Container";
@@ -31,6 +31,7 @@ interface ConfirmModalProps {
   register: UseFormRegister<PostValues>;
   setValue: UseFormSetValue<PostValues>;
   errors: FieldErrors<PostValues>;
+  trigger: UseFormTrigger<PostValues>;
   formRef: React.RefObject<HTMLFormElement>;
   isSubmitting: boolean;
   defaultCoverImage?: string | null;
@@ -44,6 +45,7 @@ export default function PublishSettings({
   formRef,
   isSubmitting,
   defaultCoverImage,
+  trigger,
 }: ConfirmModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [file, setFile] = useState<File | null>(null);
@@ -83,8 +85,15 @@ export default function PublishSettings({
     //  eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
-  const triggerSubmit = () => {
-    console.log("triggerSubmit");
+  const hasErrors = Object.keys(errors).length > 0;
+
+  const triggerSubmit = async () => {
+    // const isValid = await trigger();
+    if (hasErrors) {
+      return toast.error("Please fill in all required fields", {
+        position: "top-right",
+      });
+    }
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { cancelable: true, bubbles: true }),
@@ -116,78 +125,94 @@ export default function PublishSettings({
         <ModalContent>
           {(onClose) => (
             <Container className="h-full max-w-screen-lg py-6">
-              <ModalHeader className="mb-4 flex flex-col gap-1 border-b text-center text-2xl dark:border-b-foreground-100">
-                Publish settings
-              </ModalHeader>
-              <ModalBody className="grid items-center pt-4 lg:grid-cols-2">
-                <div className="lg:pr-20">
-                  <div className="flex flex-col gap-4">
-                    <SingleImageDropzone
-                      value={file || imageUrl}
-                      className="h-52 w-full"
-                      dropzoneOptions={{
-                        maxSize: 1024 * 1024 * 2, // 2MB
-                      }}
-                      onChange={(newFile) => {
-                        if (newFile) {
-                          setFile(newFile);
-                        }
-                      }}
-                    />
-                    <Progress
-                      size="sm"
-                      aria-label="Loading..."
-                      value={progress}
-                      className={`opacity-0 ${progress ? "opacity-100" : ""}`}
-                    />
-                  </div>
-                  <p className="text-sm">
-                    Upload a cover image for your article this will be shown in
-                    the preview of your article throughout the site and whenever
-                    your post is shared on social media. (this is optional but
-                    highly recommended.)
-                  </p>
-                  {/* TODO give users option to show or hide cover image in the article page */}
-                </div>
-                <div>
-                  <p className="mb-2 text-sm">
-                    Include tags related to your post for better discoverability
-                  </p>
-                  <div className="mb-4 flex flex-col">
-                    <TagInput control={control} />
-                  </div>
-
-                  <div className="mb-4 flex flex-col">
-                    <p className="mb-2 text-sm">
-                      A short description for your post (this will be shown in
-                      the preview)
-                    </p>
-                    <Textarea
-                      id="summary"
-                      label="Summary"
-                      radius="sm"
-                      description="A short introdution to your post (optional)."
-                      {...register("summary")}
-                    />
-                    {errors.summary && (
-                      <ErrorMessage
-                        message={errors.summary.message}
-                        className="px-1"
-                      />
+              <ModalHeader className="mb-4 flex flex-col gap-1 border-b text-center dark:border-b-foreground-100">
+                <p className="text-2xl">Publish Settings</p>
+                <p className="text-foreground-500 font-normal text-sm">
+                  Let&apos;s add some finishing touches to your article.
+                </p>
+                {hasErrors && (
+                  <div className="mb-4 text-center">
+                    {errors.title && (
+                      <ErrorMessage message={errors.title.message} />
+                    )}
+                    {errors.body && (
+                      <ErrorMessage message={errors.body.message} />
                     )}
                   </div>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  color="primary"
-                  onPress={triggerSubmit}
-                  radius="sm"
-                  isLoading={isSubmitting}
-                >
-                  {isSubmitting ? "Publishing..." : "Proceed to publish"}
-                </Button>
-              </ModalFooter>
+                )}
+              </ModalHeader>
+              <div className="grid min-h-full overflow-y-auto md:pt-5">
+                <ModalBody className="grid items-center max-sm:px-0 lg:grid-cols-2">
+                  <div className="lg:pr-20">
+                    <div className="flex flex-col gap-2">
+                      <SingleImageDropzone
+                        value={file || imageUrl}
+                        className="h-52 w-full"
+                        dropzoneOptions={{
+                          maxSize: 1024 * 1024 * 2, // 2MB
+                        }}
+                        onChange={(newFile) => {
+                          if (newFile) {
+                            setFile(newFile);
+                          }
+                        }}
+                      />
+                      <Progress
+                        size="sm"
+                        aria-label="Loading..."
+                        value={progress}
+                        className={`opacity-0 ${progress ? "opacity-100" : ""}`}
+                      />
+                    </div>
+                    <p className="text-xs text-foreground-500">
+                      Upload a cover image for your article this will be shown
+                      in the preview of your article throughout the site and
+                      whenever your post is shared on social media. (this is
+                      optional but recommended.)
+                    </p>
+                  </div>
+                  <div>
+                    <div className="mb-4 flex flex-col">
+                      <TagInput control={control} />
+                    </div>
+
+                    <div className="mb-4 flex flex-col">
+                      <Textarea
+                        id="summary"
+                        label="Description"
+                        variant="faded"
+                        radius="sm"
+                        description="A short introdution to your post (optional)."
+                        minRows={6}
+                        {...register("summary")}
+                      />
+                      {errors.summary && (
+                        <ErrorMessage
+                          message={errors.summary.message}
+                          className="px-1"
+                        />
+                      )}
+                    </div>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    onPress={onClose}
+                    radius="sm"
+                    isLoading={isSubmitting}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    color="primary"
+                    onPress={triggerSubmit}
+                    radius="sm"
+                    isLoading={isSubmitting}
+                  >
+                    {isSubmitting ? "Publishing..." : "Confirm publish"}
+                  </Button>
+                </ModalFooter>
+              </div>
             </Container>
           )}
         </ModalContent>

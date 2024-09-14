@@ -11,6 +11,7 @@ import { useState } from "react";
 import { AuthFormData, signInSchema } from "@/lib/zod";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { welcomeUser } from "@/utils/welcome-user";
 
 export function SignupAuthForm() {
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
@@ -148,10 +149,12 @@ export function SignupAuthForm() {
                     <EyeOff
                       size={16}
                       className="pointer-events-none text-default-400"
+                      className="pointer-events-none text-default-400"
                     />
                   ) : (
                     <Eye
                       size={16}
+                      className="pointer-events-none text-default-400"
                       className="pointer-events-none text-default-400"
                     />
                   )}

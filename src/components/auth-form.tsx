@@ -137,7 +137,7 @@ export function AuthForm() {
             color="primary"
             radius="sm"
             type="submit"
-            disabled={isCredentialsLoading}
+            disabled={isCredentialsLoading || isGoogleLoading || isDiscordLoading}
             isLoading={isCredentialsLoading}
             className="mt-2"
           >

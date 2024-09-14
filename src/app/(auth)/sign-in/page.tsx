@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/react";
 import { SiteLogo } from "@/components/Icons";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -17,7 +18,6 @@ export default async function LoginPage() {
     <div className="grid h-screen w-screen flex-col items-center justify-center px-6 lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Button
         radius="sm"
-        variant="ghost"
         className="absolute right-4 top-4 flex items-center gap-2 md:right-8 md:top-8 lg:hidden"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -45,12 +45,21 @@ export default async function LoginPage() {
           </p>
         </div>
       </div>
-      <div className="hidden h-full place-content-center bg-slate-100 dark:bg-slate-900 lg:grid">
+      <div className="hidden h-full place-content-center bg-slate-50 dark:bg-slate-900 lg:grid">
         <div className="flex items-center gap-3">
-          <SiteLogo className="size-12" />
+          {/* <SiteLogo className="size-12" />
           <p className="text-4xl font-bold uppercase text-inherit">
             quillstash
-          </p>
+          </p> */}
+          <div className="w-full max-w-lg">
+            <Image
+              alt="App launch Illustration by popsy at popsy.co"
+              src="/app-launch.svg"
+              height="500"
+              width="500"
+              className="aspect-square rounded-xl object-cover object-center"
+            />
+          </div>
         </div>
       </div>
     </div>
