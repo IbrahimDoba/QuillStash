@@ -197,7 +197,7 @@ useEffect(() => {
             </li>
             <li className="flex gap-1 items-center">
               <Eye className="size-4" />
-              <span className="text-xs">{viewsCount}</span>
+              {/* <span className="text-xs">{viewsCount}</span> */}
             </li>
           </>
         )}
