@@ -7,6 +7,7 @@ import { siteConfig } from '@/lib/site-config';
 import { posts } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { highlightHtmlCodeBlocks } from '@/utils/highlight-code';
+import { generateOgImageUrl } from '@/lib/verify-og';
 
 const getPost = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
@@ -66,6 +67,7 @@ export async function generateMetadata({
   const post = await getPostMetadata(slug);
 
   if (!post) return {};
+  const ogImageUrl = post.coverImage || generateOgImageUrl({name:post.author.name, title:post.title, tag:post.tags?.[0]})
  
   return {
     metadataBase: new URL(siteConfig.url),
@@ -81,7 +83,7 @@ export async function generateMetadata({
       authors: [post?.author?.name || siteConfig.title],
       images: [
         {
-          url: post.coverImage || siteConfig.ogImage,
+          url: ogImageUrl,
           width: '1200',
           height: '630',
           alt: post.title,
