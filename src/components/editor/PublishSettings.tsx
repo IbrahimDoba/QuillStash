@@ -165,10 +165,7 @@ export default function PublishSettings({
                       />
                     </div>
                     <p className="text-xs text-foreground-500">
-                      Upload a cover image for your article this will be shown
-                      in the preview of your article throughout the site and
-                      whenever your post is shared on social media. (this is
-                      optional but recommended.)
+                      Upload a cover image for your article (optional), we will generate one for you if you don&apos;t have any.
                     </p>
                   </div>
                   <div>
@@ -199,7 +196,7 @@ export default function PublishSettings({
                   <Button
                     onPress={onClose}
                     radius="sm"
-                    isLoading={isSubmitting}
+                    disabled={isSubmitting}
                   >
                     Back
                   </Button>

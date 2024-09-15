@@ -9,6 +9,7 @@ import { validateRequest } from '@/utils/validateRequest';
 import { sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { generateDescription } from '@/utils/generate-description';
+import { generateOgImageUrl } from '@/lib/verify-og';
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
@@ -74,6 +75,12 @@ export async function POST(req: Request) {
     const requestBody = await req.json();
     const validatedData = postSchema.parse(requestBody);
 
+    const ogImageUrl = validatedData.coverImage || generateOgImageUrl({
+      name: user?.name || "",
+      title: validatedData.title,
+      tag: validatedData.tags?.[0] || ""
+    });
+    
     let postSummary = validatedData.summary;
 
     if (!postSummary ||postSummary.trim() === "" || postSummary === null) {
@@ -94,6 +101,7 @@ export async function POST(req: Request) {
         summary: postSummary,
         slug: generateSlug(validatedData.title),
         userId: user?.id!,
+        coverImage: ogImageUrl,
       })
       .returning();
 
