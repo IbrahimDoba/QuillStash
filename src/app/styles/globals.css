@@ -53,6 +53,18 @@
   }
 }
 
+/* Light theme for illustrations */
+svg use {
+  color: #171717;
+}
 
+/* Dark theme */
+.dark svg use {
+  color: #ECEDEE;
+}
+
+/* .debug {
+  background-color: #2A67F7;
+} */
 
 

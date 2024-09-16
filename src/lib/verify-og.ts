@@ -4,12 +4,11 @@ const secretKey = process.env.OG_SECRET_KEY || "default_secret_key";
 
 interface OpenGraphImageParams {
   title: string;
-  tag: string;
   name?: string;
 }
 
 export function generateToken(data: OpenGraphImageParams): string {
-  const dataString = `${data.title}${data.tag}${data.name}`;
+  const dataString = `${data.title}${data.name}`;
   const hmac = createHmac("sha256", secretKey);
   hmac.update(dataString);
   return hmac.digest("hex");
@@ -25,13 +24,11 @@ export function verifyToken(
 
 export function generateOgImageUrl({
   name,
-  tag,
   title,
 }: OpenGraphImageParams): string {
-  const token = generateToken({ title, tag, name });
+  const token = generateToken({ title, name });
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const params = new URLSearchParams({ title, tkn: token });
-  if (tag) params.append("tag", tag);
+  const params = new URLSearchParams({ title, token });
   if (name) params.append("name", name);
   return `${baseUrl}/api/og?${params.toString()}`;
 }

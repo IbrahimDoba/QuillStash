@@ -67,7 +67,7 @@ export async function generateMetadata({
   const post = await getPostMetadata(slug);
 
   if (!post) return {};
-  const ogImageUrl =  generateOgImageUrl({name:post.author.name, title:post.title, tag:post.tags?.[0]})
+  const ogImageUrl =  generateOgImageUrl({name:post.author.name, title:post.title})
  
   return {
     metadataBase: new URL(siteConfig.url),

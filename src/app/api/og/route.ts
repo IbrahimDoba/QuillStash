@@ -7,9 +7,7 @@ import getSession from "@/lib/getSession";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const hasTitle = searchParams.get("title");
-
-  const tag = searchParams.get("tag")|| "";
-  const token = searchParams.get("tkn") || "";
+  const token = searchParams.get("token") || "";
   const name = searchParams.get("name") || undefined;
 
   const session = await getSession();
@@ -20,7 +18,7 @@ export async function GET(request: Request) {
   }
   const title = hasTitle && hasTitle.length > 90 ? hasTitle.slice(0, 90) + "..." : hasTitle;
 
-  const isAllowed = verifyToken({ title, tag, name }, token);
+  const isAllowed = verifyToken({ title, name }, token);
 
   if (!isAllowed) {
     return new Response("Invalid token.", { status: 401 });
@@ -28,5 +26,5 @@ export async function GET(request: Request) {
   
   const fonts = await loadFonts();
 
-  return generateOgImage({ title, tag, name, image }, fonts);
+  return generateOgImage({ title, name, image }, fonts);
 }

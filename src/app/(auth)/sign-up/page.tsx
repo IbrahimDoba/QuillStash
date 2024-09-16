@@ -26,18 +26,10 @@ export default function RegisterPage() {
       </Button>
       <div className="hidden h-full place-content-center bg-slate-100 dark:bg-slate-900 lg:grid">
         <div className="flex items-center gap-3">
-          {/* <SiteLogo className="size-12" />
-          <p className="text-4xl font-bold uppercase text-inherit">
-            quillstash
-          </p> */}
           <div className="w-full max-w-lg">
-            <Image
-              alt="App launch Illustration by popsy at popsy.co"
-              src="/product-launch.svg"
-              height="300"
-              width="500"
-              className="aspect-square rounded-xl object-cover object-center"
-            />
+            <svg width="512" height="412" viewBox="0 0 960 960">
+              <use href="/product-launch.svg#product-launch"></use>
+            </svg>
           </div>
         </div>
       </div>

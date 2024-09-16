@@ -3,13 +3,12 @@ import type { FontMap } from "./fonts";
 
 interface OpenGraphImageParams {
   title: string;
-  tag: string;
   name?: string;
   image?: string;
 }
 
 export const generateOgImage = (
-  { title, tag, name, image }: OpenGraphImageParams,
+  { title, name, image }: OpenGraphImageParams,
   fonts: FontMap,
 ) => {
   return new ImageResponse(
@@ -34,24 +33,21 @@ export const generateOgImage = (
           style={{
             display: "flex",
             flexDirection: "column",
+            marginBlockEnd: "10px",
           }}
         >
-          <div
-            className="line-clamp-1"
-            style={{
-              marginRight: "auto",
-              marginBottom: "40px",
-              color: "#fcf6f1",
-              background: "#212121",
-              padding: "5px 10px",
-              fontWeight: "600",
-              letterSpacing: "-0.05em",
-              display: "flex",
-              gap: "4px",
-            }}
+          <svg
+            viewBox="0 0 1200 1200"
+            width="50"
+            height="50"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ marginBottom: "40px" }}
           >
-            <span>#{tag}</span>
-          </div>
+            <path
+              d="M304 253h464l19 2 14 4 17 9 13 11 9 11 8 14 6 16 2 11v21l-3 15-6 15-7 11-12 14-168 168 438 1 17 3 14 5 13 8 11 9 9 11 7 11 5 12 4 15 1 10v9l-2 14-5 16-7 13-8 10-205 205-14 9-11 5-13 4-18 2h-464l-19-2-14-4-17-9-14-12-8-10-8-14-6-16-2-11v-21l3-15 6-15 7-11 9-10 172-172-439-1-17-3-14-5-13-8-13-11-10-13-8-16-4-13-2-15v-9l2-14 5-16 7-13 8-10 204-204 13-9 13-6 13-4z"
+            />
+          </svg>
           <div
             style={{
               fontSize: "4rem",
@@ -68,8 +64,7 @@ export const generateOgImage = (
               WebkitLineClamp: 3,
               overflow: "hidden",
             }}
-            tw="capitalize"
-            className="line-clamp-3"
+            tw="capitalize line-clamp-3"
           >
             {title}
           </div>
@@ -85,23 +80,23 @@ export const generateOgImage = (
             <img
               alt={`${name}'s profile avatar`}
               src={image || `https://avatar.vercel.sh/${name}?size=30`}
-              width={36}
-              height={36}
+              width={40}
+              height={40}
               tw="rounded-full"
             />
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "4px",
-                marginLeft: "10px",
+                gap: "6px",
+                marginLeft: "14px",
               }}
             >
-              <span tw="text-sm">by</span>
-              <p tw="capitalize">{name}</p>
+              <span tw="font-semibold">by</span>
+              <p tw="capitalize text-lg font-semibold">{name}</p>
             </div>
           </div>
-          <p style={{ fontSize: "18px" }}>quillstash.com</p>
+          <p style={{ fontSize: "24px" }} tw="font-semibold">quillstash.com</p>
         </div>
       </div>
     ),
