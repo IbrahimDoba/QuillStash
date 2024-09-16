@@ -78,7 +78,6 @@ export async function POST(req: Request) {
     const ogImageUrl = validatedData.coverImage || generateOgImageUrl({
       name: user?.name || "",
       title: validatedData.title,
-      tag: validatedData.tags?.[0] || ""
     });
     
     let postSummary = validatedData.summary;
