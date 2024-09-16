@@ -18,7 +18,7 @@ export async function notifyServer(post: NotificationContent) {
       body: JSON.stringify({
         author: post.author,
         title: post.title,
-        url: `${siteConfig.url}/${post.username}/${post.slug}`,
+        url: `https://www.quillstash.com/${post.username}/${post.slug}`,
       }),
     });
     console.log(response);

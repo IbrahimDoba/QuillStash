@@ -76,7 +76,7 @@ export async function generateMetadata({
     openGraph: {
       type: 'article',
       description: post.summary || siteConfig.description  ,
-      url: `https://www.quillstash.com/${post?.author?.username}/${slug}`,
+      url: `${siteConfig.url}/${post?.author?.username}/${slug}`,
       title: post.title,
       siteName: siteConfig.title,
       publishedTime: new Date(post.createdAt).toISOString(),
