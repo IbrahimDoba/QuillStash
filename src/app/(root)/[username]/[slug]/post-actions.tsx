@@ -195,10 +195,10 @@ useEffect(() => {
               </Button>
               <span className="text-xs">{likesCount}</span>
             </li>
-            <li className="flex gap-1 items-center">
+            {/* <li className="flex gap-1 items-center">
               <Eye className="size-4" />
-              {/* <span className="text-xs">{viewsCount}</span> */}
-            </li>
+              <span className="text-xs">{viewsCount}</span>
+            </li> */}
           </>
         )}
         <li>

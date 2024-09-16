@@ -49,6 +49,7 @@
     "feed": "^4.2.2",
     "framer-motion": "^11.3.23",
     "gray-matter": "^4.0.3",
+    "hercai": "^12.3.2",
     "isomorphic-dompurify": "^2.15.0",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.417.0",

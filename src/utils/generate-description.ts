@@ -1,21 +1,23 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Hercai, QuestionData } from "hercai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ 
-   model: "gemini-1.5-flash",
-   systemInstruction: "You are an SEO expert. Your descriptions should be between 150-160 characters long to optimize for search engine snippets and social media sharing."
-});
+const herc = new Hercai();
 
-export async function generateDescription(articleTitle: string) {
-  const prompt = `Generate a concise, SEO-friendly summary of an article based only on the title '${articleTitle}'. The summary should be between 150-160 characters.`;
+export async function generateDescription(articleTitle: string): Promise<string | null> {
+  const prompt = `Generate a concise, SEO-friendly summary of an article based only on the title '${articleTitle}'. The summary should be between 150-160 characters. remove any "" from the response`;
+
   try {
-    const result = await model.generateContent(prompt);
-    const description = result.response.text().trim();
-    
+    const response: QuestionData = await herc.question({
+      model: "v3",
+      content: prompt
+    });
+
+    let description = response.reply.trim();
+
     // Ensure the description is within the desired character range
     if (description.length > 160) {
-      return description.substring(0, 157) + '...';
+      description = description.substring(0, 157) + '...';
     }
+
     return description;
   } catch (error) {
     console.error('Error generating description:', error);
