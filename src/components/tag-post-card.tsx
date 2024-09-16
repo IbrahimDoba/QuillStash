@@ -43,13 +43,13 @@ function TagPostCard({
             <h3 className='line-clamp-2 font-semibold'>{title}</h3>
             <p className='text-sm line-clamp-2'>{summary}</p>
           </Link>
-          <div className='flex items-center justify-between'>
+          {/* <div className='flex items-center justify-between'>
             <p className='text-xs'>2,000 views</p>
             <div className='flex items-center gap-0.5 text-xs'>
               <MessageSquare size={16}/>
               40
             </div>
-          </div>
+          </div> */}
         </div>
       </CardBody>
     </Card>
