@@ -5,13 +5,8 @@ import { Fragment } from 'react';
 import MenuItem from './MenuItem';
 import {
   Bold,
-  Heading2,
-  Heading3,
   Italic,
-  List,
-  ListOrdered,
   PenLine,
-  Quote,
   Strikethrough,
 } from 'lucide-react';
 import LinkItem from './LinkItem';
@@ -46,7 +41,7 @@ export default function FloatingMenuBar({ editor }: { editor: Editor }) {
 
   return (
     <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-      <div className='flex flex-wrap items-center gap-3 border p-1.5 dark:border-foreground-50 mx-4 rounded-md bg-background'>
+      <div className='flex flex-col md:flex-row flex-wrap items-center gap-3 border p-1.5 dark:border-foreground-50 mx-4 rounded-md bg-background'>
         {items.map((item, index) => (
           <Fragment key={index}>
             <MenuItem {...item} />

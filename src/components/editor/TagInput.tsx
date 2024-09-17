@@ -51,6 +51,12 @@ function TagInput({ control }: TagInputProps) {
     onChange(value.filter((tag: string) => tag !== tagToDelete));
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.key === 'Enter' || e.key === ',') && inputValue) {
+      e.preventDefault();
+    }
+  };
+
   useEffect(() => {
     if (value.length === 0) {
       setInputValue('');
@@ -66,6 +72,7 @@ function TagInput({ control }: TagInputProps) {
         isDisabled={value.length >= 4}
         onSelectionChange={handleSelectionChange}
         onInputChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         inputValue={inputValue}
         menuTrigger='input'
         variant='faded'

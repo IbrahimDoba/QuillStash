@@ -11,10 +11,6 @@ import crypto from "crypto";
 import { AdapterAccount } from "next-auth/adapters";
 
 export const POST = async (req: Request) => {
-  if (req.method !== "POST") {
-    return NextResponse.json({ error: "Method not allowed" });
-  }
-
   try {
     const { body } = await req.json();
     console.log("test", body.password, body.email);
@@ -42,6 +38,7 @@ export const POST = async (req: Request) => {
         password: pwHash,
         username: username,
         name: name,
+        image: `https://avatar.vercel.sh/${name}?size=30`,
       })
       .returning();
 

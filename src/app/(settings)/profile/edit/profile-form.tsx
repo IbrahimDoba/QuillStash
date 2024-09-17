@@ -21,10 +21,8 @@ import { pronouns } from '@/utils/constants';
 
 function ProfileForm({
   profileData,
-  username,
 }: {
   profileData: UserProfileData;
-  username: string;
 }) {
   const router = useRouter();
   const { edgestore } = useEdgeStore();
@@ -88,7 +86,7 @@ function ProfileForm({
         .then(() => {
           toast.success('Profile updated successfully');
         })
-        .then(() => router.push(`/${username}`));
+        .then(() => router.push(`/${profileData.username}`));
     } catch (error) {
       toast.error('Failed to update profile');
     }
@@ -172,7 +170,7 @@ function ProfileForm({
           <p className='px-1 text-xs text-red-600'>{errors.name.message}</p>
         )}
       </div>
-
+      
       <div className='flex flex-col mb-4'>
         <Input
           type='text'
@@ -180,13 +178,14 @@ function ProfileForm({
           label='username'
           radius='sm'
           description='Your username'
-          disabled
+          disabled={!!profileData.usernameConfirmed}
           {...register('username')}
         />
         {errors.username && (
           <p className='px-1 text-xs text-red-600'>{errors.username.message}</p>
         )}
       </div>
+     
 
       <div className='flex flex-col mb-4'>
         <Textarea

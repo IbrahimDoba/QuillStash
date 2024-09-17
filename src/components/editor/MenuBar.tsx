@@ -3,54 +3,22 @@ import { Fragment } from 'react';
 
 import MenuItem from './MenuItem';
 import {
-  Bold,
   Heading2,
   Heading3,
-  Italic,
+  Heading4,
   List,
   ListOrdered,
-  PenLine,
   Quote,
   Redo,
   SeparatorHorizontal,
-  Strikethrough,
   Undo,
   CodeSquare,
-  Code,
 } from 'lucide-react';
 import { Divider } from '@nextui-org/divider';
 import ImageItem from './ImageItem';
-import LinkItem from './LinkItem';
 
 export default function MenuBar({ editor }: { editor: Editor }) {
   const items = [
-    // {
-    //   icon: Bold,
-    //   title: 'Bold',
-    //   action: () => editor.chain().focus().toggleBold().run(),
-    //   isActive: () => editor.isActive('bold'),
-    // },
-    // {
-    //   icon: Italic,
-    //   title: 'Italic',
-    //   action: () => editor.chain().focus().toggleItalic().run(),
-    //   isActive: () => editor.isActive('italic'),
-    // },
-    // {
-    //   icon: Strikethrough,
-    //   title: 'Strike',
-    //   action: () => editor.chain().focus().toggleStrike().run(),
-    //   isActive: () => editor.isActive('strike'),
-    // },
-    // {
-    //   icon: PenLine,
-    //   title: 'Highlight',
-    //   action: () => editor.chain().focus().toggleHighlight().run(),
-    //   isActive: () => editor.isActive('highlight'),
-    // },
-    // {
-    //   type: 'divider',
-    // },
     {
       icon: Heading2,
       title: 'Heading 2',
@@ -62,6 +30,12 @@ export default function MenuBar({ editor }: { editor: Editor }) {
       title: 'Heading 3',
       action: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
       isActive: () => editor.isActive('heading', { level: 3 }),
+    },
+    {
+      icon: Heading4,
+      title: 'Heading 4',
+      action: () => editor.chain().focus().toggleHeading({ level: 4 }).run(),
+      isActive: () => editor.isActive('heading', { level: 4 }),
     },
     {
       icon: List,
@@ -114,7 +88,7 @@ export default function MenuBar({ editor }: { editor: Editor }) {
   ];
 
   return (
-    <div className='flex flex-wrap items-center gap-3 border py-2 px-3 dark:border-foreground-50 mx-4 rounded-md sticky top-0'>
+    <div className='hidden sm:flex flex-wrap items-center gap-3 border py-2 px-3 dark:border-foreground-50 mx-4 rounded-md sticky top-[73px] bg-background z-50'>
       {items.map((item, index) => (
         <Fragment key={index}>
           {item.type === 'divider' ? (
@@ -125,7 +99,6 @@ export default function MenuBar({ editor }: { editor: Editor }) {
         </Fragment>
       ))}
       <ImageItem editor={editor} />
-      {/* <LinkItem editor={editor} /> */}
     </div>
   );
 }
