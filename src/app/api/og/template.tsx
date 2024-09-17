@@ -77,6 +77,7 @@ export const generateOgImage = (
           }}
         >
           <div tw="flex items-center">
+            {/* eslint-disable-next-line  @next/next/no-img-element */}
             <img
               alt={`${name}'s profile avatar`}
               src={image || `https://avatar.vercel.sh/${name}?size=30`}

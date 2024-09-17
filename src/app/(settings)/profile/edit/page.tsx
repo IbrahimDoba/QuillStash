@@ -15,14 +15,15 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const session = await getSession();
-  const email = session?.user.email!;
-  const username = session?.user.username!;
+  const email = session?.user.email;
+
+  if (!email) return redirect("sign-in");
 
   const profileData = await db.query.users.findFirst({
     where: eq(users.email, email),
   });
 
-  if (!profileData || !session) return redirect("sign-in");
+  if (!profileData) return notFound();
 
-  return <ProfileForm profileData={profileData} username={username} />;
+  return <ProfileForm profileData={profileData} />;
 }

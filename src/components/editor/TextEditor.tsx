@@ -7,17 +7,14 @@ import Image from "@tiptap/extension-image";
 import Highlight from "@tiptap/extension-highlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Link from "@tiptap/extension-link";
-import Code from "@tiptap/extension-code";
-import CodeBlock from "@tiptap/extension-code-block";
-import Dropcursor from "@tiptap/extension-dropcursor";
 import MenuBar from "./MenuBar";
 import FloatingMenubar from "./FloatingMenuBar";
 
 // load all languages with "all" or common languages with "common"
-import { all, createLowlight } from "lowlight";
+import { common, createLowlight } from "lowlight";
 
 // create a lowlight instance with all languages loaded
-const lowlight = createLowlight(all);
+const lowlight = createLowlight(common);
 
 interface EditorProps {
   value: string;

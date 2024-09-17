@@ -24,13 +24,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Google({
       async profile(profile) {
         const username = generateUsername(profile.email);
-        const displayName = generateDisplayName();
 
         return {
           id: profile.sub,
-          name: displayName,
+          name: profile.name,
           email: profile.email,
-          image: profile.picture,
+          image: profile.picture || `https://avatar.vercel.sh/${profile.name}?size=30`,
           username,
         } as User;
       },

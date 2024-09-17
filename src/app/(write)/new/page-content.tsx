@@ -101,7 +101,7 @@ function PageContent() {
 
   return (
     <>
-      <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-6'>
+      <nav className='sticky top-0 flex w-full justify-between gap-6 bg-background z-10 py-4'>
         <Button variant='light' href='/home' radius='sm' as={Link}>
           <ArrowLeft size={16} />
           <span>Back</span>
@@ -143,40 +143,37 @@ function PageContent() {
 
       {/* editor */}
       <div className='grid pt-4 pb-20 max-w-screen-lg mx-auto'>
-        <div className='flex flex-col'>
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit(onSubmit)}
-            className='space-y-8 border dark:border-foreground-50 rounded-md pt-10 px-4'
-            
-          >
-            <div className='flex flex-col'>
-              <label htmlFor='title' className='sr-only' />
-              <input
-                placeholder='Title'
-                {...register('title')}
-                onKeyDown={handleKeyDown}
-                className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none px-4'
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit(onSubmit)}
+          className='space-y-8 border dark:border-foreground-50 rounded-md pt-10 px-4'
+        >
+          <div className='flex flex-col'>
+            <label htmlFor='title' className='sr-only' />
+            <input
+              placeholder='Title'
+              {...register('title')}
+              onKeyDown={handleKeyDown}
+              className=' w-full h-20 text-4xl font-bold bg-transparent focus:ring-0 focus:outline-none px-4'
+            />
+            {errors.title && (
+              <ErrorMessage
+                message={errors.title.message}
+                className='mt-1 pl-4'
               />
-              {errors.title && (
-                <ErrorMessage
-                  message={errors.title.message}
-                  className='mt-1 pl-4'
-                />
-              )}
-            </div>
+            )}
+          </div>
 
-            <div className='flex flex-col gap-3'>
-              <TextEditor value={watch('body')} onChange={handleEditorChange} />
-              {errors.body && (
-                <ErrorMessage
-                  message={errors.body.message}
-                  className='mt-1 pl-4 mb-4'
-                />
-              )}
-            </div>
-          </form>
-        </div>
+          <div className='flex flex-col gap-3'>
+            <TextEditor value={watch('body')} onChange={handleEditorChange} />
+            {errors.body && (
+              <ErrorMessage
+                message={errors.body.message}
+                className='mt-1 pl-4 mb-4'
+              />
+            )}
+          </div>
+        </form>
       </div>
     </>
   );
