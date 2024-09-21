@@ -169,6 +169,20 @@
       "when": 1725759928512,
       "tag": "0023_clammy_ted_forrester",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1726926357054,
+      "tag": "0024_happy_scarlet_spider",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1726926709892,
+      "tag": "0025_milky_vance_astro",
+      "breakpoints": true
     }
   ]
 }

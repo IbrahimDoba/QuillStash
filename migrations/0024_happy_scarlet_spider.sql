@@ -1,0 +1,1 @@
+ALTER TABLE "posts" ALTER COLUMN "tags" SET DATA TYPE jsonb;
