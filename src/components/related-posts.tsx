@@ -1,12 +1,19 @@
 import { db } from "@/db";
-import { Post } from "@/db/schema";
+import { Post, posts } from "@/db/schema";
 import { Avatar } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
+import { and, not, eq, sql } from "drizzle-orm";
 
 async function RelatedPosts({ currentPost }: { currentPost: Post }) {
   const relatedPosts = await db.query.posts.findMany({
+    where: and(
+      not(eq(posts.id, currentPost.id)),
+      // filter issues with json arrays currently will fix
+      // for now we just exclude the current post
+    ),
     limit: 4,
+    orderBy: (posts, { desc }) => [desc(posts.createdAt)],
     with: {
       author: {
         columns: {
@@ -18,10 +25,10 @@ async function RelatedPosts({ currentPost }: { currentPost: Post }) {
     },
   });
 
-  if (!relatedPosts) return null;
+  if (!relatedPosts.length) return null;
 
   return (
-    <section>
+    <section className="max-sm:px-4">
       <h4 className="my-6 text-2xl font-bold">Continue reading</h4>
       <ul className="grid justify-center gap-8 md:gap-12 lg:grid-cols-2 lg:gap-x-16">
         {relatedPosts.map((post) => (
@@ -56,7 +63,7 @@ async function RelatedPosts({ currentPost }: { currentPost: Post }) {
                   </p>
                 </div>
                 <Link
-                  href={`${post.author.username}/${post.slug}`}
+                  href={`/${post.author.username}/${post.slug}`}
                   className="desc"
                 >
                   <h3 className="line-clamp-2 text-lg font-bold max-md:leading-6 lg:mb-2 lg:text-xl">
