@@ -6,6 +6,10 @@ export const menuItems = [
     href: '/home',
   },
   {
+    name: 'New Post',
+    href: '/new',
+  },
+  {
     name: 'Login',
     href: '/sign-in',
   },
@@ -13,26 +17,23 @@ export const menuItems = [
     name: 'Sign up',
     href: '/sign-up',
   },
-  {
-    name: 'Profile',
-    href: '/profile',
-  },
-  {
-    name: 'Terms of Service',
-    href: '/terms',
-  },
-  {
-    name: 'Privacy Policy',
-    href: '/privacy',
-  },
-  {
-    name: 'New Post',
-    href: '/write',
-  },
-  {
-    name: 'Help & Feedback',
-    href: '/help',
-  },
+  // {
+  //   name: 'Profile',
+  //   href: '/profile',
+  // },
+  // {
+  //   name: 'Terms of Service',
+  //   href: '/terms',
+  // },
+  // {
+  //   name: 'Privacy Policy',
+  //   href: '/privacy',
+  // },
+  
+  // {
+  //   name: 'Help & Feedback',
+  //   href: '/help',
+  // },
 ];
 
 export const pronouns = [
