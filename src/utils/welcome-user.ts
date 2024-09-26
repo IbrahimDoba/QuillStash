@@ -1,19 +1,16 @@
-import { Resend } from "resend";
-import { WelcomeEmail } from "@/components/emails/welcome";
-import getSession from "@/lib/getSession";
+import axios from 'axios';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-
-export const welcomeUser = async (name:string, email:string) => {
-  await resend.emails.send({
-    from: "Quillstash <taqib@quillstash.com>",
-    to: [email],
-    subject: "Thanks for joining Quillstash!",
-    react: WelcomeEmail({
-      userEmail: email,
-      username: name,
-    }),
-  });
-  console.log("Email sent");
+export const WelcomeUser = async (email: string) => {
+  try {
+    console.log(`Sending welcome email to: ${email}`);
+    const response = await axios.post('/api/welcomeemail', { email });
+    // console.log("Email sent successfully. Server response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to send welcome email:", error);
+    if (axios.isAxiosError(error)) {
+      // console.error("Axios error details:", error.response?.data);
+    }
+    throw error; // Re-throw the error so it can be handled by the calling function
+  }
 };

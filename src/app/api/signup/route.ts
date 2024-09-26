@@ -13,7 +13,7 @@ import { AdapterAccount } from "next-auth/adapters";
 export const POST = async (req: Request) => {
   try {
     const { body } = await req.json();
-    console.log("test", body.password, body.email);
+  
 
     // Check if user already exists
     const existingUser = await db.query.users.findFirst({
@@ -21,7 +21,7 @@ export const POST = async (req: Request) => {
     });
 
     if (existingUser) {
-      console.log("user exists", existingUser);
+   
       return NextResponse.json({ error: "User already exists" });
     }
 
@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
     const pwHash = await saltAndHashPassword(body.password);
     const username = generateUsername(body.email);
     const name = generateDisplayName();
-    console.log(pwHash, username, name);
+
 
     const [newUser] = await db
       .insert(users)

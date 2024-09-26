@@ -11,7 +11,7 @@ import { useState } from "react";
 import { AuthFormData, signInSchema } from "@/lib/zod";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { welcomeUser } from "@/utils/welcome-user";
+import { WelcomeUser } from "@/utils/welcome-user";
 
 export function SignupAuthForm() {
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
@@ -30,9 +30,8 @@ export function SignupAuthForm() {
   });
 
   async function onSubmit(data: AuthFormData) {
-    console.log(data);
+    console.log("ONSUBMITE DATA",data);
     setIsCredentialsLoading(true);
-
     try {
       const response = await axios.post("/api/signup", {
         body: {
@@ -42,13 +41,14 @@ export function SignupAuthForm() {
       });
 
       setIsCredentialsLoading(false);
-      console.log(response);
+
       if (!response) {
         return toast.error("Sign in failed. Please try again.");
       }
       if (response.data.error) {
         return toast.error(response.data.error);
       }
+     await WelcomeUser(data.email.toLowerCase());
 
       toast.success("Registed successfully");
       // Sign in the user

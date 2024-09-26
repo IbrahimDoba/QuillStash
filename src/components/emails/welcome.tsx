@@ -16,12 +16,12 @@ import {
 import * as React from "react";
 
 interface VercelInviteUserEmailProps {
-  username?: string;
+  // username?: string;
   userEmail?: string;
 }
 
 export const WelcomeEmail = ({
-  username,
+  // username,
   userEmail,
 }: VercelInviteUserEmailProps) => {
   const previewText = `Welcome to ${siteConfig.title}`;
@@ -46,7 +46,7 @@ export const WelcomeEmail = ({
               <strong>{previewText}</strong>
             </Heading>
             <Text className="text-[14px] leading-[24px] text-black">
-              Hello {username},
+              Hello,
             </Text>
             <Text className="text-[14px] leading-[24px] text-black">
               we&apos;re excited to have you join our community and hope you

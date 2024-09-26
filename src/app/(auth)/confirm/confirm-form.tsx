@@ -93,13 +93,15 @@ export function ConfirmForm({
           >
             Confirm
           </Button>
+          <Link href="/home">
           <Button
             isLoading={isSubmitting}
             disabled={isSubmitting}
             type="button"
           >
-            <Link href="/home">Skip</Link>
+            Skip
           </Button>
+          </Link>
         </div>
       </form>
       <div className="relative">
