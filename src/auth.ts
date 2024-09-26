@@ -119,6 +119,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           session.user.name = dbUser.name;
           session.user.image = dbUser.image;
           session.user.username = dbUser.username;
+          session.user.usernameConfirmed = dbUser.usernameConfirmed
         }
       }
       return session;

@@ -15,12 +15,12 @@ const Page = async () => {
   if (!session) redirect("/sign-in");
 
   const userIsAllowed = session?.user.usernameConfirmed;
-
+  console.log("SESSION LOGS",session)
   if (!userIsAllowed) {
     return (
       <div className="grid min-h-screen place-content-center">
         <div className="max-w-sm">
-          <ConfirmForm username={"rahim"} name={"Taqib"} />
+          <ConfirmForm username={session?.user.username} name={session?.user.name} />
         </div>
       </div>
     );

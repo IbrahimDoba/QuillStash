@@ -15,8 +15,8 @@ export function ConfirmForm({
   username,
   name,
 }: {
-  name: string;
-  username: string;
+  name: string | any;
+  username: string | any;
 }) {
   const {
     register,
@@ -35,7 +35,6 @@ export function ConfirmForm({
     try {
       console.log("Submitting:", data);
       const response = await confirmUsername(data);
-
       if (response?.success) {
         toast.loading("Granting access");
         router.refresh();

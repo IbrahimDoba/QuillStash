@@ -41,6 +41,7 @@ export const confirmUsername = async (data: ConfirmValues) => {
    // Update the user
    await db.update(users).set({
      ...values,
+     username:values.username.trim().toLowerCase(),
      usernameConfirmed: new Date()
    }).where(eq(users.id, user.id));
    
