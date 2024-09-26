@@ -9,7 +9,6 @@ import { Button, Input } from "@nextui-org/react";
 import { Discord, Google } from "@/components/Icons";
 import { useState } from "react";
 import { AuthFormData, signInSchema } from "@/lib/zod";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import { WelcomeUser } from "@/utils/welcome-user";
 
@@ -19,7 +18,6 @@ export function SignupAuthForm() {
   const [isDiscordLoading, setIsDiscordLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const router = useRouter();
 
   const {
     register,
@@ -30,7 +28,6 @@ export function SignupAuthForm() {
   });
 
   async function onSubmit(data: AuthFormData) {
-    console.log("ONSUBMITE DATA",data);
     setIsCredentialsLoading(true);
     try {
       const response = await axios.post("/api/signup", {
@@ -46,7 +43,7 @@ export function SignupAuthForm() {
         return toast.error("Sign in failed. Please try again.");
       }
       if (response.data.error) {
-        return toast.error(response.data.error);
+        return toast.error("something went wrong");
       }
      await WelcomeUser(data.email.toLowerCase());
 
@@ -61,10 +58,6 @@ export function SignupAuthForm() {
       if (result?.error) {
         return toast.error("Failed to sign in after registration");
       }
-
-      // Redirect to the confirm page
-      router.push("/confirm");
-
       return;
     } catch (err) {
       console.error("Signup error:", err);
@@ -76,30 +69,11 @@ export function SignupAuthForm() {
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     await signIn("google", { redirect: true, redirectTo: "/" });
-
-    // const result = await signIn("google", { redirect: false });
-
-    // if (result?.ok) {
-    //   // Check the session to see if the user is new
-    //   router.push('/confirm');
-
-    // } else {
-    //   toast.error("Google signed-in failed.");
-    // }
   };
 
   const handleDiscordSignIn = async () => {
     setIsDiscordLoading(true);
     await signIn("discord", { redirect: true, redirectTo: "/" });
-    // const result = await signIn("discord", { redirect: false });
-    // console.log(result)
-    // if (result?.ok) {
-    // Check the session to see if the user is new
-    //   router.push('/confirm');
-
-    // } else {
-    //   toast.error("Discord signed-in failed.");
-    // }
   };
 
   return (

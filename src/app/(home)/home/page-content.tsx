@@ -25,7 +25,7 @@ interface PostsApiResponse {
 }
 
 function PageContent() {
-  const [limit] = useState(5);
+  const [limit] = useState(10);
   const { ref, inView } = useInView();
   const url = process.env.NEXT_PUBLIC_API_URL;
 
