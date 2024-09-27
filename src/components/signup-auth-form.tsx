@@ -11,6 +11,7 @@ import { useState } from "react";
 import { AuthFormData, signInSchema } from "@/lib/zod";
 import axios from "axios";
 import { WelcomeUser } from "@/utils/welcome-user";
+import { useRouter } from "next/navigation";
 
 export function SignupAuthForm() {
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
@@ -18,6 +19,7 @@ export function SignupAuthForm() {
   const [isDiscordLoading, setIsDiscordLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const router = useRouter();
 
   const {
     register,
@@ -36,6 +38,7 @@ export function SignupAuthForm() {
           password: data.password,
         },
       });
+      // console.log("TES",response)
 
       setIsCredentialsLoading(false);
 
@@ -43,17 +46,17 @@ export function SignupAuthForm() {
         return toast.error("Sign in failed. Please try again.");
       }
       if (response.data.error) {
-        return toast.error("something went wrong");
+        return toast.error(response.data.error);
       }
-     await WelcomeUser(data.email.toLowerCase());
-
+      //  await WelcomeUser(data.email.toLowerCase());
       toast.success("Registed successfully");
       // Sign in the user
       const result = await signIn("credentials", {
         email: data.email.toLowerCase(),
         password: data.password,
-        redirect: false,
+        // redirect: false,
       });
+      router.refresh();
 
       if (result?.error) {
         return toast.error("Failed to sign in after registration");
