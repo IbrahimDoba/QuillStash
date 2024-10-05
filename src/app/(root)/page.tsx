@@ -104,7 +104,7 @@ export default async function Home() {
                       className="group relative block aspect-square overflow-hidden rounded-xl"
                     >
                       <Image
-                        src={"/placeholder.jpg"}
+                        src={story.coverImage || "/placeholder.jpg"}
                         alt={`Article by ${story.author.name}`}
                         width={600}
                         height={400}
