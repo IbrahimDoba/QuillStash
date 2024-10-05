@@ -27,7 +27,7 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const session = useSession();
   const pathname = usePathname();
-  const user = session.data?.user; // this is exposing all users data contrary to the type definition FIX!!!!
+  const user = session.data?.user;
 
   // function getPosition() {
   //   if (stickyRoutes.some((route) => pathname.startsWith(route))) {
@@ -42,20 +42,27 @@ export default function Navigation() {
   return (
     <Navbar
       shouldHideOnScroll={pathname !== "/"}
-      position={ pathname === "/" ? "static" : undefined }
+      position={pathname === "/" ? "static" : undefined}
       onMenuOpenChange={setIsMenuOpen}
       classNames={{
         wrapper: "max-w-screen-2xl px-4 md:px-6",
       }}
     >
       <NavbarContent>
-        <NavbarBrand className="flex-grow-0">
-          <Link href={user ? "/home" : "/"} className="text-default-foreground">
-            <SiteLogo className="mr-1" />
-            <p className="font-bold uppercase text-inherit">quillstash</p>
-          </Link>
-        </NavbarBrand>
-        <Search />
+        <NavbarItem>
+          <NavbarBrand className="flex-grow-0">
+            <Link
+              href={user ? "/home" : "/"}
+              className="text-default-foreground"
+            >
+              <SiteLogo className="mr-1" />
+              <p className="font-bold uppercase text-inherit">quillstash</p>
+            </Link>
+          </NavbarBrand>
+        </NavbarItem>
+        <NavbarItem>
+          <Search />
+        </NavbarItem>
       </NavbarContent>
 
       {!user ? (
@@ -90,7 +97,7 @@ export default function Navigation() {
             Write
           </Button>
           <Dropdown placement="bottom-end">
-            <DropdownTrigger >
+            <DropdownTrigger>
               <Avatar
                 as="button"
                 className="transition-transform"
@@ -139,9 +146,9 @@ export default function Navigation() {
       )}
 
       {/* theme */}
-      <NavbarItem>
-        <ThemeSwitch />
-      </NavbarItem>
+        <NavbarItem>
+          <ThemeSwitch />
+        </NavbarItem>
 
       {/* mobile toggle */}
       <NavbarMenuToggle

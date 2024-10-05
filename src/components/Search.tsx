@@ -82,6 +82,7 @@ export default function App() {
         radius='sm'
         className='lg:hidden'
       >
+        <span className='sr-only'>Search website</span>
         <SearchIcon size={18} className='text-foreground-500' />
       </Button>
       <Modal

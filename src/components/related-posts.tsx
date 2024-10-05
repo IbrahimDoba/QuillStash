@@ -29,7 +29,7 @@ async function RelatedPosts({ currentPost }: { currentPost: Post }) {
 
   return (
     <section className="max-sm:px-4">
-      <h4 className="my-6 text-2xl font-bold">Continue reading</h4>
+      <h5 className="my-6 text-2xl font-bold">Continue reading</h5>
       <ul className="grid justify-center gap-8 md:gap-12 lg:grid-cols-2 lg:gap-x-16">
         {relatedPosts.map((post) => (
           <li key={post.id}>
