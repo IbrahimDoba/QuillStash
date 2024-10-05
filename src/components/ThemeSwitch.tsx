@@ -20,10 +20,12 @@ export function ThemeSwitch() {
       {theme === 'light' ? (
         <Button onClick={() => setTheme('dark')} isIconOnly variant='light'>
           <Sun size={18} className='shrink-0'/>
+          <span className='sr-only'>Switch to dark theme</span>
         </Button>
       ) : (
         <Button onClick={() => setTheme('light')} isIconOnly variant='light'>
           <MoonStar size={18} className='shrink-0'/>
+          <span className='sr-only'>Switch to light theme</span>
         </Button>
       )}
     </div>

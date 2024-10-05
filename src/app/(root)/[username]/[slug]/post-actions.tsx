@@ -190,6 +190,7 @@ useEffect(() => {
                 className="rounded-full"
                 size="sm"
                 onClick={handleLike}
+                title="like this article"
               >
                 <Heart className="size-4" />
               </Button>
@@ -208,6 +209,7 @@ useEffect(() => {
             className="rounded-full"
             size="sm"
             onClick={handleBookmark}
+            title="save this article"
           >
             <Bookmark className="size-4" />
           </Button>
@@ -222,6 +224,7 @@ useEffect(() => {
               className="rounded-full"
               size="sm"
               variant="light"
+              title="show share actions"
             >
               <MoreVertical className="size-4" />
             </Button>
