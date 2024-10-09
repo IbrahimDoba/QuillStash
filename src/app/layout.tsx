@@ -34,7 +34,14 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    images: [`${siteConfig.url}/og-image.png`],
+    images: [
+      {
+        url: `${siteConfig.url}/og-image.png`,
+        width: "1200",
+        height: "630",
+        alt: "Quillstash",
+      },
+    ],
   },
   icons: {
     icon: "/favicon.ico",
