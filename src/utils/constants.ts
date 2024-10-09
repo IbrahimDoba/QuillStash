@@ -83,7 +83,13 @@ export const topics = [
   { name: "Video Editing", slug: "video-editing", description: "The process of manipulating and rearranging video footage to create a final product" },
   { name: "Startup Culture", slug: "startup-culture", description: "The mindset and environment of entrepreneurial and innovative businesses" },
   { name: "Remote Work", slug: "remote-work", description: "Working from a location outside the traditional office environment" },
-  {name: "Medical Technology", slug: "medical-tech", description: "Technological innovation in medical sector"}
+  {name: "Medical Technology", slug: "medical-tech", description: "Technological innovation in medical sector"},
+  { name: "Event Planning", slug: "event-planning", description: "Organizing and managing events and gatherings" },
+{ name: "Murder Mystery", slug: "murder-mystery", description: "A genre focused on solving a crime, often involving a murder" },
+{ name: "Geology", slug: "geology", description: "The study of Earth's physical structure, materials, and processes" },
+{ name: "Coding", slug: "coding", description: "The process of writing and developing computer programs" },
+{ name: "Bug Fixes", slug: "bug-fixes", description: "The process of identifying and resolving issues in software" },
+{ name: "Project Management", slug: "project-management", description: "The practice of organizing and managing resources to complete a project" },
 
 ];
 

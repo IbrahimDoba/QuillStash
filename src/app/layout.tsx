@@ -34,7 +34,8 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    images:[`${siteConfig.url}/og.jpg`],
+    images:[`${siteConfig.url}/og-image.png`],
+    
   },
   icons: {
     icon: '/favicon.ico',
