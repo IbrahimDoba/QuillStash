@@ -1,13 +1,13 @@
-import './styles/globals.css';
-import './styles/editor.css';
-import './styles/highlight.css';
-import Providers from './providers';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Analytics } from "@vercel/analytics/react"
-import { siteConfig } from '@/lib/site-config';
+import "./styles/globals.css";
+import "./styles/editor.css";
+import "./styles/highlight.css";
+import Providers from "./providers";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { siteConfig } from "@/lib/site-config";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   keywords: siteConfig.keywords,
   authors: siteConfig.authors,
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
+    type: "website",
+    locale: "en_US",
     url: siteConfig.url,
     title: siteConfig.title,
     description: siteConfig.description,
@@ -34,16 +34,12 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    images:[`${siteConfig.url}/og-image.png`],
-    card:"summary_large_image",
-    description:`${siteConfig.description}`,
-    title:`${siteConfig.title}`
-
+    images: [`${siteConfig.url}/og-image.png`],
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -53,9 +49,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={inter.className}>
-        <Analytics/>
+        <Analytics />
         <Providers>{children}</Providers>
       </body>
     </html>

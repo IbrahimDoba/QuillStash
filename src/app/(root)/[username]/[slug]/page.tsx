@@ -1,24 +1,24 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import React, { cache } from 'react';
-import PageContent from './page-content';
-import { db } from '@/db';
-import { siteConfig } from '@/lib/site-config';
-import { posts } from '@/db/schema';
-import { eq } from 'drizzle-orm';
-import { highlightHtmlCodeBlocks } from '@/utils/highlight-code';
-import { generateOgImageUrl } from '@/lib/verify-og';
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import React, { cache } from "react";
+import PageContent from "./page-content";
+import { db } from "@/db";
+import { siteConfig } from "@/lib/site-config";
+import { posts } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { highlightHtmlCodeBlocks } from "@/utils/highlight-code";
+import { generateOgImageUrl } from "@/lib/verify-og";
 
 const getPost = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
     where: (posts, { eq }) => eq(posts.slug, slug),
-    with: { 
+    with: {
       author: {
         columns: {
           name: true,
           image: true,
           username: true,
-          work: true
+          work: true,
         },
       },
     },
@@ -30,12 +30,12 @@ const getPost = cache(async (slug: string) => {
   } catch (error) {
     post.body = post.body;
   }
-  
 
   // Increment the views count
-  await db.update(posts)
+  await db
+    .update(posts)
     .set({
-      views: post.views + 1,  // increment the views
+      views: post.views + 1, // increment the views
     })
     .where(eq(posts.slug, slug));
 
@@ -45,7 +45,7 @@ const getPost = cache(async (slug: string) => {
 const getPostMetadata = cache(async (slug: string) => {
   const post = await db.query.posts.findFirst({
     where: (posts, { eq }) => eq(posts.slug, slug),
-    with: { 
+    with: {
       author: {
         columns: {
           name: true,
@@ -57,7 +57,6 @@ const getPostMetadata = cache(async (slug: string) => {
   return post;
 });
 
-
 export async function generateMetadata({
   params,
 }: {
@@ -67,15 +66,32 @@ export async function generateMetadata({
   const post = await getPostMetadata(slug);
 
   if (!post) return {};
-  const ogImageUrl =  generateOgImageUrl({name:post.author.name, title:post.title})
- 
+  const ogImageUrl = generateOgImageUrl({
+    name: post.author.name,
+    title: post.title,
+  });
+
   return {
     metadataBase: new URL(siteConfig.url),
     title: post?.title,
     keywords: post?.tags,
+    twitter: {
+      title: `${post.title}`,
+      description: `${post.summary || siteConfig.description}`,
+      card: "summary_large_image",
+      site: `${siteConfig.url}/${post?.author?.username}/${slug}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: "1200",
+          height: "630",
+          alt: post.title,
+        },
+      ],
+    },
     openGraph: {
-      type: 'article',
-      description: post.summary || siteConfig.description  ,
+      type: "article",
+      description: post.summary || siteConfig.description,
       url: `${siteConfig.url}/${post?.author?.username}/${slug}`,
       title: post.title,
       siteName: siteConfig.title,
@@ -84,8 +100,8 @@ export async function generateMetadata({
       images: [
         {
           url: ogImageUrl,
-          width: '1200',
-          height: '630',
+          width: "1200",
+          height: "630",
           alt: post.title,
         },
       ],
@@ -95,7 +111,7 @@ export async function generateMetadata({
 
 export const generateStaticParams = async () => {
   const posts = await db.query.posts.findMany({
-    with: { 
+    with: {
       author: {
         columns: {
           username: true,
@@ -115,7 +131,7 @@ async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const post = await getPost(slug);
 
-  if (!post ||  !post.author) {
+  if (!post || !post.author) {
     return notFound();
   }
 
