@@ -3,8 +3,8 @@ import axios from 'axios';
 export const WelcomeUser = async (email: string) => {
   try {
     console.log(`Sending welcome email to: ${email}`);
-    const response = await axios.post('/api/welcomeemail', { email });
-    // console.log("Email sent successfully. Server response:", response.data);
+    const response = await axios.post('/api/welcome', { email });
+    console.log("Email sent successfully. Server response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Failed to send welcome email:", error);

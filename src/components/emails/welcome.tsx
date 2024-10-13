@@ -35,9 +35,9 @@ export const WelcomeEmail = ({
           <Container className="mx-auto my-[40px] max-w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
             <Section className="mt-[32px]">
               <Img
-                src={`${siteConfig.url}/logo.png`}
-                width="40"
-                height="37"
+                src={`${siteConfig.url}/og-image.png`}
+                width="400"
+                height="200"
                 alt={siteConfig.title}
                 className="mx-auto my-0"
               />
@@ -48,7 +48,7 @@ export const WelcomeEmail = ({
             <Text className="text-[14px] leading-[24px] text-black">
               Hello,
             </Text>
-            <Text className="text-[14px] leading-[24px] text-black">
+            <Text className="text-[14px] leading-[24px] text-black font-semibold">
               we&apos;re excited to have you join our community and hope you
               find it beneficial
             </Text>
@@ -57,15 +57,15 @@ export const WelcomeEmail = ({
               community discord to connect with others.
             </Text>
 
-            <Section className="mb-[32px] mt-[32px] flex gap-6">
+            <Section className="mb-[32px] mt-[32px] justify-between flex gap-6">
               <Button
-                className="rounded bg-primary px-5 py-3 text-center text-[12px] font-semibold text-white no-underline"
+                className="rounded bg-gray-700 px-5 py-3 text-center text-[12px] font-semibold text-white no-underline mr-10"
                 href={`${siteConfig.url}/new`}
               >
                 Write an article
               </Button>
               <Button
-                className="rounded bg-default px-5 py-3 text-center text-[12px] font-semibold text-white no-underline"
+                className="rounded bg-purple-800 px-5 py-3 text-center text-[12px] font-semibold text-white no-underline"
                 href="https://discord.gg/vkYvY4D3RA"
               >
                 Join us on discord

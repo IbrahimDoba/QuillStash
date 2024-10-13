@@ -48,7 +48,7 @@ export function SignupAuthForm() {
       if (response.data.error) {
         return toast.error(response.data.error);
       }
-      //  await WelcomeUser(data.email.toLowerCase());
+       await WelcomeUser(data.email.toLowerCase());
       toast.success("Registed successfully");
       // Sign in the user
       const result = await signIn("credentials", {
