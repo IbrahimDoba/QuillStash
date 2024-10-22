@@ -61,9 +61,6 @@ export default function App() {
     staleTime: 60 * 3600,
   });
 
-  const noResults =
-    !data?.posts.length && !data?.tags.length && !data?.users.length;
-
   return (
     <>
       <Button
@@ -276,13 +273,6 @@ export default function App() {
                     )}
                   </Tab>
                 </Tabs>
-              )}
-
-              {debouncedSearchTerm && !isLoading && noResults && (
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <span>No results found for</span>
-                  <strong>&quot;{searchTerm}&quot;</strong>
-                </div>
               )}
             </ModalBody>
           </>
