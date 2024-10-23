@@ -1,9 +1,10 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import PageContent from "./page-content";
 import { db } from "@/db";
 import getSession from "@/lib/getSession";
 import { Metadata } from "next";
 import { cache } from "react";
+import { siteConfig } from "@/lib/site-config";
 import Container from "@/components/Container";
 
 const getProfileData = cache(async (username: string) => {
@@ -33,31 +34,57 @@ const getProfileData = cache(async (username: string) => {
   return profileData;
 });
 
-export const metadata: Metadata = {
-  title: "Profile",
-  openGraph: {
-    description: "User profile",
-  },
-};
-
-async function Page({ params }: { params: { username: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
   const { username } = params;
+  const profile = await getProfileData(username);
+
+  if (!profile) return {};
+
+  return {
+    title: profile?.name,
+    description: profile?.bio ?? siteConfig.description,
+    openGraph: {
+      title: profile.name,
+      description: profile.bio ?? siteConfig.description,
+      url: `${siteConfig.url}/${profile?.username}}`,
+      images: [
+        {
+          url: profile.image ?? siteConfig.ogImage,
+        },
+      ],
+    },
+  };
+}
+
+// export async function generateStaticParams() {
+//   const users = await db.query.users.findMany();
+//   return users.map((user) => ({ params: { username: user.username } }));
+// }
+
+// export const revalidate = 3600 * 12;
+
+async function Page() {
+
   const session = await getSession();
   const user = session?.user;
-
-  const profileData = await getProfileData(username);
-
-  if (!session) {
-    redirect("sign-in");
-  }
-  
+  const username = user?.username
+  const profileData = await getProfileData(username!);
+  console.log(profileData)
   if (!profileData) {
     return notFound();
   }
 
   return (
     <Container>
-      <PageContent />
+      <PageContent
+        {...profileData}
+        isCurrentUser={user?.username === profileData.username}
+      />
+
     </Container>
   );
 }

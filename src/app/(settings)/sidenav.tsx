@@ -8,16 +8,16 @@ function SideNav() {
 
   const links = [
     {
+      route: "/home",
+      name: "Home",
+    },
+    {
       route: "/profile",
       name: "Profile",
     },
     {
       route: "/account",
       name: "Account",
-    },
-    {
-      route: "/site",
-      name: "Site settings",
     },
   ];
 

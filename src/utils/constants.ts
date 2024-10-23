@@ -90,6 +90,14 @@ export const topics = [
 { name: "Coding", slug: "coding", description: "The process of writing and developing computer programs" },
 { name: "Bug Fixes", slug: "bug-fixes", description: "The process of identifying and resolving issues in software" },
 { name: "Project Management", slug: "project-management", description: "The practice of organizing and managing resources to complete a project" },
+{ name: "Education", slug: "education", description: "The process of acquiring knowledge, skills, and values through learning and teaching" },
+{ name: "Mechanics", slug: "mechanics", description: "The branch of physics dealing with the motion of objects and the forces that act on them" },
+{ name: "Cars", slug: "cars", description: "Vehicles powered by internal combustion engines or electric motors, used for transportation" },
+{ name: "Natural Disasters", slug: "natural-disasters", description: "Catastrophic events caused by natural processes such as earthquakes, floods, and hurricanes" },
+{ name: "Money", slug: "money", description: "A medium of exchange used to facilitate transactions for goods and services" },
+{ name: "Learning", slug: "learning", description: "The process of gaining knowledge or skills through study, experience, or teaching" },
+
+
 
 ];
 

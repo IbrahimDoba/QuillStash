@@ -111,7 +111,7 @@ export default function Navigation() {
               <DropdownItem
                 key="account"
                 className="h-14 gap-2"
-                href={`/${user?.username}`}
+                href={`/profile`}
               >
                 <User
                   name={user.name}
