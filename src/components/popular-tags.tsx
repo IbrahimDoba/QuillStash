@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const PopularTags = async () => {
   const tags = await db.query.tags.findMany({
-    limit: 8,
+    limit: 6,
   });
 
   if (!tags) return null;
@@ -18,7 +18,7 @@ const PopularTags = async () => {
         {tags.map((tag) => (
           <li key={tag.id}>
             <Link href={`/tag/${tag.slug}`}>
-              <Chip size='md'>
+              <Chip size='sm'>
                 {tag.name}
               </Chip>
             </Link>

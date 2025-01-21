@@ -6,13 +6,12 @@ const DiscordCard = () => {
     <Card radius="sm" shadow="sm" className="max-w-md">
       <CardHeader>
         <h4 className="xl:text-xl font-bold text-primary">
-          Become a Writer with Us!
+        Ready to Write?
         </h4>
       </CardHeader>
       <CardBody>
-        <p className="text-sm text-foreground-500">
+        <p className="text-sm text-foreground-500 font-semibold">
           Are you passionate about sharing knowledge or telling stories? Join our Discord community today and send a request to become a writer. 
-          Let your voice be heard and connect with others who share your enthusiasm for writing!
         </p>
       </CardBody>
       <CardFooter>
