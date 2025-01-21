@@ -28,7 +28,7 @@ export default function RegisterPage() {
         <div className="flex items-center gap-3">
           <div className="w-full max-w-full lg:max-w-lg">
             <svg width="512" height="412" viewBox="0 0 960 960">
-              <use href="/product-launch.svg#product-launch"></use>
+              <use href="/product-launch.svg#product-launch" />
             </svg>
           </div>
         </div>

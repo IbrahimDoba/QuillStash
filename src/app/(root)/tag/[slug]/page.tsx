@@ -2,8 +2,8 @@ import Container from "@/components/Container";
 import TagPostCard from "@/components/tag-post-card";
 import { db } from "@/db";
 import { Button } from "@nextui-org/react";
-import { Frown } from "lucide-react";
-import { Metadata } from "next";
+import { Frown, ExternalLink } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 const getTag = async (slug: string) => {
@@ -73,26 +73,48 @@ export default async function Page({ params }: { params: { slug: string } }) {
     },
   });
 
+  const isQuillAI = tag.slug === "quillai";
+
   return (
     <Container>
       <section className="grid place-content-center py-10">
         <div className="mt-10 max-w-prose space-y-3 text-center">
           <h1 className="relative max-w-prose text-balance text-center text-2xl font-bold leading-10 tracking-tight md:text-3xl lg:text-4xl xl:text-5xl">
-            Showing results for articles tagged{" "}
-            <span>&quot;{tag.name}&quot;</span>
+            {isQuillAI 
+              ? "Discover QuillAI: Your Intelligent Writing Assistant"
+              : `Articles Tagged "${tag.name}"`}
           </h1>
-          <p>A curated collection of articles about {tag.name}</p>
+          <p className="text-lg text-foreground-600">
+            {isQuillAI 
+              ? "Explore articles about our AI-powered writing tool that helps you create better content faster"
+              : `Dive into our handpicked collection of articles about ${tag.name}`}
+          </p>
+          {isQuillAI && (
+            <div className="mt-6 rounded-lg bg-primary/5 p-4 center flex justify-around">
+              <p className="flex items-center gap-2 text-primary">
+                Try QuillAI now at{" "}
+                <a 
+                  href="https://ai.quillstash.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold hover:underline"
+                >
+                  ai.quillstash.com <ExternalLink size={16} />
+                </a>
+              </p>
+            </div>
+          )}
         </div>
       </section>
       <section className="py-6">
         {posts.length ? (
-          <ul className="grid grid-cols-[repeat(auto-fill,_minmax(16.75rem,_20rem))] gap-8 max-md:justify-center md:gap-14">
-            {posts?.map((post) => (
-              <li key={post.id} className="dark:border-foreground-50">
-                <TagPostCard {...post} />
-              </li>
-            ))}
-          </ul>
+         <ul className="grid grid-cols-4 gap-8 max-md:justify-center md:gap-14">
+         {posts?.map((post) => (
+           <li key={post.id} className="dark:border-foreground-50">
+             <TagPostCard {...post} />
+           </li>
+         ))}
+       </ul>
         ) : (
           <TagNotFound />
         )}
@@ -107,18 +129,17 @@ function TagNotFound() {
       <div className="flex flex-col items-center space-y-2">
         <Frown size={64} className="text-foreground-400" />
         <p className="max-w-prose text-center lg:px-10">
-          Sorry we couldn&apos;t find any articles on that topic. You can try
-          exploring our other topics{" "}
+          We haven&apos;t published any articles on this topic yet. Browse our other topics{" "}
           <Link
             href="/home"
             className="font-semibold underline underline-offset-2"
           >
             here
           </Link>{" "}
-          or be the first to write on the topic you&apos;re looking for
+          or share your knowledge by writing the first article.
         </p>
         <Button radius="sm" color="primary" href="/new" className="mt-8">
-          Don&apos;t be shy
+          Start Writing
         </Button>
       </div>
     </div>

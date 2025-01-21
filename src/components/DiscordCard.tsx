@@ -1,18 +1,18 @@
 import { Card, CardBody, Button, CardHeader, CardFooter, Link } from '@nextui-org/react';
 import { ArrowUpRight } from 'lucide-react';
 
-const DiscordCard = ({  }) => {
+const DiscordCard = () => {
   return (
-    <Card radius='sm' shadow='sm' className="max-w-md">
+    <Card radius="sm" shadow="sm" className="max-w-md">
       <CardHeader>
         <h4 className="xl:text-xl font-bold text-primary">
-          Join the community
+          Become a Writer with Us!
         </h4>
       </CardHeader>
       <CardBody>
         <p className="text-sm text-foreground-500">
-          Be a part of our growing community. Connect, share, and discuss with like-minded individuals. We would love to have
-          you with us!
+          Are you passionate about sharing knowledge or telling stories? Join our Discord community today and send a request to become a writer. 
+          Let your voice be heard and connect with others who share your enthusiasm for writing!
         </p>
       </CardBody>
       <CardFooter>
@@ -22,7 +22,7 @@ const DiscordCard = ({  }) => {
           as={Link}
         >
           <span>
-            Join us today
+            Join the Community
           </span>
           <ArrowUpRight size={16} />
         </Button>

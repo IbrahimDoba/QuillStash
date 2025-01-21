@@ -2,7 +2,7 @@ import TopWriters from '@/components/top-writers';
 import React from 'react';
 import PageContent from './page-content';
 import PopularTags from '@/components/popular-tags';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import DiscordCard from '@/components/DiscordCard';
 
 export const metadata: Metadata = {

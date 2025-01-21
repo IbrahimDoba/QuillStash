@@ -11,8 +11,15 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
+  
   const session = await getSession();
   if (!session) redirect("/sign-in");
+
+  
+  // Check if the user has the "writer" role
+  if (session.user?.role !== "writer") {
+    redirect("/") // Redirect to homepage if not a writer
+  }
 
   const userIsAllowed = session?.user.usernameConfirmed;
   console.log("SESSION LOGS",session)

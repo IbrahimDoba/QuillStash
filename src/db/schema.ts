@@ -66,7 +66,7 @@ export const users = pgTable('users', {
   location: text('location'),
   work: text('work'),
   website: text('website'),
-  role: text('role').default('writer'),
+  role: text('role').default('reader'),
   socials: json('socials').$type<string[]>(),
   pronouns: text('pronouns').default('Prefer not to say'),
   emailVerified: timestamp('email_verified', { mode: 'date' }),

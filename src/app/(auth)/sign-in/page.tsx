@@ -3,7 +3,7 @@ import { AuthForm } from "@/components/auth-form";
 import { Button } from "@nextui-org/react";
 import { SiteLogo } from "@/components/Icons";
 import { ArrowLeft } from "lucide-react";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
@@ -48,7 +48,7 @@ export default async function LoginPage() {
       <div className="hidden h-full place-content-center bg-slate-50 dark:bg-slate-900 lg:grid">
         <div className="w-full max-w-lg">
           <svg width="512" height="412" viewBox="0 0 960 960">
-            <use href="/app-launch.svg#app-launch"></use>
+            <use href="/app-launch.svg#app-launch" />
           </svg>
         </div>
       </div>

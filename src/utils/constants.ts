@@ -96,6 +96,8 @@ export const topics = [
 { name: "Natural Disasters", slug: "natural-disasters", description: "Catastrophic events caused by natural processes such as earthquakes, floods, and hurricanes" },
 { name: "Money", slug: "money", description: "A medium of exchange used to facilitate transactions for goods and services" },
 { name: "Learning", slug: "learning", description: "The process of gaining knowledge or skills through study, experience, or teaching" },
+{ name: "QuillAI", slug: "QuillAI", description: "Official Ai SEO article generator tool form the creators of quillstash" },
+
 
 
 

@@ -22,6 +22,7 @@ import { SiteLogo } from "../Icons";
 import Search from "../Search";
 import { ThemeSwitch } from "../ThemeSwitch";
 import { usePathname } from "next/navigation";
+import { ChevronDown, Wand2 } from "lucide-react";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,15 +30,8 @@ export default function Navigation() {
   const pathname = usePathname();
   const user = session.data?.user;
 
-  // function getPosition() {
-  //   if (stickyRoutes.some((route) => pathname.startsWith(route))) {
-  //     return "sticky";
-  //   } else if (pathname === "/") {
-  //     return "static";
-  //   } else {
-  //     return;
-  //   }
-  // }
+  // Check if user has writer role
+  const isWriter = user?.role === 'writer';
 
   return (
     <Navbar
@@ -63,6 +57,38 @@ export default function Navigation() {
         <NavbarItem>
           <Search />
         </NavbarItem>
+        <NavbarItem>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                variant="light"
+                className="p-0 text-default-600 hover:text-default-900"
+                endContent={<ChevronDown size={16} />}
+              >
+                Tools
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Tools menu">
+              <DropdownItem
+                key="quillai"
+                href="https://ai.quillstash.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                startContent={<Wand2 size={16} />}
+              >
+                QuillAI
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            href="/tag/quillai"
+            className="text-default-600 hover:text-default-900 underline"
+          >
+            QuillAI
+          </Link>
+        </NavbarItem>
       </NavbarContent>
 
       {!user ? (
@@ -86,16 +112,18 @@ export default function Navigation() {
         </NavbarContent>
       ) : (
         <NavbarContent as="div" justify="end" className="flex gap-4">
-          <Button
-            href="/new"
-            as={Link}
-            color="primary"
-            variant="solid"
-            radius="sm"
-            className="px-3 max-md:hidden"
-          >
-            Write
-          </Button>
+          {isWriter && (
+            <Button
+              href="/new"
+              as={Link}
+              color="primary"
+              variant="solid"
+              radius="sm"
+              className="px-3 max-md:hidden"
+            >
+              Write
+            </Button>
+          )}
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
@@ -111,7 +139,7 @@ export default function Navigation() {
               <DropdownItem
                 key="account"
                 className="h-14 gap-2"
-                href={`/profile`}
+                href={"/profile"}
               >
                 <User
                   name={user.name}
@@ -146,9 +174,9 @@ export default function Navigation() {
       )}
 
       {/* theme */}
-        <NavbarItem>
-          <ThemeSwitch />
-        </NavbarItem>
+      <NavbarItem>
+        <ThemeSwitch />
+      </NavbarItem>
 
       {/* mobile toggle */}
       <NavbarMenuToggle
