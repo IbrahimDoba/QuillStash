@@ -3,7 +3,7 @@ import { Calendar, Edit, LinkIcon, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Card, Avatar, Button, Tabs, Tab } from "@nextui-org/react";
 import { toast } from "sonner";
-import { Draft, User as ProfileData, Post as UserPosts } from "@/db/schema";
+import type { Draft, User as ProfileData, Post as UserPosts } from "@/db/schema";
 import { useSession } from "next-auth/react";
 import ContentCard from "./content-card";
 import LinksModal from "./links-modal";
@@ -58,7 +58,9 @@ export default function PageContent({
   };
 
   const session = useSession();
-
+  console.log("Session data:", session.data);
+  const user = session.data?.user;
+  const isWriter = user?.role === 'writer';
   return (
     <section className="py-10 mx-auto max-w-screen-sm min-h-screen">
       {/* profile details */}
@@ -100,15 +102,17 @@ export default function PageContent({
                   <span>Edit profile</span>
                 </Link>
               </Button>
+           {isWriter &&( 
               <Button radius="sm">
-                <Link
-                  href={"/new"}
-                  className="flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end"
-                >
-                  <span>New post</span>
-                </Link>
-              </Button>
-            </div>
+              <Link
+                href={"/new"}
+                className="flex items-center gap-2 px-3 py-2 text-sm max-md:w-fit max-md:self-end"
+              >
+                <span>New post</span>
+              </Link>
+            </Button>
+                )  }  
+             </div>
           )}
           {/* <Button radius='sm' onClick={() => copyLink()}>
             <LinkIcon size={16} />

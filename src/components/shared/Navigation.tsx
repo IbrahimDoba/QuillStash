@@ -82,12 +82,12 @@ export default function Navigation() {
           </Dropdown>
         </NavbarItem>
         <NavbarItem>
-          <Link
+          {/* <Link
             href="/tag/quillai"
             className="text-default-600 hover:text-default-900 underline"
           >
             QuillAI
-          </Link>
+          </Link> */}
         </NavbarItem>
       </NavbarContent>
 
