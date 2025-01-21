@@ -7,7 +7,6 @@ export function sanitizeFilename(filename: string): string {
 }
 
 export async function uploadFile(file: any): Promise<string> {
-  console.log(file)
   const buffer = Buffer.from(await file.arrayBuffer());
   const pathDist: string = join(process.cwd(), "/public/images");
   const relativeUploadDir = `${dateFn.format(Date.now(), "dd-MM-y")}`;

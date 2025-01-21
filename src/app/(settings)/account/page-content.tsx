@@ -39,7 +39,7 @@ function AccountForm({
 
   async function onSubmit(data: UserAccountValues) {
     try {
-      console.log("submitted");
+      toast("Submitted");
     } catch (error) {
       toast("something went wrong");
     }

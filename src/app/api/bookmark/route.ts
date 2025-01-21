@@ -18,7 +18,6 @@ export  async function POST(
         postId,
         userId,
       });
-      console.log("biikmarked",bookmarks )
     return NextResponse.json({ message: 'Bookmark added successfully' });
     } catch (error) {
       console.error('Error adding bookmark:', error);

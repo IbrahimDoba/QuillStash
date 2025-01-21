@@ -5,14 +5,12 @@ import { posts, tags, users } from '@/db/schema';
 export const searchPosts = async (query: string) => {
   const allPosts = await db.query.posts.findMany({ with: { author: true } });
   const filteredPosts = allPosts.filter((post) => post.title.includes(query));
-  console.log(filteredPosts);
   return filteredPosts;
 };
 
 export const searchTags = async (query: string) => {
   const allTags = await db.query.tags.findMany({});
   const filteredTags = allTags.filter((tag) => tag.name.includes(query));
-  console.log(filteredTags);
   return filteredTags;
 };
 
@@ -21,6 +19,5 @@ export const searchUsers = async (query: string) => {
   const filteredUsers = allUsers.filter((user) =>
     user.username.includes(query)
   );
-  console.log(filteredUsers);
   return filteredUsers;
 };

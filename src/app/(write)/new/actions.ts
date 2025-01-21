@@ -11,7 +11,6 @@ import { redirect } from 'next/navigation';
 import { NextRequest, NextResponse } from "next/server";
 
 export const confirmUsername = async (data: ConfirmValues) => {
-    console.log("Received data:", data);
    await validateRequest();
    const session = await getSession();
    const user = session?.user;
@@ -22,12 +21,10 @@ export const confirmUsername = async (data: ConfirmValues) => {
 
    try {
     const values = confirmSchema.parse(data);
-    console.log(values);
 //  Find the user by ID
    const userToUpdate = await db.query.users.findFirst({
      where: eq(users.id, user.id)
    });
-   console.log(userToUpdate)
    if (!userToUpdate) {
      throw new Error("User not found");
    }

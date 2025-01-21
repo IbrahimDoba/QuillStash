@@ -8,7 +8,6 @@ import { validateRequest } from '@/utils/validateRequest';
 
 export async function POST(req: Request, res: NextApiResponse) {
   const { postId, userId } = await req.json();
-  console.log(postId, userId);
   await validateRequest();
 
   try {
@@ -16,7 +15,6 @@ export async function POST(req: Request, res: NextApiResponse) {
       postId,
       userId,
     });
-    // console.log('liked', likes);
 
     return NextResponse.json({ message: 'Like added successfully' });
   } catch (error) {
@@ -28,7 +26,6 @@ export async function POST(req: Request, res: NextApiResponse) {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const postId = searchParams.get('postId');
-  console.log(postId);
   if (!postId) {
     return NextResponse.json(
       { message: 'Post ID is required' },

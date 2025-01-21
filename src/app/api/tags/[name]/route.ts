@@ -24,16 +24,8 @@ export const GET = async (req: NextRequest, {params} : {params: {name:string}}) 
 
     const totalPosts = Number(count);
     const totalPages = Math.ceil(totalPosts / limit);
-    console.log('test');
 
-    // Fetch paginated posts
-    // const fetchedPosts = await db
-    //   .select()
-    //   .from(posts)
-    //   .orderBy(desc(posts.createdAt))
-    //   .limit(limit)
-    //   .offset(skip);
-    // console.log(fetchedPosts)
+
 
 
     const fetchedPosts = await db.query.posts.findMany({

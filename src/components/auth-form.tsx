@@ -36,7 +36,6 @@ export function AuthForm() {
       password: data.password,
       redirect: false,
     });
-    console.log("SIGN IN RESULT",signInResult)
     setIsCredentialsLoading(false);
 
     if (!signInResult?.ok) {

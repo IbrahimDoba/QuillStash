@@ -54,7 +54,6 @@ export async function GET(
       replies: commentReplies.filter((reply) => reply.commentId === comment.id),
     }));
 
-    console.log("Comments response: ", commentsWithReplies);
 
     return Response.json(commentsWithReplies, { status: 200 });
   } catch (error) {

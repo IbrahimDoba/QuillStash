@@ -24,7 +24,6 @@ export async function POST(req: Request) {
         body: postBody,
       })
       .returning();
-    console.log(newReply);
 
     return NextResponse.json(newReply, { status: 201 });
   } catch (error) {

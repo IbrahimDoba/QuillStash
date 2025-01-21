@@ -33,7 +33,6 @@ export function ConfirmForm({
 
   async function onSubmit(data: ConfirmValues) {
     try {
-      console.log("Submitting:", data);
       const response = await confirmUsername(data);
       if (response?.success) {
         toast.loading("Granting access");

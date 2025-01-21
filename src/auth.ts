@@ -31,6 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: profile.email,
           image: profile.picture || `https://avatar.vercel.sh/${profile.name}?size=30`,
           username,
+         
         } as User;
       },
     }),
@@ -45,6 +46,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: profile.email,
           image: profile.avatar ? `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png` : null,
           username,
+         
+
         } as User;
       },
     }),
@@ -77,6 +80,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return null; // Return null if password is incorrect
           }
           console.log("userhere", user);
+        
           return user; // Return the user if login is successful
         } catch (error) {
           if (error instanceof ZodError) {
@@ -98,6 +102,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.name = user.name;
         token.picture = user.image;
         token.username = user.username;
+        token.role = user.role;
         token.isConfirmed = user.usernameConfirmed;
       }
       return token;
@@ -110,13 +115,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.name = token.name as string;
         session.user.image = token.picture as string;
         session.user.username = token.username as string;
+        session.user.role = token.role as string;
         session.user.usernameConfirmed  = token.usernameConfirmed  as Date | null;
         // Fetch the latest user data from the database
         const dbUser = await db.query.users.findFirst({
           where: eq(users.id, token.id as string),
         });
         if (dbUser) {
-          session.user.name = dbUser.name;
+          session.user.name = dbUser.name;    
+          session.user.role = dbUser.role;    
           session.user.image = dbUser.image;
           session.user.username = dbUser.username;
           session.user.usernameConfirmed = dbUser.usernameConfirmed

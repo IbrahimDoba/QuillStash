@@ -58,7 +58,6 @@ export default function PageContent({
   };
 
   const session = useSession();
-  console.log("Session data:", session.data);
   const user = session.data?.user;
   const isWriter = user?.role === 'writer';
   return (

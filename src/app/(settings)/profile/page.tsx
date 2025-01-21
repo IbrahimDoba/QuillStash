@@ -73,7 +73,7 @@ async function Page() {
   const user = session?.user;
   const username = user?.username
   const profileData = await getProfileData(username!);
-  console.log(profileData)
+
   if (!profileData) {
     return notFound();
   }

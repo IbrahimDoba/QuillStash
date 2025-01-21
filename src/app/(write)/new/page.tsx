@@ -22,7 +22,6 @@ const Page = async () => {
   }
 
   const userIsAllowed = session?.user.usernameConfirmed;
-  console.log("SESSION LOGS",session)
   if (!userIsAllowed) {
     return (
       <div className="grid min-h-screen place-content-center">

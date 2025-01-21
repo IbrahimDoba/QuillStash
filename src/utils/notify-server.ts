@@ -21,7 +21,6 @@ export async function notifyServer(post: NotificationContent) {
         url: `${siteConfig.url}/${post.username}/${post.slug}`,
       }),
     });
-    console.log(response);
     if (response.ok) {
       console.log('Notification sent successfully!');
     } else {

@@ -21,7 +21,6 @@ function SideNav() {
     },
   ];
 
-  console.log(pathname);
 
   return (
     <aside className="relative top-0 hidden h-screen md:sticky md:block border-r dark:border-r-foreground-50">

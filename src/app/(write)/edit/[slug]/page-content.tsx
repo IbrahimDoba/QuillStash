@@ -44,7 +44,6 @@ function PageContent({ previousPostData }: { previousPostData: Post }) {
 
   async function onSubmit(values: PostValues) {
     try {
-      console.log('Form data:', values);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/posts/${previousPostData.id}`,
         {

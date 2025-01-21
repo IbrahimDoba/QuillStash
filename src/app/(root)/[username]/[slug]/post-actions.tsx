@@ -113,7 +113,6 @@ useEffect(() => {
           userId,
         }),
       });
-      console.log(response);
       if (response.ok) {
         // Handle successful like action
         toast.success("Post liked!", { position: "top-right" });
