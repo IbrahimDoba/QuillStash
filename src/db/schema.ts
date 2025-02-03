@@ -248,6 +248,13 @@ export const replies = pgTable('replies', {
 });
 export type Reply = InferSelectModel<typeof replies>;
 
+export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: text("id").primaryKey().notNull(),
+  email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+
 // replies relations
 export const repliesRelations = relations(replies, ({ one }) => ({
   user: one(users, {

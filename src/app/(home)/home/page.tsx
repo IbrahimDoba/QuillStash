@@ -4,6 +4,7 @@ import PageContent from './page-content';
 import PopularTags from '@/components/popular-tags';
 import type { Metadata } from 'next';
 import DiscordCard from '@/components/DiscordCard';
+import { Newsletter } from '@/components/Newsletter';
 
 export const metadata: Metadata = {
   title: 'Explore',
@@ -20,6 +21,7 @@ const HomePage = () => {
         <aside className='lg:flex flex-col space-y-3 md:sticky top-16 hidden'>
           <PopularTags />
           {/* <TopWriters /> */}
+          <Newsletter/>
           <DiscordCard/>
         </aside>
       </div>

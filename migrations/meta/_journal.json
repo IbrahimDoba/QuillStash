@@ -190,6 +190,13 @@
       "when": 1737465013199,
       "tag": "0026_slimy_taskmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1738619874835,
+      "tag": "0027_ancient_iceman",
+      "breakpoints": true
     }
   ]
 }
