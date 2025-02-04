@@ -57,7 +57,7 @@ export const Newsletter = () => {
       </h2>
       <p className="mb-6 text-gray-600">
         Stay updated with the latest in SaaS, AI advancements, and more.
-        Subscribe to our newsletter for exclusive insights and trends from Quillstash.
+        Subscribe to our newsletter for exclusive insights and trends from Quillstash!
       </p>
       <form
         onSubmit={handleSubmit}
